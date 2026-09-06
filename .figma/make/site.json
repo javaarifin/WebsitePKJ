@@ -1,0 +1,10 @@
+{
+  "description": "This web application offers a user-friendly platform for designing and customizing ceramic products, catering to artisans and businesses in the ceramics industry.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
