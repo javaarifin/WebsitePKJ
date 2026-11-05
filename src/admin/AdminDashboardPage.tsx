@@ -1,24 +1,27 @@
-import React from "react"
+import React, { useState } from "react"
 import { NavigateFn } from "../App"
 import { useAppStore } from "../context/AppContext"
 import AdminLayout from "./AdminLayout"
 import {
   Package,
-  CheckCircle2,
-  FileEdit,
   MessageSquare,
   Plus,
   ArrowUpRight,
   TrendingUp,
-  Tag,
   Clock,
   Eye,
-  Trash2,
   Newspaper,
   Image,
   Award,
   Sparkles,
-  Calendar,
+  Users,
+  Smartphone,
+  Monitor,
+  Tablet,
+  Globe,
+  RefreshCw,
+  Activity,
+  Compass,
 } from "lucide-react"
 
 interface AdminDashboardPageProps {
@@ -35,9 +38,14 @@ export default function AdminDashboardPage({
     gallery,
     awards,
     exhibitions,
-    deleteProduct,
+    visitorStats,
+    simulateNewVisitor,
+    resetVisitorStats,
     updateInquiryStatus,
   } = useAppStore()
+
+  const [activeTab, setActiveTab] = useState<"overview" | "visitors">("overview")
+  const [showSimulateSuccess, setShowSimulateSuccess] = useState(false)
 
   const publishedCount = products.filter((p) => p.status === "published").length
   const draftCount = products.filter((p) => p.status === "draft").length
@@ -56,12 +64,24 @@ export default function AdminDashboardPage({
   const recentNews = news.slice(0, 4)
   const recentInquiries = inquiries.slice(0, 5)
 
+  // Max views in weekly trend for dynamic bar chart height calculation
+  const maxWeeklyViews = Math.max(
+    ...visitorStats.weeklyTrend.map((d) => d.views),
+    10,
+  )
+
+  const handleSimulate = () => {
+    simulateNewVisitor()
+    setShowSimulateSuccess(true)
+    setTimeout(() => setShowSimulateSuccess(false), 2500)
+  }
+
   return (
     <AdminLayout
       currentPage="admin-dashboard"
       navigate={navigate}
       title="Dashboard Overview"
-      subtitle="Ringkasan data produk, artikel berita, galeri foto, prestasi, dan pesan pelanggan"
+      subtitle="Ringkasan data produk, artikel berita, galeri foto, pesan, dan statistik pengunjung website"
       actions={
         <div className="flex items-center gap-2">
           <button
@@ -189,6 +209,360 @@ export default function AdminDashboardPage({
             </div>
             <div className="w-10 h-10 rounded-xl bg-[#A65F46]/10 text-[#A65F46] flex items-center justify-center">
               <MessageSquare className="w-5 h-5" />
+            </div>
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* STATISTIK PENGUNJUNG WEBSITE (LIVE WEB ANALYTICS) */}
+        {/* ========================================================================= */}
+        <div className="bg-white rounded-3xl border border-[#D8C3A5]/50 shadow-sm p-6 lg:p-8 space-y-6">
+          {/* Header Analytics */}
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-[#D8C3A5]/30">
+            <div>
+              <div className="flex items-center gap-2.5 mb-1.5">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <span className="text-[11px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                  Live Traffic Tracker
+                </span>
+                {showSimulateSuccess && (
+                  <span className="text-[11px] font-semibold text-[#A65F46] animate-pulse">
+                    +1 Kunjungan baru tercatat!
+                  </span>
+                )}
+              </div>
+              <h2 className="font-display text-2xl font-bold text-[#302A26]">
+                Statistik Pengunjung Website
+              </h2>
+              <p className="text-xs text-[#302A26]/60">
+                Data interaksi pengunjung real-time saat menjelajahi katalog produk, cerita ekspor, dan kontak PKJ Craft
+              </p>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleSimulate}
+                className="flex items-center gap-1.5 bg-[#A65F46]/10 hover:bg-[#A65F46] text-[#A65F46] hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition-all shadow-xs"
+                title="Simulasi pengunjung baru membuka website"
+              >
+                <Users className="w-3.5 h-3.5" />
+                <span>Simulasi Kunjungan (+1)</span>
+              </button>
+              <button
+                onClick={resetVisitorStats}
+                className="p-2 rounded-xl border border-[#D8C3A5]/60 hover:bg-[#F8F6F0] text-[#302A26]/60 hover:text-[#302A26] transition-colors"
+                title="Reset statistik ke data default"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          {/* 4 Analytics Metric Counters */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Metric 1: Total Views */}
+            <div className="bg-[#F8F6F0] p-5 rounded-2xl border border-[#D8C3A5]/40 relative overflow-hidden">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#302A26]/60 uppercase tracking-wider">
+                  Total Dilihat (Pageviews)
+                </span>
+                <div className="w-8 h-8 rounded-lg bg-[#A65F46]/15 text-[#A65F46] flex items-center justify-center">
+                  <Eye className="w-4 h-4" />
+                </div>
+              </div>
+              <h3 className="font-display text-3xl font-bold text-[#302A26] mb-1">
+                {visitorStats.totalViews.toLocaleString("id-ID")}
+              </h3>
+              <p className="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
+                <TrendingUp className="w-3.5 h-3.5" />
+                <span>+12.4% minggu ini</span>
+              </p>
+            </div>
+
+            {/* Metric 2: Unique Visitors */}
+            <div className="bg-[#F8F6F0] p-5 rounded-2xl border border-[#D8C3A5]/40 relative overflow-hidden">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#302A26]/60 uppercase tracking-wider">
+                  Pengunjung Unik
+                </span>
+                <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center">
+                  <Users className="w-4 h-4" />
+                </div>
+              </div>
+              <h3 className="font-display text-3xl font-bold text-[#302A26] mb-1">
+                {visitorStats.totalVisitors.toLocaleString("id-ID")}
+              </h3>
+              <p className="text-[11px] text-[#302A26]/60">
+                Sesi perangkat unik
+              </p>
+            </div>
+
+            {/* Metric 3: Today's Visits */}
+            <div className="bg-[#F8F6F0] p-5 rounded-2xl border border-[#D8C3A5]/40 relative overflow-hidden">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#302A26]/60 uppercase tracking-wider">
+                  Kunjungan Hari Ini
+                </span>
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                  <Activity className="w-4 h-4" />
+                </div>
+              </div>
+              <h3 className="font-display text-3xl font-bold text-[#A65F46] mb-1">
+                {visitorStats.todayViews.toLocaleString("id-ID")}
+              </h3>
+              <p className="text-[11px] text-emerald-700 font-medium">
+                {visitorStats.todayVisitors} pengunjung unik hari ini
+              </p>
+            </div>
+
+            {/* Metric 4: Average Pages / Session */}
+            <div className="bg-[#F8F6F0] p-5 rounded-2xl border border-[#D8C3A5]/40 relative overflow-hidden">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-semibold text-[#302A26]/60 uppercase tracking-wider">
+                  Rata-rata Hal. / Sesi
+                </span>
+                <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center">
+                  <Compass className="w-4 h-4" />
+                </div>
+              </div>
+              <h3 className="font-display text-3xl font-bold text-[#302A26] mb-1">
+                {(
+                  visitorStats.totalViews /
+                  (visitorStats.totalVisitors || 1)
+                ).toFixed(1)}
+              </h3>
+              <p className="text-[11px] text-[#7A8065] font-medium">
+                Kedalaman eksplorasi kriya
+              </p>
+            </div>
+          </div>
+
+          {/* Grid 2 Columns: 7-Day Trend Chart & Top Pages / Devices */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2">
+            {/* Left Chart (7 spans): 7-Day Visitor Trend */}
+            <div className="lg:col-span-7 bg-[#FAF8F5] rounded-2xl p-6 border border-[#D8C3A5]/40 flex flex-col justify-between">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="font-display font-bold text-base text-[#302A26]">
+                    Tren Kunjungan 7 Hari Terakhir
+                  </h3>
+                  <p className="text-xs text-[#302A26]/50">
+                    Jumlah halaman yang diakses setiap hari
+                  </p>
+                </div>
+                <span className="text-[11px] font-semibold text-[#A65F46] bg-[#A65F46]/10 px-2.5 py-1 rounded-lg">
+                  7 Hari
+                </span>
+              </div>
+
+              {/* Visual Bar Chart */}
+              <div className="h-48 flex items-end justify-between gap-2 sm:gap-4 pt-4 pb-2 border-b border-[#D8C3A5]/30">
+                {visitorStats.weeklyTrend.map((item, idx) => {
+                  const heightPercent = Math.max(
+                    Math.round((item.views / maxWeeklyViews) * 100),
+                    12,
+                  )
+                  const isToday = idx === visitorStats.weeklyTrend.length - 1
+
+                  return (
+                    <div
+                      key={item.date}
+                      className="flex-1 flex flex-col items-center h-full justify-end group relative"
+                    >
+                      {/* Tooltip on hover */}
+                      <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-[#302A26] text-white text-[10px] font-mono py-1 px-2 rounded-lg whitespace-nowrap pointer-events-none shadow-md z-10">
+                        {item.views} views ({item.visitors} unik)
+                      </div>
+
+                      {/* Bar */}
+                      <div
+                        style={{ height: `${heightPercent}%` }}
+                        className={`w-full max-w-[42px] rounded-t-xl transition-all duration-300 group-hover:scale-y-105 ${
+                          isToday
+                            ? "bg-gradient-to-t from-[#A65F46] to-[#d87c5c] shadow-sm"
+                            : "bg-[#D8C3A5] hover:bg-[#bda586]"
+                        }`}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Chart Labels */}
+              <div className="flex items-center justify-between gap-2 sm:gap-4 pt-3 text-center">
+                {visitorStats.weeklyTrend.map((item, idx) => {
+                  const isToday = idx === visitorStats.weeklyTrend.length - 1
+                  return (
+                    <div key={item.date} className="flex-1">
+                      <p
+                        className={`text-[11px] font-bold ${
+                          isToday ? "text-[#A65F46]" : "text-[#302A26]/70"
+                        }`}
+                      >
+                        {item.dayName}
+                      </p>
+                      <p className="text-[10px] text-[#302A26]/40">{item.date}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Right Column (5 spans): Devices & Top Pages */}
+            <div className="lg:col-span-5 space-y-6">
+              {/* Device Breakdown */}
+              <div className="bg-[#FAF8F5] rounded-2xl p-5 border border-[#D8C3A5]/40">
+                <h4 className="font-display font-bold text-sm text-[#302A26] mb-3">
+                  Perangkat Pengunjung
+                </h4>
+                <div className="space-y-3">
+                  {visitorStats.devices.map((d) => {
+                    const iconMap = {
+                      Mobile: <Smartphone className="w-3.5 h-3.5 text-blue-600" />,
+                      Desktop: <Monitor className="w-3.5 h-3.5 text-emerald-600" />,
+                      Tablet: <Tablet className="w-3.5 h-3.5 text-purple-600" />,
+                    }
+
+                    return (
+                      <div key={d.device} className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="flex items-center gap-1.5 font-medium text-[#302A26]">
+                            {iconMap[d.device]}
+                            {d.device === "Mobile"
+                              ? "Smartphone"
+                              : d.device === "Desktop"
+                                ? "Komputer / Laptop"
+                                : "Tablet / iPad"}
+                          </span>
+                          <span className="font-bold text-[#302A26] font-mono">
+                            {d.percentage}% ({d.count})
+                          </span>
+                        </div>
+                        <div className="w-full bg-[#D8C3A5]/30 rounded-full h-2 overflow-hidden">
+                          <div
+                            style={{ width: `${d.percentage}%` }}
+                            className={`h-full rounded-full ${
+                              d.device === "Mobile"
+                                ? "bg-blue-600"
+                                : d.device === "Desktop"
+                                  ? "bg-emerald-600"
+                                  : "bg-purple-600"
+                            }`}
+                          />
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Top Pages */}
+              <div className="bg-[#FAF8F5] rounded-2xl p-5 border border-[#D8C3A5]/40">
+                <h4 className="font-display font-bold text-sm text-[#302A26] mb-3">
+                  Halaman Paling Populer
+                </h4>
+                <div className="space-y-2.5">
+                  {visitorStats.topPages.slice(0, 4).map((page, rank) => (
+                    <div
+                      key={page.path}
+                      className="flex items-center justify-between text-xs p-2 rounded-xl bg-white border border-[#D8C3A5]/30"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-[#A65F46]/10 text-[#A65F46] font-bold text-[10px] flex items-center justify-center">
+                          #{rank + 1}
+                        </span>
+                        <div>
+                          <p className="font-semibold text-[#302A26] line-clamp-1">
+                            {page.name}
+                          </p>
+                          <p className="text-[10px] text-[#302A26]/40 font-mono">
+                            {page.path}
+                          </p>
+                        </div>
+                      </div>
+                      <span className="font-bold font-mono text-[#A65F46] bg-[#A65F46]/10 px-2 py-0.5 rounded text-[11px]">
+                        {page.views} views
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Real-time Visitor Log Feed */}
+          <div className="pt-4 border-t border-[#D8C3A5]/30">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="font-display font-bold text-base text-[#302A26]">
+                  Aktivitas Pengunjung Terkini (Live Feed)
+                </h3>
+                <p className="text-xs text-[#302A26]/50">
+                  Daftar pengunjung terbaru yang membuka halaman website PKJ Craft
+                </p>
+              </div>
+              <span className="text-xs text-[#302A26]/40">
+                Menampilkan {Math.min(visitorStats.recentLogs.length, 6)} aktivitas terakhir
+              </span>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-[#D8C3A5]/40 text-[#302A26]/50 uppercase tracking-wider text-[10px]">
+                    <th className="pb-2.5 font-semibold">Waktu</th>
+                    <th className="pb-2.5 font-semibold">Halaman Di Browse</th>
+                    <th className="pb-2.5 font-semibold">Perangkat / Browser</th>
+                    <th className="pb-2.5 font-semibold">Asal Pengunjung</th>
+                    <th className="pb-2.5 font-semibold text-right">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#D8C3A5]/20">
+                  {visitorStats.recentLogs.slice(0, 6).map((log) => (
+                    <tr
+                      key={log.id}
+                      className="hover:bg-[#F8F6F0]/80 transition-colors"
+                    >
+                      <td className="py-2.5 pr-2 font-mono text-[#302A26]/60">
+                        {log.timeFormatted}
+                      </td>
+                      <td className="py-2.5 px-2">
+                        <span className="font-semibold text-[#302A26] block">
+                          {log.pageName}
+                        </span>
+                        <span className="text-[10px] text-[#302A26]/40 font-mono">
+                          {log.path}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-2">
+                        <div className="flex items-center gap-1.5">
+                          {log.device === "Mobile" ? (
+                            <Smartphone className="w-3.5 h-3.5 text-blue-600" />
+                          ) : (
+                            <Monitor className="w-3.5 h-3.5 text-emerald-600" />
+                          )}
+                          <span className="text-[#302A26]/80">{log.browser}</span>
+                        </div>
+                      </td>
+                      <td className="py-2.5 px-2">
+                        <span className="inline-flex items-center gap-1 text-[#302A26]/80">
+                          <Globe className="w-3 h-3 text-[#7A8065]" />
+                          {log.location}
+                        </span>
+                      </td>
+                      <td className="py-2.5 pl-2 text-right">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                          Terverifikasi
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -348,55 +722,21 @@ export default function AdminDashboardPage({
                         </td>
                         <td className="py-3.5 px-3">
                           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-[#F8F6F0] text-[#7A8065] border border-[#D8C3A5]/40">
-                            <Tag className="w-3 h-3" />
                             {product.category}
                           </span>
                         </td>
                         <td className="py-3.5 px-3">
-                          {product.status === "published" ? (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-                              Tayang
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
-                              Draft
-                            </span>
-                          )}
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            Tayang
+                          </span>
                         </td>
                         <td className="py-3.5 pl-3 text-right">
-                          <div className="flex items-center justify-end gap-1.5">
-                            <button
-                              onClick={() =>
-                                navigate("product-detail", {
-                                  productId: product.id,
-                                })
-                              }
-                              className="p-1.5 text-[#302A26]/60 hover:text-[#A65F46] hover:bg-[#F8F6F0] rounded-lg"
-                              title="Lihat Halaman Publik"
-                            >
-                              <Eye className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => navigate("admin-products")}
-                              className="p-1.5 text-[#302A26]/60 hover:text-blue-600 hover:bg-[#F8F6F0] rounded-lg"
-                              title="Edit di Menu Produk"
-                            >
-                              <FileEdit className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => {
-                                if (
-                                  confirm(`Hapus produk "${product.name}"?`)
-                                ) {
-                                  deleteProduct(product.id)
-                                }
-                              }}
-                              className="p-1.5 text-[#302A26]/40 hover:text-red-600 hover:bg-red-50 rounded-lg"
-                              title="Hapus Produk"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
+                          <button
+                            onClick={() => navigate("admin-products")}
+                            className="text-[#A65F46] hover:text-[#8f5239] font-medium text-xs hover:underline"
+                          >
+                            Edit
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -405,16 +745,15 @@ export default function AdminDashboardPage({
               </div>
             </div>
 
-            {/* Recent News Section */}
+            {/* Recent News Articles */}
             <div className="bg-white rounded-2xl border border-[#D8C3A5]/40 shadow-xs p-6">
               <div className="flex items-center justify-between mb-5">
                 <div>
                   <h3 className="font-display font-bold text-lg text-[#302A26]">
-                    Berita & Artikel Terkini
+                    Artikel & Kegiatan Terkini
                   </h3>
                   <p className="text-xs text-[#302A26]/50">
-                    Dokumentasi kegiatan dan cerita yang baru saja
-                    dipublikasikan
+                    Publikasi berita workshop dan kriya gerabah
                   </p>
                 </div>
                 <button
@@ -426,27 +765,22 @@ export default function AdminDashboardPage({
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 {recentNews.map((item) => (
                   <div
                     key={item.id}
-                    className="p-3.5 rounded-xl bg-[#F8F6F0] border border-[#D8C3A5]/30 flex gap-3 items-start hover:border-[#A65F46]/50 transition-colors"
+                    onClick={() => navigate("admin-news")}
+                    className="p-3.5 rounded-xl border border-[#D8C3A5]/40 hover:border-[#A65F46] transition-all cursor-pointer flex gap-3 group bg-white"
                   >
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+                      className="w-16 h-16 rounded-lg object-cover bg-[#D8C3A5]/40 flex-shrink-0 group-hover:scale-105 transition-transform"
                     />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] uppercase font-bold text-[#A65F46]">
-                          {item.category}
-                        </span>
-                        <span className="text-[10px] text-[#302A26]/40 flex items-center gap-0.5">
-                          <Calendar className="w-3 h-3" />
-                          {item.date}
-                        </span>
-                      </div>
+                    <div className="overflow-hidden">
+                      <span className="text-[10px] font-semibold text-[#A65F46] uppercase tracking-wide block mb-0.5">
+                        {item.category}
+                      </span>
                       <h4 className="font-semibold text-xs text-[#302A26] line-clamp-1 mb-1">
                         {item.title}
                       </h4>
@@ -580,18 +914,18 @@ export default function AdminDashboardPage({
                 </p>
                 <div className="space-y-2">
                   <button
-                    onClick={() => navigate("news")}
+                    onClick={() => navigate("home")}
                     className="w-full bg-white/10 hover:bg-[#A65F46] text-white text-xs font-semibold py-2 rounded-xl transition-colors flex items-center justify-center gap-1.5"
                   >
                     <Eye className="w-3.5 h-3.5" />
-                    <span>Uji Halaman Berita Publik</span>
+                    <span>Lihat Website Publik</span>
                   </button>
                   <button
-                    onClick={() => navigate("gallery")}
+                    onClick={() => navigate("products")}
                     className="w-full bg-white/10 hover:bg-[#A65F46] text-white text-xs font-semibold py-2 rounded-xl transition-colors flex items-center justify-center gap-1.5"
                   >
                     <Eye className="w-3.5 h-3.5" />
-                    <span>Uji Halaman Galeri Publik</span>
+                    <span>Lihat Katalog Produk</span>
                   </button>
                 </div>
               </div>

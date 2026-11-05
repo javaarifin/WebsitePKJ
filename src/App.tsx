@@ -88,7 +88,7 @@ const pageToPathMap: Record<Page, string> = {
 }
 
 function AppContent() {
-  const { isAuthenticated } = useAppStore()
+  const { isAuthenticated, recordPageVisit } = useAppStore()
 
   // Initialize page from URL pathname if matched
   const [nav, setNav] = useState<NavState>(() => {
@@ -100,6 +100,13 @@ function AppContent() {
     }
     return { page: "home", lang: "en" }
   })
+
+  // Automatically record analytics for public page visits
+  useEffect(() => {
+    if (!nav.page.startsWith("admin")) {
+      recordPageVisit(nav.page)
+    }
+  }, [nav.page])
 
   // Navigate handler with URL synchronization
   const navigate: NavigateFn = (page, params) => {

@@ -82,11 +82,60 @@ export interface AuthUser {
   role: 'superadmin' | 'editor'
 }
 
+export interface VisitorLog {
+  id: string
+  timestamp: string
+  timeFormatted: string
+  path: string
+  pageName: string
+  device: 'Mobile' | 'Desktop' | 'Tablet'
+  browser: string
+  location: string
+}
+
+export interface DayTrend {
+  date: string
+  dayName: string
+  views: number
+  visitors: number
+}
+
+export interface PageStat {
+  path: string
+  name: string
+  views: number
+  percentage: number
+}
+
+export interface DeviceStat {
+  device: 'Mobile' | 'Desktop' | 'Tablet'
+  count: number
+  percentage: number
+}
+
+export interface VisitorStats {
+  totalViews: number
+  totalVisitors: number
+  todayViews: number
+  todayVisitors: number
+  lastUpdated: string
+  weeklyTrend: DayTrend[]
+  topPages: PageStat[]
+  devices: DeviceStat[]
+  recentLogs: VisitorLog[]
+}
+
 interface AppContextType {
   // Language & i18n
   lang: Lang
   setLang: (lang: Lang) => void
   t: TranslationDictionary
+
+  // Visitor Analytics
+  visitorStats: VisitorStats
+  recordPageVisit: (page: string) => void
+  simulateNewVisitor: () => void
+  resetVisitorStats: () => void
 
   // Products
   products: Product[]
@@ -147,6 +196,132 @@ const STORAGE_KEYS = {
   EXHIBITIONS: 'pkj_craft_exhibitions_v1',
   INQUIRIES: 'pkj_craft_inquiries_v1',
   AUTH: 'pkj_craft_auth_v1',
+  VISITOR_STATS: 'pkj_craft_visitor_stats_v1',
+}
+
+const generateDefaultVisitorStats = (): VisitorStats => {
+  const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab']
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+  const today = new Date()
+
+  const weeklyTrend: DayTrend[] = []
+  const baseViews = [142, 198, 230, 210, 265, 310, 187]
+  const baseVisitors = [65, 92, 108, 98, 124, 145, 88]
+
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today)
+    d.setDate(today.getDate() - i)
+    const dayName = days[d.getDay()]
+    const dateStr = `${d.getDate()} ${months[d.getMonth()]}`
+    weeklyTrend.push({
+      date: dateStr,
+      dayName: i === 0 ? 'Hari Ini' : dayName,
+      views: baseViews[6 - i] || 150,
+      visitors: baseVisitors[6 - i] || 70,
+    })
+  }
+
+  const todayStat = weeklyTrend[weeklyTrend.length - 1]
+
+  const topPages: PageStat[] = [
+    { path: '/', name: 'Beranda Utama', views: 842, percentage: 46 },
+    { path: '/products', name: 'Katalog Produk', views: 485, percentage: 26 },
+    { path: '/export', name: 'Pengalaman Ekspor', views: 218, percentage: 12 },
+    { path: '/gallery', name: 'Galeri Foto Kriya', views: 146, percentage: 8 },
+    { path: '/about', name: 'Tentang Kami', views: 98, percentage: 5 },
+    { path: '/contact', name: 'Kontak & Penawaran', views: 53, percentage: 3 },
+  ]
+
+  const devices: DeviceStat[] = [
+    { device: 'Mobile', count: 1142, percentage: 62 },
+    { device: 'Desktop', count: 608, percentage: 33 },
+    { device: 'Tablet', count: 92, percentage: 5 },
+  ]
+
+  const recentLogs: VisitorLog[] = [
+    {
+      id: 'log-1',
+      timestamp: new Date(Date.now() - 3 * 60000).toISOString(),
+      timeFormatted: 'Baru saja',
+      path: '/products',
+      pageName: 'Katalog Produk',
+      device: 'Mobile',
+      browser: 'Chrome Mobile',
+      location: 'Yogyakarta, ID',
+    },
+    {
+      id: 'log-2',
+      timestamp: new Date(Date.now() - 14 * 60000).toISOString(),
+      timeFormatted: '14 menit lalu',
+      path: '/',
+      pageName: 'Beranda Utama',
+      device: 'Mobile',
+      browser: 'Safari iOS',
+      location: 'Jakarta, ID',
+    },
+    {
+      id: 'log-3',
+      timestamp: new Date(Date.now() - 35 * 60000).toISOString(),
+      timeFormatted: '35 menit lalu',
+      path: '/export',
+      pageName: 'Pengalaman Ekspor',
+      device: 'Desktop',
+      browser: 'Chrome Windows',
+      location: 'Sydney, AU',
+    },
+    {
+      id: 'log-4',
+      timestamp: new Date(Date.now() - 52 * 60000).toISOString(),
+      timeFormatted: '52 menit lalu',
+      path: '/products',
+      pageName: 'Katalog Produk',
+      device: 'Mobile',
+      browser: 'Chrome Android',
+      location: 'Surabaya, ID',
+    },
+    {
+      id: 'log-5',
+      timestamp: new Date(Date.now() - 85 * 60000).toISOString(),
+      timeFormatted: '1 jam lalu',
+      path: '/contact',
+      pageName: 'Kontak & Penawaran',
+      device: 'Desktop',
+      browser: 'Firefox Mac',
+      location: 'Bandung, ID',
+    },
+    {
+      id: 'log-6',
+      timestamp: new Date(Date.now() - 110 * 60000).toISOString(),
+      timeFormatted: '2 jam lalu',
+      path: '/gallery',
+      pageName: 'Galeri Foto Kriya',
+      device: 'Mobile',
+      browser: 'Safari iOS',
+      location: 'Bali, ID',
+    },
+    {
+      id: 'log-7',
+      timestamp: new Date(Date.now() - 160 * 60000).toISOString(),
+      timeFormatted: '2 jam lalu',
+      path: '/about',
+      pageName: 'Tentang Kami',
+      device: 'Desktop',
+      browser: 'Edge Windows',
+      location: 'Semarang, ID',
+    },
+  ]
+
+  return {
+    totalViews: 1842,
+    totalVisitors: 824,
+    todayViews: todayStat.views,
+    todayVisitors: todayStat.visitors,
+    lastUpdated: new Date().toISOString(),
+    weeklyTrend,
+    topPages,
+    devices,
+    recentLogs,
+  }
 }
 
 const DEFAULT_INQUIRIES: Inquiry[] = [
@@ -362,6 +537,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       console.error('Error loading auth from localStorage:', e)
     }
     return null
+  })
+
+  // 8. Visitor Stats state
+  const [visitorStats, setVisitorStats] = useState<VisitorStats>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.VISITOR_STATS)
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (parsed && typeof parsed.totalViews === 'number') return parsed
+      }
+    } catch (e) {
+      console.error('Error loading visitor stats:', e)
+    }
+    const defaultStats = generateDefaultVisitorStats()
+    try {
+      localStorage.setItem(STORAGE_KEYS.VISITOR_STATS, JSON.stringify(defaultStats))
+    } catch (e) {}
+    return defaultStats
   })
 
   // Persist products
@@ -617,12 +810,259 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setUser(null)
   }
 
+  // Visitor tracking operations
+  const recordPageVisit = (page: string) => {
+    if (page.startsWith('admin')) return
+
+    const pageNames: Record<string, string> = {
+      home: 'Beranda Utama',
+      products: 'Katalog Produk',
+      'product-detail': 'Detail Produk',
+      about: 'Tentang Kami',
+      company: 'Profil Perusahaan',
+      export: 'Pengalaman Ekspor',
+      awards: 'Penghargaan & Prestasi',
+      exhibitions: 'Agenda Pameran',
+      training: 'Pelatihan & Kegiatan',
+      news: 'Berita & Artikel',
+      'news-detail': 'Detail Berita',
+      gallery: 'Galeri Foto Kriya',
+      contact: 'Kontak & Penawaran',
+    }
+
+    const pagePath: Record<string, string> = {
+      home: '/',
+      products: '/products',
+      'product-detail': '/products',
+      about: '/about',
+      company: '/company',
+      export: '/export',
+      awards: '/awards',
+      exhibitions: '/exhibitions',
+      training: '/training',
+      news: '/news',
+      'news-detail': '/news',
+      gallery: '/gallery',
+      contact: '/contact',
+    }
+
+    const pName = pageNames[page] || page
+    const pPath = pagePath[page] || `/${page}`
+
+    let device: 'Mobile' | 'Desktop' | 'Tablet' = 'Desktop'
+    let browser = 'Browser'
+    if (typeof navigator !== 'undefined') {
+      const ua = navigator.userAgent
+      if (/ipad|tablet/i.test(ua)) device = 'Tablet'
+      else if (/mobile|iphone|android/i.test(ua)) device = 'Mobile'
+
+      if (/chrome|crios/i.test(ua)) browser = 'Chrome'
+      else if (/safari/i.test(ua) && !/chrome/i.test(ua)) browser = 'Safari'
+      else if (/firefox/i.test(ua)) browser = 'Firefox'
+      else if (/edg/i.test(ua)) browser = 'Edge'
+    }
+
+    setVisitorStats(prev => {
+      let isNewSession = false
+      try {
+        if (!sessionStorage.getItem('pkj_visited_session')) {
+          isNewSession = true
+          sessionStorage.setItem('pkj_visited_session', 'true')
+        }
+      } catch (e) {}
+
+      const newTotalViews = prev.totalViews + 1
+      const newTodayViews = prev.todayViews + 1
+      const newTotalVisitors = isNewSession ? prev.totalVisitors + 1 : prev.totalVisitors
+      const newTodayVisitors = isNewSession ? prev.todayVisitors + 1 : prev.todayVisitors
+
+      const updatedWeekly = [...prev.weeklyTrend]
+      if (updatedWeekly.length > 0) {
+        const lastIdx = updatedWeekly.length - 1
+        updatedWeekly[lastIdx] = {
+          ...updatedWeekly[lastIdx],
+          views: updatedWeekly[lastIdx].views + 1,
+          visitors: isNewSession ? updatedWeekly[lastIdx].visitors + 1 : updatedWeekly[lastIdx].visitors,
+        }
+      }
+
+      let pageFound = false
+      let updatedPages = prev.topPages.map(item => {
+        if (item.path === pPath || item.name === pName) {
+          pageFound = true
+          return { ...item, views: item.views + 1 }
+        }
+        return item
+      })
+      if (!pageFound) {
+        updatedPages.push({ path: pPath, name: pName, views: 1, percentage: 0 })
+      }
+      const sumPageViews = updatedPages.reduce((acc, p) => acc + p.views, 0)
+      updatedPages = updatedPages
+        .map(p => ({
+          ...p,
+          percentage: Math.round((p.views / (sumPageViews || 1)) * 100),
+        }))
+        .sort((a, b) => b.views - a.views)
+
+      let updatedDevices = prev.devices.map(d => (d.device === device ? { ...d, count: d.count + 1 } : d))
+      const sumDeviceCounts = updatedDevices.reduce((acc, d) => acc + d.count, 0)
+      updatedDevices = updatedDevices.map(d => ({
+        ...d,
+        percentage: Math.round((d.count / (sumDeviceCounts || 1)) * 100),
+      }))
+
+      const now = new Date()
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} WIB`
+      const newLog: VisitorLog = {
+        id: `log-${Date.now()}`,
+        timestamp: now.toISOString(),
+        timeFormatted: timeStr,
+        path: pPath,
+        pageName: pName,
+        device,
+        browser,
+        location: 'Pengunjung Web',
+      }
+      const updatedLogs = [newLog, ...prev.recentLogs.slice(0, 24)]
+
+      const updatedStats: VisitorStats = {
+        ...prev,
+        totalViews: newTotalViews,
+        totalVisitors: newTotalVisitors,
+        todayViews: newTodayViews,
+        todayVisitors: newTodayVisitors,
+        lastUpdated: now.toISOString(),
+        weeklyTrend: updatedWeekly,
+        topPages: updatedPages,
+        devices: updatedDevices,
+        recentLogs: updatedLogs,
+      }
+
+      try {
+        localStorage.setItem(STORAGE_KEYS.VISITOR_STATS, JSON.stringify(updatedStats))
+      } catch (e) {}
+
+      return updatedStats
+    })
+  }
+
+  const simulateNewVisitor = () => {
+    const pageKeys = ['home', 'products', 'export', 'gallery', 'contact', 'about']
+    const randomPage = pageKeys[Math.floor(Math.random() * pageKeys.length)]
+    const cities = ['Yogyakarta, ID', 'Jakarta, ID', 'Surabaya, ID', 'Bandung, ID', 'Bali, ID', 'Tokyo, JP', 'Sydney, AU']
+    const randomCity = cities[Math.floor(Math.random() * cities.length)]
+    const devList: ('Mobile' | 'Desktop' | 'Tablet')[] = ['Mobile', 'Mobile', 'Desktop', 'Tablet']
+    const randomDev = devList[Math.floor(Math.random() * devList.length)]
+    const browsers = ['Chrome Mobile', 'Safari iOS', 'Chrome Windows', 'Firefox Mac', 'Edge Windows']
+    const randomBrowser = browsers[Math.floor(Math.random() * browsers.length)]
+
+    const pageNames: Record<string, string> = {
+      home: 'Beranda Utama',
+      products: 'Katalog Produk',
+      export: 'Pengalaman Ekspor',
+      gallery: 'Galeri Foto Kriya',
+      contact: 'Kontak & Penawaran',
+      about: 'Tentang Kami',
+    }
+    const pagePaths: Record<string, string> = {
+      home: '/',
+      products: '/products',
+      export: '/export',
+      gallery: '/gallery',
+      contact: '/contact',
+      about: '/about',
+    }
+
+    setVisitorStats(prev => {
+      const now = new Date()
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} WIB`
+      const newTotalViews = prev.totalViews + 1
+      const newTotalVisitors = prev.totalVisitors + 1
+      const newTodayViews = prev.todayViews + 1
+      const newTodayVisitors = prev.todayVisitors + 1
+
+      const updatedWeekly = [...prev.weeklyTrend]
+      if (updatedWeekly.length > 0) {
+        const lastIdx = updatedWeekly.length - 1
+        updatedWeekly[lastIdx] = {
+          ...updatedWeekly[lastIdx],
+          views: updatedWeekly[lastIdx].views + 1,
+          visitors: updatedWeekly[lastIdx].visitors + 1,
+        }
+      }
+
+      let updatedPages = prev.topPages.map(p => {
+        if (p.path === pagePaths[randomPage]) {
+          return { ...p, views: p.views + 1 }
+        }
+        return p
+      })
+      const sumPageViews = updatedPages.reduce((acc, p) => acc + p.views, 0)
+      updatedPages = updatedPages
+        .map(p => ({
+          ...p,
+          percentage: Math.round((p.views / (sumPageViews || 1)) * 100),
+        }))
+        .sort((a, b) => b.views - a.views)
+
+      let updatedDevices = prev.devices.map(d => (d.device === randomDev ? { ...d, count: d.count + 1 } : d))
+      const sumDeviceCounts = updatedDevices.reduce((acc, d) => acc + d.count, 0)
+      updatedDevices = updatedDevices.map(d => ({
+        ...d,
+        percentage: Math.round((d.count / (sumDeviceCounts || 1)) * 100),
+      }))
+
+      const newLog: VisitorLog = {
+        id: `log-${Date.now()}`,
+        timestamp: now.toISOString(),
+        timeFormatted: timeStr,
+        path: pagePaths[randomPage],
+        pageName: pageNames[randomPage],
+        device: randomDev,
+        browser: randomBrowser,
+        location: randomCity,
+      }
+
+      const updatedStats: VisitorStats = {
+        ...prev,
+        totalViews: newTotalViews,
+        totalVisitors: newTotalVisitors,
+        todayViews: newTodayViews,
+        todayVisitors: newTodayVisitors,
+        lastUpdated: now.toISOString(),
+        weeklyTrend: updatedWeekly,
+        topPages: updatedPages,
+        devices: updatedDevices,
+        recentLogs: [newLog, ...prev.recentLogs.slice(0, 24)],
+      }
+
+      try {
+        localStorage.setItem(STORAGE_KEYS.VISITOR_STATS, JSON.stringify(updatedStats))
+      } catch (e) {}
+
+      return updatedStats
+    })
+  }
+
+  const resetVisitorStats = () => {
+    const freshStats = generateDefaultVisitorStats()
+    setVisitorStats(freshStats)
+    try {
+      localStorage.setItem(STORAGE_KEYS.VISITOR_STATS, JSON.stringify(freshStats))
+    } catch (e) {}
+  }
+
   return (
     <AppContext.Provider
       value={{
         lang,
         setLang,
         t: translations[lang] || translations.en,
+        visitorStats,
+        recordPageVisit,
+        simulateNewVisitor,
+        resetVisitorStats,
         products,
         addProduct,
         updateProduct,
