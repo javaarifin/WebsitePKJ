@@ -1,13 +1,15 @@
 import { useState } from 'react'
+import { useAppStore } from '../context/AppContext'
 
 export default function WhatsAppButton() {
+  const { t } = useAppStore()
   const [hovered, setHovered] = useState(false)
 
   return (
     <div className="fixed bottom-6 right-6 z-40 flex items-center gap-2">
       {hovered && (
         <div className="bg-[#302A26] text-white text-[13px] font-medium px-3 py-2 rounded-lg shadow-lg whitespace-nowrap animate-[fadeIn_0.2s_ease]">
-          Chat with us
+          {t.common.chatWa}
         </div>
       )}
       <a

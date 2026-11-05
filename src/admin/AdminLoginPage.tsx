@@ -1,7 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import { NavigateFn } from '../App'
-import { useAppStore } from '../context/AppContext'
-import { Lock, User, ArrowLeft, Shield, AlertCircle, CheckCircle2 } from 'lucide-react'
+import React, { useState, useEffect } from "react"
+
+import { NavigateFn } from "../App"
+
+import { useAppStore } from "../context/AppContext"
+
+import {
+  Lock,
+  User,
+  ArrowLeft,
+  Shield,
+  AlertCircle,
+  CheckCircle2,
+} from "lucide-react"
 
 interface AdminLoginPageProps {
   navigate: NavigateFn
@@ -9,54 +19,67 @@ interface AdminLoginPageProps {
 
 export default function AdminLoginPage({ navigate }: AdminLoginPageProps) {
   const { login, isAuthenticated } = useAppStore()
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+
+  const [username, setUsername] = useState("")
+
+  const [password, setPassword] = useState("")
+
   const [error, setError] = useState<string | null>(null)
+
   const [loading, setLoading] = useState(false)
+
   const [success, setSuccess] = useState(false)
 
   // If already logged in, redirect to dashboard
+
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('admin-dashboard')
+      navigate("admin-dashboard")
     }
   }, [isAuthenticated, navigate])
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
+
     setError(null)
+
     setLoading(true)
 
     setTimeout(() => {
       const res = login(username, password)
+
       if (res.success) {
         setSuccess(true)
+
         setTimeout(() => {
-          navigate('admin-dashboard')
+          navigate("admin-dashboard")
         }, 500)
       } else {
-        setError(res.error || 'Username atau password salah')
+        setError(res.error || "Username atau password salah")
+
         setLoading(false)
       }
     }, 400)
   }
 
   const fillDemoCredentials = () => {
-    setUsername('admin')
-    setPassword('admin123')
+    setUsername("admin")
+
+    setPassword("admin123")
+
     setError(null)
   }
 
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4"
-      style={{ backgroundColor: '#F5F1E8' }}
+      style={{ backgroundColor: "#F5F1E8" }}
     >
       <div className="max-w-md w-full">
         {/* Back Link */}
         <div className="mb-6">
           <button
-            onClick={() => navigate('home')}
+            onClick={() => navigate("home")}
             className="inline-flex items-center gap-2 text-sm text-[#302A26]/70 hover:text-[#A65F46] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -97,7 +120,9 @@ export default function AdminLoginPage({ navigate }: AdminLoginPageProps) {
             {success && (
               <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm flex items-center gap-3">
                 <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-emerald-500" />
-                <span className="font-medium">Berhasil masuk! Membuka dashboard...</span>
+                <span className="font-medium">
+                  Berhasil masuk! Membuka dashboard...
+                </span>
               </div>
             )}
 
@@ -114,7 +139,7 @@ export default function AdminLoginPage({ navigate }: AdminLoginPageProps) {
                     type="text"
                     required
                     value={username}
-                    onChange={e => setUsername(e.target.value)}
+                    onChange={(e) => setUsername(e.target.value)}
                     placeholder="Masukkan username"
                     className="w-full pl-10 pr-4 py-3 bg-[#F8F6F0] border border-[#D8C3A5] rounded-xl text-sm text-[#302A26] placeholder-[#302A26]/40 focus:outline-none focus:border-[#A65F46] focus:bg-white transition-all"
                   />
@@ -133,7 +158,7 @@ export default function AdminLoginPage({ navigate }: AdminLoginPageProps) {
                     type="password"
                     required
                     value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="Masukkan password"
                     className="w-full pl-10 pr-4 py-3 bg-[#F8F6F0] border border-[#D8C3A5] rounded-xl text-sm text-[#302A26] placeholder-[#302A26]/40 focus:outline-none focus:border-[#A65F46] focus:bg-white transition-all"
                   />
@@ -159,7 +184,14 @@ export default function AdminLoginPage({ navigate }: AdminLoginPageProps) {
             {/* Demo Credentials Quick Fill */}
             <div className="mt-6 pt-6 border-t border-[#D8C3A5]/30 text-center">
               <p className="text-xs text-[#302A26]/60 mb-2.5">
-                Kredensial Demo: <code className="bg-[#F8F6F0] px-1.5 py-0.5 rounded text-[#A65F46] font-mono">admin</code> / <code className="bg-[#F8F6F0] px-1.5 py-0.5 rounded text-[#A65F46] font-mono">admin123</code>
+                Kredensial Demo:{" "}
+                <code className="bg-[#F8F6F0] px-1.5 py-0.5 rounded text-[#A65F46] font-mono">
+                  admin
+                </code>{" "}
+                /{" "}
+                <code className="bg-[#F8F6F0] px-1.5 py-0.5 rounded text-[#A65F46] font-mono">
+                  admin123
+                </code>
               </p>
               <button
                 type="button"

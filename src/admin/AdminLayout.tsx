@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { Page, NavigateFn } from '../App'
-import { useAppStore } from '../context/AppContext'
+import React, { useState } from "react"
+import { Page, NavigateFn } from "../App"
+import { useAppStore } from "../context/AppContext"
 import {
   LayoutDashboard,
   Package,
@@ -13,7 +13,11 @@ import {
   ExternalLink,
   ChevronRight,
   ShieldCheck,
-} from 'lucide-react'
+  Newspaper,
+  Image,
+  Award,
+  Sparkles,
+} from "lucide-react"
 
 interface AdminLayoutProps {
   currentPage: Page
@@ -32,36 +36,69 @@ export default function AdminLayout({
   subtitle,
   actions,
 }: AdminLayoutProps) {
-  const { user, logout, products, inquiries } = useAppStore()
+  const {
+    user,
+    logout,
+    products,
+    inquiries,
+    news,
+    gallery,
+    awards,
+    exhibitions,
+  } = useAppStore()
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
-  const newInquiriesCount = inquiries.filter(i => i.status === 'new').length
+  const newInquiriesCount = inquiries.filter((i) => i.status === "new").length
 
   const navItems = [
     {
-      label: 'Dashboard',
-      page: 'admin-dashboard' as Page,
+      label: "Dashboard Overview",
+      page: "admin-dashboard" as Page,
       icon: LayoutDashboard,
       badge: null,
     },
     {
-      label: 'Products',
-      page: 'admin-products' as Page,
+      label: "Katalog Produk",
+      page: "admin-products" as Page,
       icon: Package,
       badge: products.length,
     },
     {
-      label: 'Inquiries',
-      page: 'admin-inquiries' as Page,
+      label: "Berita & Artikel",
+      page: "admin-news" as Page,
+      icon: Newspaper,
+      badge: news.length,
+    },
+    {
+      label: "Galeri Foto",
+      page: "admin-gallery" as Page,
+      icon: Image,
+      badge: gallery.length,
+    },
+    {
+      label: "Penghargaan",
+      page: "admin-awards" as Page,
+      icon: Award,
+      badge: awards.length,
+    },
+    {
+      label: "Pameran (Exhibitions)",
+      page: "admin-exhibitions" as Page,
+      icon: Sparkles,
+      badge: exhibitions.length,
+    },
+    {
+      label: "Pesan & Inquiries",
+      page: "admin-inquiries" as Page,
       icon: MessageSquare,
       badge: newInquiriesCount > 0 ? newInquiriesCount : null,
-      badgeColor: 'bg-[#A65F46] text-white',
+      badgeColor: "bg-[#A65F46] text-white",
     },
   ]
 
   const handleLogout = () => {
     logout()
-    navigate('admin-login')
+    navigate("admin-login")
   }
 
   return (
@@ -74,17 +111,25 @@ export default function AdminLayout({
             className="p-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/10"
             aria-label="Toggle menu"
           >
-            {mobileSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileSidebarOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
           <div>
-            <span className="font-display font-bold text-sm tracking-wide text-white">PARJONO</span>
-            <span className="text-[10px] bg-[#A65F46] text-white px-1.5 py-0.5 rounded font-mono ml-2">CMS</span>
+            <span className="font-display font-bold text-sm tracking-wide text-white">
+              PARJONO
+            </span>
+            <span className="text-[10px] bg-[#A65F46] text-white px-1.5 py-0.5 rounded font-mono ml-2">
+              CMS
+            </span>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => navigate('home')}
+            onClick={() => navigate("home")}
             className="text-xs text-white/80 hover:text-white flex items-center gap-1 bg-white/10 px-2.5 py-1.5 rounded-lg"
           >
             <Globe className="w-3.5 h-3.5" />
@@ -111,15 +156,17 @@ export default function AdminLayout({
       {/* Sidebar */}
       <aside
         className={`fixed lg:sticky top-0 left-0 bottom-0 z-50 w-72 bg-[#302A26] text-white flex flex-col justify-between transition-transform duration-300 ease-in-out lg:translate-x-0 ${
-          mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } h-screen shadow-xl`}
+          mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } h-screen shadow-xl overflow-y-auto`}
       >
         <div>
           {/* Brand Header */}
           <div className="p-6 border-b border-white/10 flex items-center justify-between">
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="font-display font-bold text-lg tracking-wider text-white">PARJONO</span>
+                <span className="font-display font-bold text-lg tracking-wider text-white">
+                  PARJONO
+                </span>
                 <span className="text-[10px] font-bold uppercase tracking-wider bg-[#A65F46] text-white px-2 py-0.5 rounded shadow-sm">
                   CMS
                 </span>
@@ -139,10 +186,10 @@ export default function AdminLayout({
           {/* Navigation Links */}
           <div className="px-4 py-6">
             <p className="px-3 text-[10px] font-semibold text-white/40 tracking-widest uppercase mb-3">
-              Management
+              Menu Pengelolaan
             </p>
             <nav className="space-y-1">
-              {navItems.map(item => {
+              {navItems.map((item) => {
                 const Icon = item.icon
                 const isActive = currentPage === item.page
                 return (
@@ -154,12 +201,16 @@ export default function AdminLayout({
                     }}
                     className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-medium transition-all ${
                       isActive
-                        ? 'bg-[#A65F46] text-white shadow-sm font-semibold'
-                        : 'text-white/70 hover:bg-white/5 hover:text-white'
+                        ? "bg-[#A65F46] text-white shadow-sm font-semibold"
+                        : "text-white/70 hover:bg-white/5 hover:text-white"
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-white/60'}`} />
+                      <Icon
+                        className={`w-5 h-5 ${
+                          isActive ? "text-white" : "text-white/60"
+                        }`}
+                      />
                       <span>{item.label}</span>
                     </div>
                     {item.badge !== null && item.badge !== undefined && (
@@ -168,8 +219,8 @@ export default function AdminLayout({
                           item.badgeColor
                             ? item.badgeColor
                             : isActive
-                            ? 'bg-white/20 text-white'
-                            : 'bg-white/10 text-white/80'
+                              ? "bg-white/20 text-white"
+                              : "bg-white/10 text-white/80"
                         }`}
                       >
                         {item.badge}
@@ -187,7 +238,7 @@ export default function AdminLayout({
               </p>
               <button
                 onClick={() => {
-                  navigate('home')
+                  navigate("home")
                   setMobileSidebarOpen(false)
                 }}
                 className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm text-white/70 hover:bg-white/5 hover:text-[#D8C3A5] transition-colors"
@@ -200,7 +251,7 @@ export default function AdminLayout({
               </button>
               <button
                 onClick={() => {
-                  navigate('products')
+                  navigate("products")
                   setMobileSidebarOpen(false)
                 }}
                 className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm text-white/70 hover:bg-white/5 hover:text-[#D8C3A5] transition-colors"
@@ -208,6 +259,19 @@ export default function AdminLayout({
                 <div className="flex items-center gap-3">
                   <Package className="w-5 h-5 text-[#D8C3A5]" />
                   <span>Katalog Produk</span>
+                </div>
+                <ExternalLink className="w-4 h-4 text-white/40" />
+              </button>
+              <button
+                onClick={() => {
+                  navigate("news")
+                  setMobileSidebarOpen(false)
+                }}
+                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm text-white/70 hover:bg-white/5 hover:text-[#D8C3A5] transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <Newspaper className="w-5 h-5 text-[#D8C3A5]" />
+                  <span>Halaman Berita</span>
                 </div>
                 <ExternalLink className="w-4 h-4 text-white/40" />
               </button>
@@ -224,11 +288,11 @@ export default function AdminLayout({
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-semibold text-white leading-tight">
-                  {user?.name || 'Administrator'}
+                  {user?.name || "Administrator"}
                 </span>
                 <span className="text-[11px] text-emerald-400 flex items-center gap-1">
                   <ShieldCheck className="w-3 h-3" />
-                  {user?.role || 'Super Admin'}
+                  {user?.role || "Super Admin"}
                 </span>
               </div>
             </div>
@@ -252,17 +316,21 @@ export default function AdminLayout({
               <span>Admin Dashboard</span>
               <ChevronRight className="w-3 h-3" />
               <span className="text-[#A65F46] font-medium capitalize">
-                {currentPage.replace('admin-', '')}
+                {currentPage.replace("admin-", "")}
               </span>
             </div>
-            <h1 className="font-display text-2xl font-bold text-[#302A26]">{title}</h1>
-            {subtitle && <p className="text-sm text-[#302A26]/60 mt-0.5">{subtitle}</p>}
+            <h1 className="font-display text-2xl font-bold text-[#302A26]">
+              {title}
+            </h1>
+            {subtitle && (
+              <p className="text-sm text-[#302A26]/60 mt-0.5">{subtitle}</p>
+            )}
           </div>
 
           <div className="flex items-center gap-3">
             {actions}
             <button
-              onClick={() => navigate('home')}
+              onClick={() => navigate("home")}
               className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium text-[#302A26]/70 hover:text-[#302A26] bg-[#F8F6F0] hover:bg-[#D8C3A5]/30 rounded-lg border border-[#D8C3A5]/50 transition-colors"
             >
               <Globe className="w-3.5 h-3.5 text-[#A65F46]" />
@@ -281,14 +349,18 @@ export default function AdminLayout({
         {/* Mobile Page Header (if on mobile) */}
         <div className="lg:hidden p-4 bg-white border-b border-[#D8C3A5]/40 flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <h1 className="font-display text-xl font-bold text-[#302A26]">{title}</h1>
+            <h1 className="font-display text-xl font-bold text-[#302A26]">
+              {title}
+            </h1>
             {actions}
           </div>
           {subtitle && <p className="text-xs text-[#302A26]/60">{subtitle}</p>}
         </div>
 
         {/* Main Content Body */}
-        <main className="flex-1 p-4 lg:p-8 max-w-7xl w-full mx-auto">{children}</main>
+        <main className="flex-1 p-4 lg:p-8 max-w-7xl w-full mx-auto">
+          {children}
+        </main>
       </div>
     </div>
   )

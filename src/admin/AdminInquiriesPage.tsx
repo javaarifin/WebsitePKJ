@@ -1,7 +1,11 @@
-import { useState } from 'react'
-import { NavigateFn } from '../App'
-import { useAppStore, Inquiry } from '../context/AppContext'
-import AdminLayout from './AdminLayout'
+import { useState } from "react"
+
+import { NavigateFn } from "../App"
+
+import { useAppStore, Inquiry } from "../context/AppContext"
+
+import AdminLayout from "./AdminLayout"
+
 import {
   MessageSquare,
   Search,
@@ -14,26 +18,34 @@ import {
   Globe,
   Clock,
   Package,
-} from 'lucide-react'
+} from "lucide-react"
 
 interface AdminInquiriesPageProps {
   navigate: NavigateFn
 }
 
-export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps) {
+export default function AdminInquiriesPage({
+  navigate,
+}: AdminInquiriesPageProps) {
   const { inquiries, updateInquiryStatus, deleteInquiry } = useAppStore()
 
-  const [search, setSearch] = useState('')
-  const [statusFilter, setStatusFilter] = useState<'all' | 'new' | 'contacted' | 'archived'>('all')
+  const [search, setSearch] = useState("")
+
+  const [statusFilter, setStatusFilter] =
+    useState<"all" | "new" | "contacted" | "archived">("all")
+
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null)
 
-  const filteredInquiries = inquiries.filter(inq => {
-    const matchStatus = statusFilter === 'all' || inq.status === statusFilter
+  const filteredInquiries = inquiries.filter((inq) => {
+    const matchStatus = statusFilter === "all" || inq.status === statusFilter
+
     const matchSearch =
       inq.name.toLowerCase().includes(search.toLowerCase()) ||
       inq.email.toLowerCase().includes(search.toLowerCase()) ||
-      (inq.company && inq.company.toLowerCase().includes(search.toLowerCase())) ||
+      (inq.company &&
+        inq.company.toLowerCase().includes(search.toLowerCase())) ||
       inq.message.toLowerCase().includes(search.toLowerCase())
+
     return matchStatus && matchSearch
   })
 
@@ -52,28 +64,29 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
             type="text"
             placeholder="Cari pesan berdasarkan nama, email, perusahaan..."
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-[#F8F6F0] border border-[#D8C3A5]/60 rounded-xl text-xs sm:text-sm text-[#302A26] placeholder-[#302A26]/40 focus:outline-none focus:border-[#A65F46] focus:bg-white transition-colors"
           />
         </div>
 
         <div className="flex items-center gap-1.5 bg-[#F8F6F0] p-1 rounded-xl border border-[#D8C3A5]/40 self-start md:self-auto">
-          {(['all', 'new', 'contacted', 'archived'] as const).map(status => {
+          {(["all", "new", "contacted", "archived"] as const).map((status) => {
             const count =
-              status === 'all'
+              status === "all"
                 ? inquiries.length
-                : inquiries.filter(i => i.status === status).length
+                : inquiries.filter((i) => i.status === status).length
+
             return (
               <button
                 key={status}
                 onClick={() => setStatusFilter(status)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${
                   statusFilter === status
-                    ? 'bg-white text-[#302A26] shadow-xs font-semibold'
-                    : 'text-[#302A26]/60 hover:text-[#302A26]'
+                    ? "bg-white text-[#302A26] shadow-xs font-semibold"
+                    : "text-[#302A26]/60 hover:text-[#302A26]"
                 }`}
               >
-                {status === 'all' ? 'Semua' : status} ({count})
+                {status === "all" ? "Semua" : status} ({count})
               </button>
             )
           })}
@@ -91,36 +104,40 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
                 Tidak ada pesan yang ditemukan
               </p>
               <p className="text-xs text-[#302A26]/50 mt-1">
-                Pesan dari formulir kontak dan permintaan produk akan muncul di sini.
+                Pesan dari formulir kontak dan permintaan produk akan muncul di
+                sini.
               </p>
             </div>
           ) : (
-            filteredInquiries.map(inq => {
+            filteredInquiries.map((inq) => {
               const isSelected = selectedInquiry?.id === inq.id
+
               return (
                 <div
                   key={inq.id}
                   onClick={() => setSelectedInquiry(inq)}
                   className={`bg-white p-5 rounded-2xl border transition-all cursor-pointer ${
                     isSelected
-                      ? 'border-[#A65F46] shadow-md ring-1 ring-[#A65F46]/30'
-                      : 'border-[#D8C3A5]/40 hover:border-[#A65F46]/50 shadow-xs'
+                      ? "border-[#A65F46] shadow-md ring-1 ring-[#A65F46]/30"
+                      : "border-[#D8C3A5]/40 hover:border-[#A65F46]/50 shadow-xs"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div className="flex items-center gap-2">
-                      <h4 className="font-semibold text-sm text-[#302A26]">{inq.name}</h4>
-                      {inq.status === 'new' && (
+                      <h4 className="font-semibold text-sm text-[#302A26]">
+                        {inq.name}
+                      </h4>
+                      {inq.status === "new" && (
                         <span className="bg-[#A65F46] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
                           Baru
                         </span>
                       )}
-                      {inq.status === 'contacted' && (
+                      {inq.status === "contacted" && (
                         <span className="bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-2 py-0.5 rounded">
                           Sudah Dihubungi
                         </span>
                       )}
-                      {inq.status === 'archived' && (
+                      {inq.status === "archived" && (
                         <span className="bg-gray-100 text-gray-600 text-[10px] font-semibold px-2 py-0.5 rounded">
                           Arsip
                         </span>
@@ -128,10 +145,12 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
                     </div>
                     <span className="text-[11px] text-[#302A26]/40 flex items-center gap-1 whitespace-nowrap">
                       <Clock className="w-3 h-3" />
-                      {new Date(inq.createdAt).toLocaleDateString('id-ID', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
+                      {new Date(inq.createdAt).toLocaleDateString("id-ID", {
+                        day: "numeric",
+
+                        month: "short",
+
+                        year: "numeric",
                       })}
                     </span>
                   </div>
@@ -165,10 +184,10 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
                     <div className="flex items-center gap-2 text-xs">
                       {inq.phone && (
                         <a
-                          href={`https://wa.me/${inq.phone.replace(/[^0-9]/g, '')}`}
+                          href={`https://wa.me/${inq.phone.replace(/[^0-9]/g, "")}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={e => e.stopPropagation()}
+                          onClick={(e) => e.stopPropagation()}
                           className="text-[#25D366] font-medium hover:underline flex items-center gap-1"
                         >
                           <Phone className="w-3.5 h-3.5" />
@@ -177,7 +196,7 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
                       )}
                       <a
                         href={`mailto:${inq.email}?subject=Balasan Inquiry Parjono Keramik Jaya`}
-                        onClick={e => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()}
                         className="text-[#A65F46] font-medium hover:underline flex items-center gap-1"
                       >
                         <Mail className="w-3.5 h-3.5" />
@@ -186,11 +205,12 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
                     </div>
 
                     <div className="flex items-center gap-1">
-                      {inq.status !== 'contacted' && (
+                      {inq.status !== "contacted" && (
                         <button
-                          onClick={e => {
+                          onClick={(e) => {
                             e.stopPropagation()
-                            updateInquiryStatus(inq.id, 'contacted')
+
+                            updateInquiryStatus(inq.id, "contacted")
                           }}
                           className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg"
                           title="Tandai Sudah Dihubungi"
@@ -198,11 +218,12 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
                           <CheckCircle className="w-4 h-4" />
                         </button>
                       )}
-                      {inq.status !== 'archived' && (
+                      {inq.status !== "archived" && (
                         <button
-                          onClick={e => {
+                          onClick={(e) => {
                             e.stopPropagation()
-                            updateInquiryStatus(inq.id, 'archived')
+
+                            updateInquiryStatus(inq.id, "archived")
                           }}
                           className="p-1.5 text-[#302A26]/50 hover:bg-[#F8F6F0] rounded-lg"
                           title="Arsipkan"
@@ -211,11 +232,14 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
                         </button>
                       )}
                       <button
-                        onClick={e => {
+                        onClick={(e) => {
                           e.stopPropagation()
-                          if (confirm('Hapus inquiry ini?')) {
+
+                          if (confirm("Hapus inquiry ini?")) {
                             deleteInquiry(inq.id)
-                            if (selectedInquiry?.id === inq.id) setSelectedInquiry(null)
+
+                            if (selectedInquiry?.id === inq.id)
+                              setSelectedInquiry(null)
                           }
                         }}
                         className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg"
@@ -240,20 +264,26 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
                   <span className="text-[10px] uppercase font-bold text-[#A65F46] tracking-widest">
                     Detail Pesan
                   </span>
-                  <span className="text-xs text-[#302A26]/40">ID: {selectedInquiry.id}</span>
+                  <span className="text-xs text-[#302A26]/40">
+                    ID: {selectedInquiry.id}
+                  </span>
                 </div>
                 <h3 className="font-display font-bold text-xl text-[#302A26]">
                   {selectedInquiry.name}
                 </h3>
                 {selectedInquiry.company && (
-                  <p className="text-xs text-[#A65F46] font-medium">{selectedInquiry.company}</p>
+                  <p className="text-xs text-[#A65F46] font-medium">
+                    {selectedInquiry.company}
+                  </p>
                 )}
               </div>
 
               <div className="space-y-2 text-xs bg-[#F8F6F0] p-4 rounded-xl border border-[#D8C3A5]/30">
                 <div className="flex items-center justify-between">
                   <span className="text-[#302A26]/50">Email:</span>
-                  <span className="font-medium text-[#302A26] select-all">{selectedInquiry.email}</span>
+                  <span className="font-medium text-[#302A26] select-all">
+                    {selectedInquiry.email}
+                  </span>
                 </div>
                 {selectedInquiry.phone && (
                   <div className="flex items-center justify-between">
@@ -266,7 +296,9 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
                 {selectedInquiry.country && (
                   <div className="flex items-center justify-between">
                     <span className="text-[#302A26]/50">Negara:</span>
-                    <span className="font-medium text-[#302A26]">{selectedInquiry.country}</span>
+                    <span className="font-medium text-[#302A26]">
+                      {selectedInquiry.country}
+                    </span>
                   </div>
                 )}
                 {selectedInquiry.productName && (
@@ -280,13 +312,17 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
                 {selectedInquiry.quantity && (
                   <div className="flex items-center justify-between">
                     <span className="text-[#302A26]/50">Jumlah Kuantitas:</span>
-                    <span className="font-medium text-[#302A26]">{selectedInquiry.quantity}</span>
+                    <span className="font-medium text-[#302A26]">
+                      {selectedInquiry.quantity}
+                    </span>
                   </div>
                 )}
               </div>
 
               <div>
-                <p className="text-xs font-semibold text-[#302A26] mb-1.5">Isi Pesan / Pertanyaan:</p>
+                <p className="text-xs font-semibold text-[#302A26] mb-1.5">
+                  Isi Pesan / Pertanyaan:
+                </p>
                 <div className="p-4 rounded-xl bg-[#F8F6F0] border border-[#D8C3A5]/30 text-xs text-[#302A26]/80 leading-relaxed whitespace-pre-line">
                   {selectedInquiry.message}
                 </div>
@@ -306,7 +342,7 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
                   </a>
                   {selectedInquiry.phone ? (
                     <a
-                      href={`https://wa.me/${selectedInquiry.phone.replace(/[^0-9]/g, '')}`}
+                      href={`https://wa.me/${selectedInquiry.phone.replace(/[^0-9]/g, "")}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#25D366] hover:bg-[#1fb854] text-white text-xs font-medium transition-colors"
@@ -316,7 +352,9 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
                     </a>
                   ) : (
                     <button
-                      onClick={() => updateInquiryStatus(selectedInquiry.id, 'contacted')}
+                      onClick={() =>
+                        updateInquiryStatus(selectedInquiry.id, "contacted")
+                      }
                       className="py-2.5 px-3 rounded-xl border border-[#D8C3A5] hover:bg-[#F8F6F0] text-xs font-medium text-[#302A26]"
                     >
                       Tandai Selesai
@@ -328,7 +366,10 @@ export default function AdminInquiriesPage({ navigate }: AdminInquiriesPageProps
           ) : (
             <div className="text-center py-12 text-[#302A26]/40">
               <MessageSquare className="w-10 h-10 mx-auto mb-2 opacity-40" />
-              <p className="text-xs">Klik salah satu pesan di daftar sebelah kiri untuk melihat rincian lengkap.</p>
+              <p className="text-xs">
+                Klik salah satu pesan di daftar sebelah kiri untuk melihat
+                rincian lengkap.
+              </p>
             </div>
           )}
         </div>
