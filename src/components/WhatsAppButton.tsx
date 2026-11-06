@@ -1,9 +1,14 @@
 import { useState } from 'react'
-import { useAppStore } from '../context/AppContext'
+import { useAppStore, formatWhatsAppLink } from '../context/AppContext'
 
 export default function WhatsAppButton() {
-  const { t } = useAppStore()
+  const { t, companyInfo } = useAppStore()
   const [hovered, setHovered] = useState(false)
+
+  const waUrl = formatWhatsAppLink(
+    companyInfo.whatsapp,
+    "Halo Admin Parjono Keramik Jaya, saya tertarik dengan produk kerajinan Anda."
+  )
 
   return (
     <div className="fixed bottom-6 right-6 z-40 flex items-center gap-2">
@@ -13,7 +18,7 @@ export default function WhatsAppButton() {
         </div>
       )}
       <a
-        href="https://wa.me/6200000000"
+        href={waUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with us on WhatsApp"

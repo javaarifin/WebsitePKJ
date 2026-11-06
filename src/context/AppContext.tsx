@@ -85,6 +85,30 @@ export interface AuthUser {
   expiresAt?: number
 }
 
+export interface CompanyInfo {
+  name: string
+  tagline: string
+  phone: string
+  whatsapp: string
+  email: string
+  addressLine1: string
+  addressLine2: string
+  operatingHours: string
+  googleMapsUrl: string
+  instagram: string
+  facebook: string
+}
+
+export function formatWhatsAppLink(phone: string, text?: string): string {
+  let cleaned = (phone || '').replace(/[^0-9]/g, '')
+  if (cleaned.startsWith('0')) {
+    cleaned = '62' + cleaned.slice(1)
+  }
+  if (!cleaned) cleaned = '6281234567890'
+  const base = `https://wa.me/${cleaned}`
+  return text ? `${base}?text=${encodeURIComponent(text)}` : base
+}
+
 export interface VisitorLog {
   id: string
   timestamp: string
@@ -181,6 +205,11 @@ interface AppContextType {
   updateInquiryStatus: (id: string, status: Inquiry['status']) => void
   deleteInquiry: (id: string) => void
 
+  // Company Info & Contact
+  companyInfo: CompanyInfo
+  updateCompanyInfo: (info: Partial<CompanyInfo>) => void
+  resetCompanyInfoToDefault: () => void
+
   // Auth
   isAuthenticated: boolean
   user: AuthUser | null
@@ -202,6 +231,21 @@ const STORAGE_KEYS = {
   AUTH: 'pkj_craft_auth_v1',
   ADMIN_CRED: 'pkj_craft_admin_cred_v1',
   VISITOR_STATS: 'pkj_craft_visitor_stats_v1',
+  COMPANY_INFO: 'pkj_craft_company_info_v1',
+}
+
+export const DEFAULT_COMPANY_INFO: CompanyInfo = {
+  name: 'PARJONO KERAMIK JAYA',
+  tagline: 'Produsen Gerabah & Terakota Kasongan, Bantul',
+  phone: '+62 812-3456-7890',
+  whatsapp: '+62 812-3456-7890',
+  email: 'info@parjonokeramikjaya.com',
+  addressLine1: 'Klisat, Srihardono, Pundong',
+  addressLine2: 'Bantul, D.I. Yogyakarta 55771, Indonesia',
+  operatingHours: 'Senin - Sabtu: 08:00 - 17:00 WIB',
+  googleMapsUrl: 'https://maps.google.com/?q=Kasongan+Bantul+Yogyakarta',
+  instagram: '@parjonokeramikjaya',
+  facebook: 'Parjono Keramik Jaya',
 }
 
 const generateDefaultVisitorStats = (): VisitorStats => {
@@ -575,6 +619,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return defaultStats
   })
 
+  // 9. Company Info state (WhatsApp, phone, email, address, maps)
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.COMPANY_INFO)
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (parsed && typeof parsed === 'object') {
+          return { ...DEFAULT_COMPANY_INFO, ...parsed }
+        }
+      }
+    } catch (e) {
+      console.error('Error loading company info:', e)
+    }
+    return DEFAULT_COMPANY_INFO
+  })
+
   // Persist products
   useEffect(() => {
     try {
@@ -806,6 +866,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const deleteInquiry = (id: string) => {
     setInquiries(prev => prev.filter(inq => inq.id !== id))
+  }
+
+  // Company Info operations
+  const updateCompanyInfo = (info: Partial<CompanyInfo>) => {
+    setCompanyInfo(prev => {
+      const updated = { ...prev, ...info }
+      try {
+        localStorage.setItem(STORAGE_KEYS.COMPANY_INFO, JSON.stringify(updated))
+      } catch (e) {
+        console.error('Failed to save company info:', e)
+      }
+      return updated
+    })
+  }
+
+  const resetCompanyInfoToDefault = () => {
+    setCompanyInfo(DEFAULT_COMPANY_INFO)
+    try {
+      localStorage.setItem(STORAGE_KEYS.COMPANY_INFO, JSON.stringify(DEFAULT_COMPANY_INFO))
+    } catch (e) {
+      console.error('Failed to reset company info:', e)
+    }
   }
 
   // Auth & Security operations
@@ -1210,6 +1292,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         addInquiry,
         updateInquiryStatus,
         deleteInquiry,
+        companyInfo,
+        updateCompanyInfo,
+        resetCompanyInfoToDefault,
         isAuthenticated: !!user,
         user,
         login,

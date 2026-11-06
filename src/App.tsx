@@ -24,8 +24,9 @@ import AdminNewsPage from "./admin/AdminNewsPage"
 import AdminGalleryPage from "./admin/AdminGalleryPage"
 import AdminAwardsPage from "./admin/AdminAwardsPage"
 import AdminExhibitionsPage from "./admin/AdminExhibitionsPage"
+import AdminSettingsPage from "./admin/AdminSettingsPage"
 
-export type Page = "home" | "about" | "products" | "product-detail" | "company" | "export" | "awards" | "exhibitions" | "training" | "news" | "news-detail" | "gallery" | "contact" | "admin-login" | "admin-dashboard" | "admin-products" | "admin-news" | "admin-gallery" | "admin-awards" | "admin-exhibitions" | "admin-inquiries"
+export type Page = "home" | "about" | "products" | "product-detail" | "company" | "export" | "awards" | "exhibitions" | "training" | "news" | "news-detail" | "gallery" | "contact" | "admin-login" | "admin-dashboard" | "admin-products" | "admin-news" | "admin-gallery" | "admin-awards" | "admin-exhibitions" | "admin-inquiries" | "admin-settings"
 
 export interface NavState {
   page: Page
@@ -61,6 +62,7 @@ const pathToPageMap: Record<string, Page> = {
   "/admin/awards": "admin-awards",
   "/admin/exhibitions": "admin-exhibitions",
   "/admin/inquiries": "admin-inquiries",
+  "/admin/settings": "admin-settings",
 }
 
 const pageToPathMap: Record<Page, string> = {
@@ -85,6 +87,7 @@ const pageToPathMap: Record<Page, string> = {
   "admin-awards": "/admin/awards",
   "admin-exhibitions": "/admin/exhibitions",
   "admin-inquiries": "/admin/inquiries",
+  "admin-settings": "/admin/settings",
 }
 
 function AppContent() {
@@ -194,6 +197,7 @@ function AppContent() {
       "admin-exhibitions":
         "Manajemen Pameran (Exhibitions) | PARJONO KERAMIK JAYA CMS",
       "admin-inquiries": "Manajemen Pesan & Inquiry | PARJONO KERAMIK JAYA CMS",
+      "admin-settings": "Pengaturan Kontak & Profil | PARJONO KERAMIK JAYA CMS",
     }
     document.title = titles[nav.page] || titles.home
   }, [nav.page])
@@ -206,7 +210,8 @@ function AppContent() {
     nav.page === "admin-gallery" ||
     nav.page === "admin-awards" ||
     nav.page === "admin-exhibitions" ||
-    nav.page === "admin-inquiries"
+    nav.page === "admin-inquiries" ||
+    nav.page === "admin-settings"
 
   return (
     <div
@@ -256,6 +261,9 @@ function AppContent() {
         )}
         {nav.page === "admin-inquiries" && (
           <AdminInquiriesPage navigate={navigate} />
+        )}
+        {nav.page === "admin-settings" && (
+          <AdminSettingsPage navigate={navigate} />
         )}
       </main>
 

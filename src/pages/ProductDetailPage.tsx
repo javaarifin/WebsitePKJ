@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavigateFn } from '../App'
-import { useAppStore } from '../context/AppContext'
+import { useAppStore, formatWhatsAppLink } from '../context/AppContext'
 
 interface Props {
   navigate: NavigateFn
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function ProductDetailPage({ navigate, productId }: Props) {
-  const { products, addInquiry, t, lang } = useAppStore()
+  const { products, addInquiry, t, lang, companyInfo } = useAppStore()
   const liveProducts = products.filter(p => p.status !== 'draft')
 
   const product =
@@ -168,11 +168,12 @@ export default function ProductDetailPage({ navigate, productId }: Props) {
                 {t.products.inquireBtn}
               </button>
               <a
-                href={`https://wa.me/6200000000?text=${encodeURIComponent(
+                href={formatWhatsAppLink(
+                  companyInfo.whatsapp,
                   lang === 'id'
                     ? `Halo, saya tertarik memesan produk ${product.name} dari PARJONO KERAMIK JAYA.`
-                    : `Hello, I am interested in inquiring about ${product.name} from PARJONO KERAMIK JAYA.`,
-                )}`}
+                    : `Hello, I am interested in inquiring about ${product.name} from PARJONO KERAMIK JAYA.`
+                )}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white font-semibold py-3.5 rounded-xl hover:bg-[#1fb854] transition-colors shadow-xs"

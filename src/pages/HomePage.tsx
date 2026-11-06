@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { NavigateFn } from '../App'
 import { IMAGES } from '../data'
-import { useAppStore } from '../context/AppContext'
+import { useAppStore, formatWhatsAppLink } from '../context/AppContext'
 
 interface Props {
   navigate: NavigateFn
 }
 
 export default function HomePage({ navigate }: Props) {
-  const { products, news, gallery, awards, exhibitions, t, lang } = useAppStore()
+  const { products, news, gallery, awards, exhibitions, t, lang, companyInfo } = useAppStore()
   const liveProducts = products.filter(p => p.status !== 'draft')
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null)
   const galleryPreview = gallery.slice(0, 6)
@@ -526,7 +526,12 @@ export default function HomePage({ navigate }: Props) {
               {t.nav.contactUs}
             </button>
             <a
-              href="https://wa.me/6200000000"
+              href={formatWhatsAppLink(
+                companyInfo.whatsapp,
+                lang === 'id'
+                  ? 'Halo Parjono Keramik Jaya, saya tertarik untuk memesan produk gerabah.'
+                  : 'Hello Parjono Keramik Jaya, I am interested in placing an order for pottery products.'
+              )}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 bg-[#25D366] text-white font-semibold px-8 py-4 rounded-xl hover:bg-[#1fb854] transition-colors text-[15px] shadow-sm"

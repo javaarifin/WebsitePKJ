@@ -21,6 +21,7 @@ import {
   Lock,
   AlertCircle,
   CheckCircle2,
+  Settings,
 } from "lucide-react"
 
 interface AdminLayoutProps {
@@ -105,6 +106,11 @@ export default function AdminLayout({
       icon: MessageSquare,
       badge: newInquiriesCount > 0 ? newInquiriesCount : null,
       badgeColor: "bg-[#A65F46] text-white",
+    },
+    {
+      label: "Pengaturan Kontak",
+      page: "admin-settings" as Page,
+      icon: Settings,
     },
   ]
 
