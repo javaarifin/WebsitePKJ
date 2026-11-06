@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react"
 import { NavigateFn } from "../App"
 import { useAppStore, AwardItem } from "../context/AppContext"
+import { validateImageFile } from "../utils/security"
 import AdminLayout from "./AdminLayout"
 import {
   Award,
@@ -99,8 +100,10 @@ export default function AdminAwardsPage({ navigate }: AdminAwardsPageProps) {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Ukuran file maksimal 5MB")
+      const validation = validateImageFile(file)
+      if (!validation.valid) {
+        alert(validation.error)
+        e.target.value = ""
         return
       }
       const reader = new FileReader()

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { INITIAL_PRODUCTS, NEWS, GALLERY_IMAGES, AWARDS, EXHIBITIONS } from '../data'
 import { Lang, TranslationDictionary, translations } from '../translations'
+import { hashPassword, checkLoginRateLimit, recordFailedLogin, clearLoginRateLimit } from '../utils/security'
 
 export type { Lang, TranslationDictionary }
 
@@ -80,6 +81,8 @@ export interface AuthUser {
   username: string
   name: string
   role: 'superadmin' | 'editor'
+  loginTime?: string
+  expiresAt?: number
 }
 
 export interface VisitorLog {
@@ -181,8 +184,9 @@ interface AppContextType {
   // Auth
   isAuthenticated: boolean
   user: AuthUser | null
-  login: (username: string, password: string) => { success: boolean; error?: string }
+  login: (username: string, password: string) => Promise<{ success: boolean; error?: string }>
   logout: () => void
+  changeAdminPassword: (oldPassword: string, newPassword: string) => Promise<{ success: boolean; error?: string }>
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -196,6 +200,7 @@ const STORAGE_KEYS = {
   EXHIBITIONS: 'pkj_craft_exhibitions_v1',
   INQUIRIES: 'pkj_craft_inquiries_v1',
   AUTH: 'pkj_craft_auth_v1',
+  ADMIN_CRED: 'pkj_craft_admin_cred_v1',
   VISITOR_STATS: 'pkj_craft_visitor_stats_v1',
 }
 
@@ -528,11 +533,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return DEFAULT_INQUIRIES
   })
 
-  // 7. Auth state
+  // 7. Auth state with session expiration check
   const [user, setUser] = useState<AuthUser | null>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.AUTH)
-      if (saved) return JSON.parse(saved)
+      if (saved) {
+        const parsed: AuthUser = JSON.parse(saved)
+        // Auto-logout if session has expired (anti session hijacking)
+        if (parsed.expiresAt && Date.now() > parsed.expiresAt) {
+          localStorage.removeItem(STORAGE_KEYS.AUTH)
+          return null
+        }
+        return parsed
+      }
     } catch (e) {
       console.error('Error loading auth from localStorage:', e)
     }
@@ -790,24 +803,124 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setInquiries(prev => prev.filter(inq => inq.id !== id))
   }
 
-  // Auth operations
-  const login = (username: string, password: string) => {
+  // Auth & Security operations
+  const login = async (username: string, password: string): Promise<{ success: boolean; error?: string }> => {
     const trimmedUser = username.trim()
     const trimmedPass = password.trim()
-    if (trimmedUser === 'admin' && trimmedPass === 'admin123') {
+
+    // 1. Check Rate Limiting / Brute-force lockout
+    const rateLimit = checkLoginRateLimit()
+    if (rateLimit.isLocked) {
+      return {
+        success: false,
+        error: `Terlalu banyak percobaan gagal. Akses login dikunci sementara selama ${rateLimit.remainingSeconds} detik demi keamanan.`,
+      }
+    }
+
+    if (!trimmedUser || !trimmedPass) {
+      return { success: false, error: 'Username dan password wajib diisi.' }
+    }
+
+    // 2. Fetch or initialize stored admin credential hash
+    let storedCred: { username: string; hash: string } | null = null
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.ADMIN_CRED)
+      if (raw) {
+        storedCred = JSON.parse(raw)
+      } else {
+        const defaultHash = await hashPassword('admin123')
+        storedCred = { username: 'admin', hash: defaultHash }
+        localStorage.setItem(STORAGE_KEYS.ADMIN_CRED, JSON.stringify(storedCred))
+      }
+    } catch (e) {
+      const defaultHash = await hashPassword('admin123')
+      storedCred = { username: 'admin', hash: defaultHash }
+    }
+
+    // 3. Verify user and password hash
+    const inputHash = await hashPassword(trimmedPass)
+    const isUserMatch = trimmedUser.toLowerCase() === (storedCred?.username || 'admin').toLowerCase()
+    const isPassMatch = storedCred && inputHash === storedCred.hash
+
+    if (isUserMatch && isPassMatch) {
+      clearLoginRateLimit()
+      const now = Date.now()
       const authUser: AuthUser = {
-        username: 'admin',
+        username: storedCred?.username || 'admin',
         name: 'Parjono Admin',
         role: 'superadmin',
+        loginTime: new Date(now).toISOString(),
+        expiresAt: now + 8 * 3600 * 1000, // 8-hour session
       }
       setUser(authUser)
+      try {
+        localStorage.setItem(STORAGE_KEYS.AUTH, JSON.stringify(authUser))
+      } catch (e) {}
       return { success: true }
     }
-    return { success: false, error: 'Username atau password salah. Gunakan admin / admin123' }
+
+    // 4. Record failed attempt
+    const failedStatus = recordFailedLogin()
+    if (failedStatus.isLocked) {
+      return {
+        success: false,
+        error: `Terlalu banyak percobaan gagal berturut-turut. Akun dikunci sementara selama 5 menit untuk alasan keamanan.`,
+      }
+    }
+
+    const remaining = Math.max(0, 5 - failedStatus.attempts)
+    return {
+      success: false,
+      error: `Username atau password salah. Sisa kesempatan sebelum akun dikunci: ${remaining} kali.`,
+    }
   }
 
   const logout = () => {
     setUser(null)
+    try {
+      localStorage.removeItem(STORAGE_KEYS.AUTH)
+    } catch (e) {}
+  }
+
+  const changeAdminPassword = async (
+    oldPass: string,
+    newPass: string,
+  ): Promise<{ success: boolean; error?: string }> => {
+    if (!newPass || newPass.length < 6) {
+      return { success: false, error: 'Password baru minimal 6 karakter.' }
+    }
+
+    let storedCred: { username: string; hash: string } | null = null
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.ADMIN_CRED)
+      if (raw) {
+        storedCred = JSON.parse(raw)
+      } else {
+        const defaultHash = await hashPassword('admin123')
+        storedCred = { username: 'admin', hash: defaultHash }
+      }
+    } catch (e) {
+      return { success: false, error: 'Gagal membaca data kredensial.' }
+    }
+
+    const oldHash = await hashPassword(oldPass.trim())
+    if (!storedCred || oldHash !== storedCred.hash) {
+      return { success: false, error: 'Password lama yang Anda masukkan tidak sesuai.' }
+    }
+
+    const newHash = await hashPassword(newPass.trim())
+    const updatedCred = {
+      username: storedCred.username,
+      hash: newHash,
+      updatedAt: new Date().toISOString(),
+    }
+
+    try {
+      localStorage.setItem(STORAGE_KEYS.ADMIN_CRED, JSON.stringify(updatedCred))
+      return { success: true }
+    } catch (e) {
+      return { success: false, error: 'Gagal menyimpan password baru.' }
+    }
   }
 
   // Visitor tracking operations
@@ -1096,6 +1209,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         user,
         login,
         logout,
+        changeAdminPassword,
       }}
     >
       {children}

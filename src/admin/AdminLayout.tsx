@@ -17,6 +17,10 @@ import {
   Image,
   Award,
   Sparkles,
+  Key,
+  Lock,
+  AlertCircle,
+  CheckCircle2,
 } from "lucide-react"
 
 interface AdminLayoutProps {
@@ -45,8 +49,16 @@ export default function AdminLayout({
     gallery,
     awards,
     exhibitions,
+    changeAdminPassword,
   } = useAppStore()
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
+  const [oldPassword, setOldPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [pwdError, setPwdError] = useState<string | null>(null)
+  const [pwdSuccess, setPwdSuccess] = useState(false)
+  const [pwdLoading, setPwdLoading] = useState(false)
 
   const newInquiriesCount = inquiries.filter((i) => i.status === "new").length
 
@@ -99,6 +111,38 @@ export default function AdminLayout({
   const handleLogout = () => {
     logout()
     navigate("admin-login")
+  }
+
+  const handleChangePasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setPwdError(null)
+    setPwdSuccess(false)
+
+    if (newPassword.length < 6) {
+      setPwdError("Password baru minimal 6 karakter.")
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setPwdError("Konfirmasi password baru tidak cocok.")
+      return
+    }
+
+    setPwdLoading(true)
+    const res = await changeAdminPassword(oldPassword, newPassword)
+    setPwdLoading(false)
+
+    if (res.success) {
+      setPwdSuccess(true)
+      setOldPassword("")
+      setNewPassword("")
+      setConfirmPassword("")
+      setTimeout(() => {
+        setIsPasswordModalOpen(false)
+        setPwdSuccess(false)
+      }, 1500)
+    } else {
+      setPwdError(res.error || "Gagal mengubah password.")
+    }
   }
 
   return (
@@ -296,13 +340,29 @@ export default function AdminLayout({
                 </span>
               </div>
             </div>
-            <button
-              onClick={handleLogout}
-              className="p-2 text-white/60 hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors"
-              title="Keluar"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => {
+                  setPwdError(null)
+                  setPwdSuccess(false)
+                  setOldPassword("")
+                  setNewPassword("")
+                  setConfirmPassword("")
+                  setIsPasswordModalOpen(true)
+                }}
+                className="p-2 text-white/60 hover:text-[#D8C3A5] hover:bg-white/5 rounded-lg transition-colors"
+                title="Ganti Password Admin"
+              >
+                <Key className="w-4 h-4" />
+              </button>
+              <button
+                onClick={handleLogout}
+                className="p-2 text-white/60 hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors"
+                title="Keluar"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </aside>
@@ -362,6 +422,119 @@ export default function AdminLayout({
           {children}
         </main>
       </div>
+
+      {/* MODAL GANTI PASSWORD ADMIN */}
+      {isPasswordModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 lg:p-8 max-w-md w-full shadow-2xl border border-[#D8C3A5]/50 animate-[fadeIn_0.2s_ease]">
+            <div className="flex items-center justify-between pb-4 border-b border-[#D8C3A5]/30 mb-5">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-xl bg-[#A65F46]/10 text-[#A65F46] flex items-center justify-center">
+                  <Key className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-display font-bold text-lg text-[#302A26]">
+                    Ubah Password Admin
+                  </h3>
+                  <p className="text-xs text-[#302A26]/50">
+                    Perbarui kata sandi untuk keamanan akses CMS
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsPasswordModalOpen(false)}
+                className="p-1.5 rounded-lg text-[#302A26]/40 hover:text-[#302A26] hover:bg-[#F8F6F0] transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {pwdError && (
+              <div className="mb-4 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-500" />
+                <span>{pwdError}</span>
+              </div>
+            )}
+
+            {pwdSuccess && (
+              <div className="mb-4 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs flex items-center gap-2.5">
+                <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-emerald-500" />
+                <span>Password berhasil diperbarui dan dienkripsi!</span>
+              </div>
+            )}
+
+            <form onSubmit={handleChangePasswordSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-[#302A26] mb-1.5 uppercase tracking-wider">
+                  Password Lama
+                </label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-[#302A26]/40 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="password"
+                    required
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    placeholder="Masukkan password saat ini"
+                    className="w-full pl-9 pr-3 py-2.5 bg-[#F8F6F0] border border-[#D8C3A5] rounded-xl text-xs text-[#302A26] focus:outline-none focus:border-[#A65F46] focus:bg-white transition-all"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#302A26] mb-1.5 uppercase tracking-wider">
+                  Password Baru
+                </label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-[#302A26]/40 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="password"
+                    required
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Minimal 6 karakter"
+                    className="w-full pl-9 pr-3 py-2.5 bg-[#F8F6F0] border border-[#D8C3A5] rounded-xl text-xs text-[#302A26] focus:outline-none focus:border-[#A65F46] focus:bg-white transition-all"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#302A26] mb-1.5 uppercase tracking-wider">
+                  Konfirmasi Password Baru
+                </label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-[#302A26]/40 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Ketik ulang password baru"
+                    className="w-full pl-9 pr-3 py-2.5 bg-[#F8F6F0] border border-[#D8C3A5] rounded-xl text-xs text-[#302A26] focus:outline-none focus:border-[#A65F46] focus:bg-white transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setIsPasswordModalOpen(false)}
+                  className="flex-1 py-2.5 rounded-xl border border-[#D8C3A5] text-xs font-semibold text-[#302A26]/70 hover:bg-[#F8F6F0] transition-colors"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={pwdLoading}
+                  className="flex-1 py-2.5 rounded-xl bg-[#A65F46] hover:bg-[#8f5239] text-white text-xs font-semibold shadow-sm transition-all disabled:opacity-50 flex items-center justify-center gap-1.5"
+                >
+                  {pwdLoading ? "Menyimpan..." : "Simpan Password"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

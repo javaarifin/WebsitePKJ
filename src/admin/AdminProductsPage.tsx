@@ -3,6 +3,7 @@ import React, { useState, useRef } from "react"
 import { NavigateFn } from "../App"
 
 import { useAppStore, Product } from "../context/AppContext"
+import { validateImageFile } from "../utils/security"
 
 import AdminLayout from "./AdminLayout"
 
@@ -235,22 +236,20 @@ export default function AdminProductsPage({
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Ukuran file terlalu besar (maksimal 5MB).")
-
+      const validation = validateImageFile(file)
+      if (!validation.valid) {
+        alert(validation.error)
+        e.target.value = ""
         return
       }
 
       const reader = new FileReader()
-
       reader.onload = () => {
         if (typeof reader.result === "string") {
           setFormData((prev) => ({ ...prev, image: reader.result as string }))
         }
       }
-
       reader.readAsDataURL(file)
     }
   }
