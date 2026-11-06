@@ -243,7 +243,7 @@ export const DEFAULT_COMPANY_INFO: CompanyInfo = {
   addressLine1: 'Klisat, Srihardono, Pundong',
   addressLine2: 'Bantul, D.I. Yogyakarta 55771, Indonesia',
   operatingHours: 'Senin - Sabtu: 08:00 - 17:00 WIB',
-  googleMapsUrl: 'https://maps.google.com/?q=Kasongan+Bantul+Yogyakarta',
+  googleMapsUrl: 'https://maps.google.com/?q=Klisat,+Srihardono,+Pundong,+Bantul,+Yogyakarta',
   instagram: '@parjonokeramikjaya',
   facebook: 'Parjono Keramik Jaya',
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { NavigateFn } from '../App'
 import { useAppStore, formatWhatsAppLink } from '../context/AppContext'
+import { MapPin, ExternalLink } from 'lucide-react'
 
 interface Props {
   navigate: NavigateFn
@@ -141,6 +142,11 @@ export default function ContactPage({ navigate }: Props) {
     },
   ]
 
+  const addressQuery = `${companyInfo.addressLine1}, ${companyInfo.addressLine2}`
+  const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(addressQuery)}&t=&z=15&ie=UTF8&iwloc=&output=embed`
+  const googleMapsRedirectUrl =
+    companyInfo.googleMapsUrl || `https://maps.google.com/?q=${encodeURIComponent(addressQuery)}`
+
   return (
     <div className="pt-[72px]">
       {/* Hero */}
@@ -234,6 +240,76 @@ export default function ContactPage({ navigate }: Props) {
                   </a>
                 )}
               </div>
+            </div>
+
+            {/* Mini Map Card */}
+            <div className="mt-8 pt-8 border-t border-[#D8C3A5]/40">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-[#302A26]/60 text-[12px] font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-[#A65F46]" />
+                  {lang === 'id' ? 'Peta Lokasi Workshop' : 'Workshop Location Map'}
+                </p>
+                <a
+                  href={googleMapsRedirectUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[12px] font-semibold text-[#A65F46] hover:text-[#8f5239] transition-colors"
+                >
+                  <span>{lang === 'id' ? 'Buka Google Maps' : 'Open Google Maps'}</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              {/* Interactive Card */}
+              <div className="relative group rounded-2xl overflow-hidden border border-[#D8C3A5]/60 shadow-sm hover:shadow-md transition-all duration-300 bg-stone-100">
+                {/* Embed Map iframe */}
+                <iframe
+                  title="Peta Lokasi Parjono Keramik Jaya"
+                  src={mapEmbedUrl}
+                  className="w-full h-52 sm:h-60 border-0 pointer-events-none group-hover:scale-[1.02] transition-transform duration-500"
+                  loading="lazy"
+                />
+
+                {/* Clickable Overlay Link to Google Maps */}
+                <a
+                  href={googleMapsRedirectUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 bg-transparent flex flex-col justify-between p-3.5 group-hover:bg-[#302A26]/10 transition-colors"
+                  aria-label="Buka lokasi workshop di Google Maps"
+                >
+                  {/* Top Floating Badge */}
+                  <div className="self-end bg-white/95 backdrop-blur-xs text-[#302A26] px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm flex items-center gap-1.5 border border-stone-200/60 group-hover:bg-[#A65F46] group-hover:text-white group-hover:border-[#A65F46] transition-all">
+                    <span>{lang === 'id' ? 'Petunjuk Arah' : 'Get Directions'}</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </div>
+
+                  {/* Bottom Location Pill */}
+                  <div className="bg-white/95 backdrop-blur-xs text-[#302A26] p-2.5 rounded-xl shadow-sm border border-stone-200/60 max-w-sm group-hover:border-[#A65F46]/50 transition-colors">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-full bg-[#A65F46] text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <MapPin className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-semibold text-xs text-[#302A26] truncate">
+                          {companyInfo.name || "PARJONO KERAMIK JAYA"}
+                        </p>
+                        <p className="text-[11px] text-stone-500 truncate">
+                          {companyInfo.addressLine1}, {companyInfo.addressLine2}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <p className="text-[11px] text-[#302A26]/50 mt-2 flex items-center gap-1">
+                <span>📍</span>
+                <span>
+                  {lang === 'id'
+                    ? 'Klik area peta untuk membuka rute navigasi langsung di Google Maps.'
+                    : 'Click anywhere on the map to get turn-by-turn directions on Google Maps.'}
+                </span>
+              </p>
             </div>
           </div>
 
