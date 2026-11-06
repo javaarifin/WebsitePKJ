@@ -119,9 +119,22 @@ export default function ProductDetailPage({ navigate, productId }: Props) {
             <p className="text-[#7A8065] text-[11px] font-semibold tracking-widest uppercase mb-2">
               {product.category}
             </p>
-            <h1 className="font-display text-[40px] font-bold text-[#302A26] mb-4">
+            <h1 className="font-display text-[40px] font-bold text-[#302A26] mb-3">
               {product.name}
             </h1>
+
+            {/* Price */}
+            <div className="mb-6 flex flex-wrap items-baseline gap-3">
+              <span className="font-display text-3xl font-bold text-[#A65F46]">
+                {product.price || (lang === 'id' ? 'Hubungi untuk Harga' : 'Contact for Price')}
+              </span>
+              {product.moq && (
+                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#F5F1E8] text-[#7A8065] border border-[#D8C3A5]/50">
+                  MOQ: {product.moq}
+                </span>
+              )}
+            </div>
+
             <p className="text-[#302A26]/65 leading-relaxed mb-8">{product.description}</p>
 
             {/* Specs */}
@@ -131,6 +144,7 @@ export default function ProductDetailPage({ navigate, productId }: Props) {
               </h3>
               <dl className="grid grid-cols-2 gap-4">
                 {[
+                  [lang === 'id' ? 'Estimasi Harga' : 'Price', product.price || (lang === 'id' ? 'Hubungi Kami' : 'Contact Us')],
                   [t.products.material, product.material || 'Terracotta Clay'],
                   [t.products.size, product.size || 'Custom size available'],
                   [t.products.weight, product.weight || 'Varies by size'],

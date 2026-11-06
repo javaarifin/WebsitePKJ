@@ -51,6 +51,8 @@ export interface Product {
   finish: string
 
   moq: string
+
+  price?: string
 }
 
 export const INITIAL_PRODUCTS: Product[] = [
@@ -78,7 +80,9 @@ export const INITIAL_PRODUCTS: Product[] = [
 
     finish: "Natural / Unglazed",
 
-    moq: "[Contact us for MOQ details]",
+    moq: "50 pcs",
+
+    price: "Rp 75.000",
   },
 
   {
@@ -105,7 +109,9 @@ export const INITIAL_PRODUCTS: Product[] = [
 
     finish: "Natural",
 
-    moq: "[Contact us for MOQ details]",
+    moq: "50 pcs",
+
+    price: "Rp 60.000",
   },
 
   {
@@ -132,7 +138,9 @@ export const INITIAL_PRODUCTS: Product[] = [
 
     finish: "Natural / Weathered",
 
-    moq: "[Contact us for MOQ details]",
+    moq: "30 pcs",
+
+    price: "Rp 120.000",
   },
 
   {
@@ -159,7 +167,9 @@ export const INITIAL_PRODUCTS: Product[] = [
 
     finish: "Natural",
 
-    moq: "[Contact us for MOQ details]",
+    moq: "40 pcs",
+
+    price: "Rp 95.000",
   },
 
   {
@@ -186,7 +196,9 @@ export const INITIAL_PRODUCTS: Product[] = [
 
     finish: "Natural / Unglazed",
 
-    moq: "[Contact us for MOQ details]",
+    moq: "50 pcs",
+
+    price: "Rp 45.000",
   },
 
   {
@@ -213,7 +225,9 @@ export const INITIAL_PRODUCTS: Product[] = [
 
     finish: "Natural",
 
-    moq: "[Contact us for MOQ details]",
+    moq: "30 pcs",
+
+    price: "Rp 85.000",
   },
 
   {
@@ -240,7 +254,9 @@ export const INITIAL_PRODUCTS: Product[] = [
 
     finish: "Natural",
 
-    moq: "[Contact us for MOQ details]",
+    moq: "20 pcs",
+
+    price: "Rp 150.000",
   },
 
   {
@@ -267,7 +283,9 @@ export const INITIAL_PRODUCTS: Product[] = [
 
     finish: "Natural / Unglazed",
 
-    moq: "[Contact us for MOQ details]",
+    moq: "25 pcs",
+
+    price: "Rp 110.000",
   },
 ]
 

@@ -141,21 +141,26 @@ export default function ProductsPage({ navigate }: Props) {
                   <h3 className="font-display font-semibold text-[18px] text-[#302A26] mb-2 group-hover:text-[#A65F46] transition-colors line-clamp-1">
                     {product.name}
                   </h3>
-                  <p className="text-[#302A26]/55 text-[13px] leading-relaxed mb-4 line-clamp-2">
+                  <p className="text-[#302A26]/55 text-[13px] leading-relaxed mb-3 line-clamp-2">
                     {product.description}
                   </p>
-                  <span className="inline-flex items-center gap-1 text-[#A65F46] text-[13px] font-semibold group-hover:gap-2 transition-all">
-                    {t.products.viewDetails}
-                    <svg
-                      className="w-3.5 h-3.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2.5}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </span>
+                  <div className="flex items-center justify-between pt-2.5 border-t border-[#D8C3A5]/30">
+                    <span className="font-display font-bold text-[15px] text-[#A65F46]">
+                      {product.price || (lang === 'id' ? 'Hubungi Kami' : 'Contact Us')}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[#302A26]/60 text-[12px] font-semibold group-hover:text-[#A65F46] group-hover:gap-1.5 transition-all">
+                      {t.products.viewDetails}
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}

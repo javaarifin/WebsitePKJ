@@ -404,7 +404,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const saved = localStorage.getItem(STORAGE_KEYS.PRODUCTS)
       if (saved) {
         const parsed = JSON.parse(saved)
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map((p: Product) => ({
+            ...p,
+            price: p.price ? p.price.replace(/\s*\/\s*\$[\d.]+/g, "").trim() : p.price,
+          }))
+        }
       }
     } catch (e) {
       console.error('Error loading products from localStorage:', e)

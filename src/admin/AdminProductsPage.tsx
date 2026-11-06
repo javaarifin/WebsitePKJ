@@ -131,7 +131,7 @@ export default function AdminProductsPage({
 
     moq: "50 pcs",
 
-    price: "Rp 75.000 / $5.00",
+    price: "Rp 75.000",
 
     status: "published",
   })
@@ -190,7 +190,7 @@ export default function AdminProductsPage({
 
       moq: "50 pcs",
 
-      price: "Hubungi Kami / $5.00",
+      price: "Rp 75.000",
 
       status: "published",
     })
@@ -472,7 +472,7 @@ export default function AdminProductsPage({
                   <th className="py-3.5 pl-6 pr-3">Produk</th>
                   <th className="py-3.5 px-3">Kategori</th>
                   <th className="py-3.5 px-3">Spesifikasi</th>
-                  <th className="py-3.5 px-3">Harga / MOQ</th>
+                  <th className="py-3.5 px-3">Harga (Rp) / MOQ</th>
                   <th className="py-3.5 px-3">Status</th>
                   <th className="py-3.5 pr-6 text-right">Aksi</th>
                 </tr>
@@ -666,11 +666,11 @@ export default function AdminProductsPage({
 
                 <div>
                   <label className="block text-xs font-semibold text-[#302A26] uppercase tracking-wider mb-1.5">
-                    Harga / Estimasi MOQ
+                    Harga Produk (Rupiah)
                   </label>
                   <input
                     type="text"
-                    placeholder="Contoh: Rp 85.000 atau Inquire MOQ"
+                    placeholder="Contoh: Rp 85.000 atau Hubungi Kami"
                     value={formData.price}
                     onChange={(e) =>
                       setFormData((prev) => ({
