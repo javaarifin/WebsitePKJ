@@ -56,17 +56,29 @@ export default function Navbar({ nav, navigate }: Props) {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBg}`}>
       <div className="max-w-[1280px] mx-auto px-6 flex items-center justify-between h-[72px]">
         {/* Logo */}
-        <button onClick={() => navigate('home')} className="flex flex-col items-start leading-none">
-          <span
-            className={`font-display font-bold text-[17px] tracking-wide transition-colors ${textBase}`}
-          >
-            PARJONO
-          </span>
-          <span
-            className={`font-display text-[11px] tracking-[0.2em] transition-colors ${textBase} opacity-70`}
-          >
-            KERAMIK JAYA
-          </span>
+        <button
+          onClick={() => navigate('home')}
+          className="flex items-center gap-3 text-left group focus:outline-none"
+        >
+          <div className="bg-white p-1.5 md:p-2 rounded-xl shadow-xs border border-stone-200/80 group-hover:scale-105 transition-transform flex items-center justify-center">
+            <img
+              src="/images/pkj-logo.jpg"
+              alt="PARJONO KERAMIK JAYA"
+              className="h-8 md:h-9 w-auto object-contain"
+            />
+          </div>
+          <div className="hidden sm:flex flex-col items-start leading-none">
+            <span
+              className={`font-display font-bold text-[16px] tracking-wide transition-colors ${textBase}`}
+            >
+              PARJONO
+            </span>
+            <span
+              className={`font-display text-[10px] tracking-[0.2em] transition-colors ${textBase} opacity-70 mt-0.5`}
+            >
+              KERAMIK JAYA
+            </span>
+          </div>
         </button>
 
         {/* Desktop nav */}
@@ -233,6 +245,21 @@ export default function Navbar({ nav, navigate }: Props) {
         }`}
       >
         <div className="bg-[#F5F1E8] border-t border-[#D8C3A5]/40 px-6 py-4 shadow-xl">
+          <div className="flex items-center gap-3 pb-3 mb-2 border-b border-[#D8C3A5]/40">
+            <div className="bg-white p-1.5 rounded-xl shadow-xs border border-stone-200">
+              <img
+                src="/images/pkj-logo.jpg"
+                alt="PARJONO KERAMIK JAYA"
+                className="h-8 w-auto object-contain"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-display font-bold text-sm text-[#302A26]">PARJONO</span>
+              <span className="text-[10px] text-[#A65F46] font-semibold tracking-wider">
+                KERAMIK JAYA
+              </span>
+            </div>
+          </div>
           {navLinks.map(link => (
             <button
               key={link.page}

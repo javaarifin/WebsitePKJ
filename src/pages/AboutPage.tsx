@@ -132,6 +132,13 @@ export default function AboutPage({ navigate }: Props) {
       <section className="py-[100px] max-w-[1280px] mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
+            <div className="bg-white p-2.5 rounded-2xl border border-stone-200/80 inline-block shadow-xs mb-5">
+              <img
+                src="/images/pkj-logo.jpg"
+                alt="PARJONO KERAMIK JAYA Logo"
+                className="h-10 w-auto object-contain"
+              />
+            </div>
             <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
               {lang === 'id' ? 'Tentang Perusahaan' : 'Company Story'}
             </p>

@@ -67,11 +67,18 @@ export default function CompanyPage({ navigate }: Props) {
           <img src={IMAGES.craftsmanWoman} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-[#302A26]/80" />
         </div>
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 text-center">
+        <div className="relative z-10 max-w-[1280px] mx-auto px-6 text-center flex flex-col items-center">
+          <div className="bg-white p-3 md:p-4 rounded-2xl shadow-xl border border-white/20 inline-block mb-6 hover:scale-105 transition-transform">
+            <img
+              src="/images/pkj-logo.jpg"
+              alt="PARJONO KERAMIK JAYA Logo"
+              className="h-14 md:h-18 w-auto object-contain"
+            />
+          </div>
           <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
             {t.nav.company}
           </p>
-          <h1 className="font-display text-[52px] font-bold text-white mb-4">
+          <h1 className="font-display text-[46px] md:text-[56px] font-bold text-white mb-4">
             PARJONO KERAMIK JAYA
           </h1>
           <p className="text-white/60 text-lg max-w-xl mx-auto">

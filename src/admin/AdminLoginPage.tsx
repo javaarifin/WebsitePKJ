@@ -109,11 +109,15 @@ export default function AdminLoginPage({ navigate }: AdminLoginPageProps) {
           {/* Header */}
           <div className="bg-[#302A26] p-8 text-center relative overflow-hidden">
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#D8C3A5_1px,transparent_1px)] [background-size:16px_16px]" />
-            <div className="relative z-10">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-[#A65F46] text-white flex items-center justify-center shadow-lg shadow-[#A65F46]/30">
-                <Shield className="w-7 h-7" />
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="bg-white p-3 rounded-2xl shadow-lg border border-white/20 inline-block mb-3.5">
+                <img
+                  src="/images/pkj-logo.jpg"
+                  alt="PARJONO KERAMIK JAYA"
+                  className="h-10 w-auto object-contain"
+                />
               </div>
-              <h1 className="font-display font-bold text-2xl text-white tracking-wide">
+              <h1 className="font-display font-bold text-xl text-white tracking-wide">
                 PARJONO KERAMIK JAYA
               </h1>
               <p className="text-[#D8C3A5] text-xs tracking-widest uppercase mt-1">

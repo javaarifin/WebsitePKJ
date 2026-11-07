@@ -167,11 +167,18 @@ export default function AdminLayout({
               <Menu className="w-6 h-6" />
             )}
           </button>
-          <div>
+          <div className="flex items-center gap-2">
+            <div className="bg-white p-1 rounded-lg shrink-0">
+              <img
+                src="/images/pkj-logo.jpg"
+                alt="PKJ Logo"
+                className="h-6 w-auto object-contain"
+              />
+            </div>
             <span className="font-display font-bold text-sm tracking-wide text-white">
               PARJONO
             </span>
-            <span className="text-[10px] bg-[#A65F46] text-white px-1.5 py-0.5 rounded font-mono ml-2">
+            <span className="text-[10px] bg-[#A65F46] text-white px-1.5 py-0.5 rounded font-mono">
               CMS
             </span>
           </div>
@@ -211,19 +218,28 @@ export default function AdminLayout({
       >
         <div>
           {/* Brand Header */}
-          <div className="p-6 border-b border-white/10 flex items-center justify-between">
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="font-display font-bold text-lg tracking-wider text-white">
-                  PARJONO
-                </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-[#A65F46] text-white px-2 py-0.5 rounded shadow-sm">
-                  CMS
+          <div className="p-5 border-b border-white/10 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-white p-1.5 rounded-xl shadow-xs shrink-0">
+                <img
+                  src="/images/pkj-logo.jpg"
+                  alt="PKJ Logo"
+                  className="h-8 w-auto object-contain"
+                />
+              </div>
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1.5">
+                  <span className="font-display font-bold text-sm tracking-wider text-white">
+                    PARJONO
+                  </span>
+                  <span className="text-[9px] font-bold uppercase tracking-wider bg-[#A65F46] text-white px-1.5 py-0.5 rounded shadow-sm">
+                    CMS
+                  </span>
+                </div>
+                <span className="text-[10px] text-[#D8C3A5] font-light tracking-[0.15em]">
+                  KERAMIK JAYA
                 </span>
               </div>
-              <span className="text-xs text-[#D8C3A5] font-light tracking-[0.2em] mt-0.5">
-                KERAMIK JAYA
-              </span>
             </div>
             <button
               onClick={() => setMobileSidebarOpen(false)}

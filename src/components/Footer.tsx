@@ -30,9 +30,17 @@ export default function Footer({ navigate }: Props) {
       <div className="max-w-[1280px] mx-auto px-6 pt-16 pb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Brand */}
         <div className="lg:col-span-1">
-          <button onClick={() => navigate('home')} className="mb-5 block text-left">
-            <div className="font-display font-bold text-xl text-white tracking-wide">PARJONO</div>
-            <div className="font-display text-sm text-white/50 tracking-[0.2em]">KERAMIK JAYA</div>
+          <button onClick={() => navigate('home')} className="mb-5 block text-left group">
+            <div className="bg-white p-2.5 rounded-2xl inline-block shadow-md border border-stone-200/50 group-hover:scale-105 transition-transform mb-3">
+              <img
+                src="/images/pkj-logo.jpg"
+                alt="PARJONO KERAMIK JAYA"
+                className="h-11 w-auto object-contain"
+              />
+            </div>
+            <div className="font-display font-bold text-base text-white tracking-wide">
+              PARJONO KERAMIK JAYA
+            </div>
           </button>
           <p className="text-sm leading-relaxed text-white/55 mb-5">{companyInfo.tagline || t.footer.tagline}</p>
           <div className="flex gap-3">
