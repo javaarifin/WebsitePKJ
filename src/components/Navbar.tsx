@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function Navbar({ nav, navigate }: Props) {
-  const { lang, setLang, t, isAuthenticated } = useAppStore()
+  const { lang, setLang, t } = useAppStore()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [companyOpen, setCompanyOpen] = useState(false)
@@ -180,29 +180,6 @@ export default function Navbar({ nav, navigate }: Props) {
             </button>
           </div>
 
-          {isAuthenticated && (
-            <button
-              onClick={() => navigate('admin-dashboard')}
-              className={`text-[12px] font-medium transition-colors hover:text-[#A65F46] flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-current/20 hover:border-[#A65F46] ${textBase}`}
-              title="Kembali ke Admin Dashboard"
-            >
-              <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
-              <span>Dashboard</span>
-            </button>
-          )}
-
           <button
             onClick={() => navigate('contact')}
             className="bg-[#A65F46] text-white text-[13px] font-medium px-5 py-2.5 rounded-lg hover:bg-[#8f5239] transition-colors duration-200 shadow-xs"
@@ -321,14 +298,6 @@ export default function Navbar({ nav, navigate }: Props) {
             </div>
 
             <div className="flex items-center gap-2">
-              {isAuthenticated && (
-                <button
-                  onClick={() => navigate('admin-dashboard')}
-                  className="border border-[#A65F46] text-[#A65F46] text-[13px] font-medium px-4 py-2 rounded-lg hover:bg-[#A65F46] hover:text-white transition-colors"
-                >
-                  Dashboard
-                </button>
-              )}
               <button
                 onClick={() => navigate('contact')}
                 className="bg-[#A65F46] text-white text-[13px] font-medium px-4 py-2 rounded-lg hover:bg-[#8f5239] transition-colors"
