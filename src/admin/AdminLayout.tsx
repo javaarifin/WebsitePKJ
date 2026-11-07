@@ -213,7 +213,7 @@ export default function AdminLayout({
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 z-50 w-72 bg-[#302A26] text-white flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-72 bg-[#302A26] text-white flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } h-screen shadow-xl`}
       >
@@ -391,7 +391,7 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 min-h-screen">
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen lg:pl-72">
         {/* Top Header Bar */}
         <div className="bg-white border-b border-[#D8C3A5]/40 px-6 py-4 hidden lg:flex items-center justify-between sticky top-0 z-30 shadow-xs">
           <div>
