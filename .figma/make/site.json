@@ -1,7 +1,12 @@
 {
-  "description": "This web application offers a user-friendly platform for designing and customizing ceramic products, catering to artisans and businesses in the ceramics industry.",
+  "title": "PARJONO KERAMIK JAYA | Produsen Gerabah & Terakota Kasongan",
+  "description": "Produsen dan eksportir kriya gerabah, keramik, dan terakota tradisional berkualitas ekspor asli Kasongan, Bantul, Yogyakarta, Indonesia.",
+  "language": "id",
   "robots": {
-    "index": false
+    "index": true
+  },
+  "openGraph": {
+    "image": "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1200&q=80"
   },
   "accessibility": {
     "addBypassLinks": false,

@@ -124,7 +124,7 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
     return html.replace(`<!-- ${slotName} -->`, content)
   }
 
-  const title = config.title ?? "Figma Make App"
+  const title = config.title ?? "PARJONO KERAMIK JAYA | Produsen Gerabah & Terakota"
 
   const description = config.description ?? ""
 
