@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { NavigateFn } from "../App"
 import { useAppStore } from "../context/AppContext"
 import { checkLoginRateLimit } from "../utils/security"
+import { PKJ_LOGO } from "../assets/logo"
 import {
   Lock,
   User,
@@ -112,7 +113,7 @@ export default function AdminLoginPage({ navigate }: AdminLoginPageProps) {
             <div className="relative z-10 flex flex-col items-center">
               <div className="bg-white p-3 rounded-2xl shadow-lg border border-white/20 inline-block mb-3.5">
                 <img
-                  src="/images/pkj-logo.jpg"
+                  src={PKJ_LOGO}
                   alt="PARJONO KERAMIK JAYA"
                   className="h-10 w-auto object-contain"
                 />

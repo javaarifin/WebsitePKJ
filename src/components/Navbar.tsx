@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Page, NavState, NavigateFn } from '../App'
 import { useAppStore } from '../context/AppContext'
+import { PKJ_LOGO } from '../assets/logo'
 
 interface Props {
   nav: NavState
@@ -62,7 +63,7 @@ export default function Navbar({ nav, navigate }: Props) {
         >
           <div className="bg-white p-1.5 md:p-2 rounded-xl shadow-xs border border-stone-200/80 group-hover:scale-105 transition-transform flex items-center justify-center">
             <img
-              src="/images/pkj-logo.jpg"
+              src={PKJ_LOGO}
               alt="PARJONO KERAMIK JAYA"
               className="h-8 md:h-9 w-auto object-contain"
             />
@@ -248,7 +249,7 @@ export default function Navbar({ nav, navigate }: Props) {
           <div className="flex items-center gap-3 pb-3 mb-2 border-b border-[#D8C3A5]/40">
             <div className="bg-white p-1.5 rounded-xl shadow-xs border border-stone-200">
               <img
-                src="/images/pkj-logo.jpg"
+                src={PKJ_LOGO}
                 alt="PARJONO KERAMIK JAYA"
                 className="h-8 w-auto object-contain"
               />

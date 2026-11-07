@@ -1,5 +1,6 @@
 import { NavigateFn, Page } from '../App'
 import { useAppStore, formatWhatsAppLink } from '../context/AppContext'
+import { PKJ_LOGO } from '../assets/logo'
 
 interface Props {
   navigate: NavigateFn
@@ -33,7 +34,7 @@ export default function Footer({ navigate }: Props) {
           <button onClick={() => navigate('home')} className="mb-5 block text-left group">
             <div className="bg-white p-2.5 rounded-2xl inline-block shadow-md border border-stone-200/50 group-hover:scale-105 transition-transform mb-3">
               <img
-                src="/images/pkj-logo.jpg"
+                src={PKJ_LOGO}
                 alt="PARJONO KERAMIK JAYA"
                 className="h-11 w-auto object-contain"
               />

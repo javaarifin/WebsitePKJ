@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Page, NavigateFn } from "../App"
 import { useAppStore } from "../context/AppContext"
+import { PKJ_LOGO } from "../assets/logo"
 import {
   LayoutDashboard,
   Package,
@@ -170,7 +171,7 @@ export default function AdminLayout({
           <div className="flex items-center gap-2">
             <div className="bg-white p-1 rounded-lg shrink-0">
               <img
-                src="/images/pkj-logo.jpg"
+                src={PKJ_LOGO}
                 alt="PKJ Logo"
                 className="h-6 w-auto object-contain"
               />
@@ -222,7 +223,7 @@ export default function AdminLayout({
             <div className="flex items-center gap-3">
               <div className="bg-white p-1.5 rounded-xl shadow-xs shrink-0">
                 <img
-                  src="/images/pkj-logo.jpg"
+                  src={PKJ_LOGO}
                   alt="PKJ Logo"
                   className="h-8 w-auto object-contain"
                 />

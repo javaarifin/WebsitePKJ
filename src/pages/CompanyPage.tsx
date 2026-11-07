@@ -1,6 +1,7 @@
 import { NavigateFn, Page } from '../App'
 import { IMAGES } from '../data'
 import { useAppStore } from '../context/AppContext'
+import { PKJ_LOGO } from '../assets/logo'
 
 interface Props {
   navigate: NavigateFn
@@ -70,7 +71,7 @@ export default function CompanyPage({ navigate }: Props) {
         <div className="relative z-10 max-w-[1280px] mx-auto px-6 text-center flex flex-col items-center">
           <div className="bg-white p-3 md:p-4 rounded-2xl shadow-xl border border-white/20 inline-block mb-6 hover:scale-105 transition-transform">
             <img
-              src="/images/pkj-logo.jpg"
+              src={PKJ_LOGO}
               alt="PARJONO KERAMIK JAYA Logo"
               className="h-14 md:h-18 w-auto object-contain"
             />
