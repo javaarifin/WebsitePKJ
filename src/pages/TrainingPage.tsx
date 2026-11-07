@@ -42,7 +42,7 @@ export default function TrainingPage({ navigate }: Props) {
       {/* Hero */}
       <section
         style={{ backgroundColor: "#302A26" }}
-        className="py-24 relative overflow-hidden"
+        className="py-16 sm:py-24 relative overflow-hidden"
       >
         <div className="absolute inset-0 opacity-20">
           <img
@@ -52,14 +52,14 @@ export default function TrainingPage({ navigate }: Props) {
           />
           <div className="absolute inset-0 bg-[#302A26]/80" />
         </div>
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 text-center">
-          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 text-center">
+          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
             {isId ? "Perusahaan" : "Company"}
           </p>
-          <h1 className="font-display text-[52px] font-bold text-white mb-4">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             {isId ? "Pelatihan & Kegiatan" : "Training & Activities"}
           </h1>
-          <p className="text-white/60 text-lg max-w-xl mx-auto">
+          <p className="text-white/60 text-base sm:text-lg max-w-xl mx-auto">
             {isId
               ? "Program pelatihan, lokakarya, dan kegiatan yang mencerminkan komitmen kami terhadap pembelajaran berkelanjutan."
               : "Training programs, workshops, and activities reflecting our commitment to continuous growth."}
@@ -72,14 +72,14 @@ export default function TrainingPage({ navigate }: Props) {
         style={{ backgroundColor: "#F5F1E8" }}
         className="sticky top-[72px] z-30 border-b border-[#D8C3A5]/60"
       >
-        <div className="max-w-[1280px] mx-auto px-6 py-4 flex flex-wrap gap-2">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-wrap gap-1.5 sm:gap-2">
           {typeKeys.map((key) => {
             const label = isId ? typeMap[key]?.id : typeMap[key]?.en
             return (
               <button
                 key={key}
                 onClick={() => setActiveKey(key)}
-                className={`px-4 py-2 rounded-lg text-[12px] font-medium transition-all ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs font-medium transition-all ${
                   activeKey === key
                     ? "bg-[#A65F46] text-white shadow-sm"
                     : "bg-white text-[#302A26]/70 border border-[#D8C3A5] hover:border-[#A65F46] hover:text-[#A65F46]"
@@ -93,7 +93,7 @@ export default function TrainingPage({ navigate }: Props) {
       </section>
 
       {/* Activities grid */}
-      <section className="py-[80px] max-w-[1280px] mx-auto px-6">
+      <section className="py-10 sm:py-14 md:py-16 lg:py-[80px] max-w-[1280px] mx-auto px-4 sm:px-6">
         <div className="mb-8">
           <p className="text-[#302A26]/50 text-[14px] leading-relaxed max-w-2xl">
             {isId

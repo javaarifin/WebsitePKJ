@@ -14,7 +14,7 @@ export default function ExhibitionsPage({ navigate }: Props) {
       {/* Hero */}
       <section
         style={{ backgroundColor: "#302A26" }}
-        className="py-24 relative overflow-hidden"
+        className="py-16 sm:py-24 relative overflow-hidden"
       >
         <div className="absolute inset-0 opacity-20">
           <img
@@ -24,14 +24,14 @@ export default function ExhibitionsPage({ navigate }: Props) {
           />
           <div className="absolute inset-0 bg-[#302A26]/80" />
         </div>
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 text-center">
-          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 text-center">
+          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
             {isId ? "Perusahaan" : "Company"}
           </p>
-          <h1 className="font-display text-[52px] font-bold text-white mb-4">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             {isId ? "Pameran & Ekshibisi" : "Exhibitions"}
           </h1>
-          <p className="text-white/60 text-lg max-w-xl mx-auto">
+          <p className="text-white/60 text-base sm:text-lg max-w-xl mx-auto">
             {isId
               ? "Partisipasi aktif kami dalam berbagai pameran kriya di tingkat nasional maupun mancanegara."
               : "Our participation in exhibitions across Indonesia and beyond."}
@@ -40,8 +40,8 @@ export default function ExhibitionsPage({ navigate }: Props) {
       </section>
 
       {/* Intro */}
-      <section className="py-12 max-w-[1280px] mx-auto px-6">
-        <p className="text-[#302A26]/50 text-[14px] leading-relaxed max-w-2xl">
+      <section className="py-8 sm:py-12 max-w-[1280px] mx-auto px-4 sm:px-6">
+        <p className="text-[#302A26]/50 text-[13px] sm:text-[14px] leading-relaxed max-w-2xl">
           {isId
             ? "Dokumentasi dan partisipasi pameran kriya keramik gerabah PARJONO KERAMIK JAYA di tingkat nasional maupun internasional."
             : "Documentation and records of craft exhibitions and trade shows attended by PARJONO KERAMIK JAYA."}
@@ -49,13 +49,13 @@ export default function ExhibitionsPage({ navigate }: Props) {
       </section>
 
       {/* Exhibition timeline */}
-      <section className="pb-[100px] max-w-[1280px] mx-auto px-6">
+      <section className="pb-12 sm:pb-16 md:pb-20 lg:pb-[100px] max-w-[1280px] mx-auto px-4 sm:px-6">
         {exhibitions.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-3xl border border-[#D8C3A5]/40">
-            <p className="font-display text-[24px] text-[#302A26]/40 mb-3">
+          <div className="text-center py-16 sm:py-20 bg-white rounded-3xl border border-[#D8C3A5]/40 px-4">
+            <p className="font-display text-xl sm:text-[24px] text-[#302A26]/40 mb-3">
               {isId ? "Belum ada agenda pameran" : "No exhibitions recorded yet"}
             </p>
-            <p className="text-xs text-[#302A26]/60">
+            <p className="text-xs sm:text-sm text-[#302A26]/60">
               {isId
                 ? "Data pameran dapat ditambahkan melalui panel admin."
                 : "Exhibitions data can be added via the admin dashboard."}
@@ -66,7 +66,7 @@ export default function ExhibitionsPage({ navigate }: Props) {
             {exhibitions.map((ex, idx) => (
               <div
                 key={ex.id}
-                className={`grid lg:grid-cols-2 gap-10 items-center ${
+                className={`grid lg:grid-cols-2 gap-6 sm:gap-10 items-center ${
                   idx % 2 === 1 ? "lg:flex-row-reverse" : ""
                 }`}
               >
@@ -80,16 +80,16 @@ export default function ExhibitionsPage({ navigate }: Props) {
                       />
                     </div>
                     <div>
-                      <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3">
+                      <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-2 sm:mb-3">
                         {ex.year}
                       </p>
-                      <h2 className="font-display text-[32px] font-bold text-[#302A26] mb-2">
+                      <h2 className="font-display text-xl sm:text-2xl md:text-[32px] font-bold text-[#302A26] mb-2">
                         {ex.name}
                       </h2>
-                      <p className="text-[#7A8065] text-[14px] font-medium mb-4">
+                      <p className="text-[#7A8065] text-xs sm:text-[14px] font-medium mb-3 sm:mb-4">
                         {ex.location}
                       </p>
-                      <p className="text-[#302A26]/65 leading-relaxed">
+                      <p className="text-[#302A26]/65 leading-relaxed text-sm sm:text-base">
                         {ex.description}
                       </p>
                     </div>
@@ -97,16 +97,16 @@ export default function ExhibitionsPage({ navigate }: Props) {
                 ) : (
                   <>
                     <div className="order-2 lg:order-1">
-                      <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3">
+                      <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-2 sm:mb-3">
                         {ex.year}
                       </p>
-                      <h2 className="font-display text-[32px] font-bold text-[#302A26] mb-2">
+                      <h2 className="font-display text-xl sm:text-2xl md:text-[32px] font-bold text-[#302A26] mb-2">
                         {ex.name}
                       </h2>
-                      <p className="text-[#7A8065] text-[14px] font-medium mb-4">
+                      <p className="text-[#7A8065] text-xs sm:text-[14px] font-medium mb-3 sm:mb-4">
                         {ex.location}
                       </p>
-                      <p className="text-[#302A26]/65 leading-relaxed">
+                      <p className="text-[#302A26]/65 leading-relaxed text-sm sm:text-base">
                         {ex.description}
                       </p>
                     </div>

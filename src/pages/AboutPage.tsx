@@ -109,19 +109,19 @@ export default function AboutPage({ navigate }: Props) {
   return (
     <div className="pt-[72px]">
       {/* Hero */}
-      <section style={{ backgroundColor: '#302A26' }} className="py-24 relative overflow-hidden">
+      <section style={{ backgroundColor: '#302A26' }} className="py-16 sm:py-24 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <img src={IMAGES.intro} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-[#302A26]/80" />
         </div>
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 text-center">
-          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 text-center">
+          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
             {t.nav.about}
           </p>
-          <h1 className="font-display text-[52px] font-bold text-white mb-4">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             {lang === 'id' ? 'Kisah Perjalanan Kami' : 'Our Story'}
           </h1>
-          <p className="text-white/60 text-lg max-w-xl mx-auto">
+          <p className="text-white/60 text-base sm:text-lg max-w-xl mx-auto">
             {lang === 'id'
               ? 'Dedikasi kriya tanah liat dan gerabah autentik sejak 2003 di Yogyakarta.'
               : 'A journey of craftsmanship and dedication since 2003.'}
@@ -130,8 +130,8 @@ export default function AboutPage({ navigate }: Props) {
       </section>
 
       {/* Company Story */}
-      <section className="py-[100px] max-w-[1280px] mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-[100px] max-w-[1280px] mx-auto px-4 sm:px-6">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div>
             <div className="bg-white p-2.5 rounded-2xl border border-stone-200/80 inline-block shadow-xs mb-5">
               <img
@@ -140,10 +140,10 @@ export default function AboutPage({ navigate }: Props) {
                 className="h-10 w-auto object-contain"
               />
             </div>
-            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
               {lang === 'id' ? 'Tentang Perusahaan' : 'Company Story'}
             </p>
-            <h2 className="font-display text-[40px] font-bold text-[#302A26] mb-6">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-4 sm:mb-6">
               {lang === 'id' ? 'Berakar di Bantul, Yogyakarta' : 'Rooted in Yogyakarta'}
             </h2>
             <p className="text-[#7A8065] text-[13px] font-semibold tracking-wide mb-4">
@@ -178,32 +178,32 @@ export default function AboutPage({ navigate }: Props) {
       </section>
 
       {/* Company Journey Timeline */}
-      <section style={{ backgroundColor: '#F5F1E8' }} className="py-[100px] border-y border-[#D8C3A5]/40">
-        <div className="max-w-[800px] mx-auto px-6">
-          <div className="text-center mb-14">
-            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3">
+      <section style={{ backgroundColor: '#F5F1E8' }} className="py-12 sm:py-16 md:py-20 lg:py-[100px] border-y border-[#D8C3A5]/40">
+        <div className="max-w-[800px] mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-14">
+            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-2 sm:mb-3">
               {lang === 'id' ? 'Tonggak Sejarah' : 'Our History'}
             </p>
-            <h2 className="font-display text-[40px] font-bold text-[#302A26]">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26]">
               {lang === 'id' ? 'Jejak Perjalanan Usaha' : 'Company Journey'}
             </h2>
           </div>
           <div className="relative">
             <div className="absolute left-8 top-0 bottom-0 w-px bg-[#D8C3A5]" />
-            <div className="space-y-10">
+            <div className="space-y-8 sm:space-y-10">
               {timeline.map((item, i) => (
-                <div key={i} className="flex gap-8 items-start pl-0">
-                  <div className="relative flex-shrink-0 w-16 text-right">
-                    <span className="font-display font-bold text-[#A65F46] text-[15px]">
+                <div key={i} className="flex gap-4 sm:gap-8 items-start pl-0">
+                  <div className="relative flex-shrink-0 w-14 sm:w-16 text-right">
+                    <span className="font-display font-bold text-[#A65F46] text-[14px] sm:text-[15px]">
                       {item.year}
                     </span>
-                    <div className="absolute right-[-33px] top-1.5 w-4 h-4 rounded-full bg-[#A65F46] border-4 border-[#F5F1E8]" />
+                    <div className="absolute right-[-25px] sm:right-[-33px] top-1.5 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#A65F46] border-4 border-[#F5F1E8]" />
                   </div>
-                  <div className="pb-4">
-                    <h3 className="font-display font-semibold text-[20px] text-[#302A26] mb-2">
+                  <div className="pb-4 pl-3 sm:pl-0">
+                    <h3 className="font-display font-semibold text-lg sm:text-[20px] text-[#302A26] mb-1 sm:mb-2">
                       {item.title}
                     </h3>
-                    <p className="text-[#302A26]/60 leading-relaxed text-[14px]">{item.desc}</p>
+                    <p className="text-[#302A26]/60 leading-relaxed text-[13px] sm:text-[14px]">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -213,8 +213,8 @@ export default function AboutPage({ navigate }: Props) {
       </section>
 
       {/* Craftsmanship */}
-      <section className="py-[100px] max-w-[1280px] mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-[100px] max-w-[1280px] mx-auto px-4 sm:px-6">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="rounded-2xl overflow-hidden aspect-[4/3] bg-[#D8C3A5] shadow-xs">
             <img
               src={IMAGES.craftsman2}
@@ -223,23 +223,23 @@ export default function AboutPage({ navigate }: Props) {
             />
           </div>
           <div>
-            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
               {lang === 'id' ? 'Keahlian Tangan' : 'Craftsmanship'}
             </p>
-            <h2 className="font-display text-[40px] font-bold text-[#302A26] mb-6">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-4 sm:mb-6">
               {lang === 'id' ? 'Sentuhan Tangan di Setiap Karya' : 'Made by Hand, Every Time'}
             </h2>
-            <p className="text-[#302A26]/70 leading-relaxed mb-5">
+            <p className="text-[#302A26]/70 leading-relaxed mb-4 sm:mb-5 text-sm sm:text-base">
               {lang === 'id'
                 ? 'Setiap produk yang meninggalkan bengkel kami dibentuk secara manual dengan tangan. Kami tidak mengandalkan cetakan massal mesin otomatis — sebaliknya, kami merawat keahlian putar tanah liat yang telah diasah turun-temurun di Yogyakarta.'
                 : 'Every product that leaves our workshop is shaped by hand. We do not rely on mass-production methods — instead, we apply traditional clay-forming techniques that have been practised in Yogyakarta for generations.'}
             </p>
-            <p className="text-[#302A26]/70 leading-relaxed mb-5">
+            <p className="text-[#302A26]/70 leading-relaxed mb-4 sm:mb-5 text-sm sm:text-base">
               {lang === 'id'
                 ? 'Hal ini membuat setiap pot dan gerabah memiliki variasi alami dan jiwa tersendiri yang hanya dimiliki kriya autentik. Perbedaan halus antar produk bukanlah cacat, melainkan bukti otentik kerja tangan perajin.'
                 : 'This means each piece carries the natural variation and character that only genuine handcraft can provide. Minor differences between pieces are not imperfections — they are the mark of authenticity.'}
             </p>
-            <p className="text-[#302A26]/70 leading-relaxed">
+            <p className="text-[#302A26]/70 leading-relaxed text-sm sm:text-base">
               {lang === 'id'
                 ? 'Mulai dari seleksi tanah liat lempung, pembentukan, pengeringan teduh, pembakaran kayu bertahap, hingga inspeksi akhir, semua proses dikerjakan dengan penuh dedikasi.'
                 : 'From raw clay selection to final inspection, every step is managed with care and attention to maintain the standards our customers expect.'}
@@ -249,26 +249,26 @@ export default function AboutPage({ navigate }: Props) {
       </section>
 
       {/* Our Values */}
-      <section style={{ backgroundColor: '#D8C3A5' }} className="py-[100px]">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="text-center mb-14">
-            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3">
+      <section style={{ backgroundColor: '#D8C3A5' }} className="py-12 sm:py-16 md:py-20 lg:py-[100px]">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-14">
+            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-2 sm:mb-3">
               {lang === 'id' ? 'Nilai Pokok' : 'What We Believe'}
             </p>
-            <h2 className="font-display text-[40px] font-bold text-[#302A26]">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26]">
               {lang === 'id' ? 'Nilai-Nilai Kriya Kami' : 'Our Values'}
             </h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {values.map(v => (
-              <div key={v.title} className="bg-white rounded-2xl p-8 shadow-xs">
-                <div className="w-10 h-10 rounded-full bg-[#A65F46]/10 flex items-center justify-center mb-5">
+              <div key={v.title} className="bg-white rounded-2xl p-6 sm:p-8 shadow-xs">
+                <div className="w-10 h-10 rounded-full bg-[#A65F46]/10 flex items-center justify-center mb-4 sm:mb-5">
                   <div className="w-3 h-3 rounded-full bg-[#A65F46]" />
                 </div>
-                <h3 className="font-display font-semibold text-[20px] text-[#302A26] mb-3">
+                <h3 className="font-display font-semibold text-lg sm:text-[20px] text-[#302A26] mb-2 sm:mb-3">
                   {v.title}
                 </h3>
-                <p className="text-[#302A26]/60 text-[14px] leading-relaxed">{v.desc}</p>
+                <p className="text-[#302A26]/60 text-[13px] sm:text-[14px] leading-relaxed">{v.desc}</p>
               </div>
             ))}
           </div>
@@ -276,28 +276,28 @@ export default function AboutPage({ navigate }: Props) {
       </section>
 
       {/* Export Experience */}
-      <section className="py-[100px] max-w-[1280px] mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-[100px] max-w-[1280px] mx-auto px-4 sm:px-6">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div>
-            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
               {lang === 'id' ? 'Jangkauan Ekspor' : 'International Reach'}
             </p>
-            <h2 className="font-display text-[40px] font-bold text-[#302A26] mb-6">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-4 sm:mb-6">
               {t.nav.exportExperience}
             </h2>
-            <p className="text-[#302A26]/70 leading-relaxed mb-5">
+            <p className="text-[#302A26]/70 leading-relaxed mb-4 sm:mb-5 text-sm sm:text-base">
               {lang === 'id'
                 ? 'PARJONO KERAMIK JAYA memiliki rekam jejak dalam melayani pengiriman pesanan ke pasar internasional. Produk kami telah dikirimkan ke berbagai pembeli luar negeri dengan kepatuhan standar kemasan pelindung dan sertifikasi mutu.'
                 : 'PARJONO KERAMIK JAYA has experience serving international markets. Our products have been prepared and shipped to buyers outside Indonesia, reflecting our capability to meet international quality and packaging requirements.'}
             </p>
-            <p className="text-[#302A26]/70 leading-relaxed mb-8">
+            <p className="text-[#302A26]/70 leading-relaxed mb-6 sm:mb-8 text-sm sm:text-base">
               {lang === 'id'
                 ? 'Kami menyambut hangat komunikasi dari para pembeli grosir, importir, dan distributor mancanegara yang berminat memasarkan kerajinan terakota asli Indonesia.'
                 : 'We welcome inquiries from international buyers, distributors, and retail partners interested in authentic Indonesian terracotta craft.'}
             </p>
             <button
               onClick={() => navigate('export')}
-              className="inline-flex items-center gap-2 bg-[#A65F46] text-white font-semibold px-7 py-3.5 rounded-xl hover:bg-[#8f5239] transition-colors shadow-xs"
+              className="inline-flex items-center gap-2 bg-[#A65F46] text-white font-semibold px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl hover:bg-[#8f5239] transition-colors shadow-xs text-sm sm:text-base"
             >
               <span>{lang === 'id' ? 'Pelajari Pengalaman Ekspor' : 'Learn About Our Export Experience'}</span>
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -316,19 +316,19 @@ export default function AboutPage({ navigate }: Props) {
       </section>
 
       {/* CTA */}
-      <section style={{ backgroundColor: '#302A26' }} className="py-[80px]">
-        <div className="max-w-[1280px] mx-auto px-6 text-center">
-          <h2 className="font-display text-[36px] font-bold text-white mb-4">
+      <section style={{ backgroundColor: '#302A26' }} className="py-12 sm:py-16 md:py-20">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 text-center">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
             {lang === 'id' ? 'Siap Berkolaborasi Bersama Kami?' : 'Ready to work with us?'}
           </h2>
-          <p className="text-white/60 mb-8 max-w-md mx-auto">
+          <p className="text-white/60 mb-6 sm:mb-8 max-w-md mx-auto text-sm sm:text-base">
             {lang === 'id'
               ? 'Hubungi kami untuk mendiskusikan pesanan kustom, katalog harga grosir, atau peluang kerja sama ekspor.'
               : 'Get in touch to discuss your requirements, products, or business partnership opportunities.'}
           </p>
           <button
             onClick={() => navigate('contact')}
-            className="bg-[#A65F46] text-white font-semibold px-8 py-4 rounded-xl hover:bg-[#8f5239] transition-colors shadow-xs"
+            className="w-full sm:w-auto bg-[#A65F46] text-white font-semibold px-8 py-3.5 sm:py-4 rounded-xl hover:bg-[#8f5239] transition-colors shadow-xs text-sm sm:text-base"
           >
             {t.nav.contactUs}
           </button>

@@ -28,7 +28,7 @@ export default function Footer({ navigate }: Props) {
 
   return (
     <footer style={{ backgroundColor: '#302A26' }} className="text-white/70">
-      <div className="max-w-[1280px] mx-auto px-6 pt-16 pb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-8 sm:pb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
         {/* Brand */}
         <div className="lg:col-span-1">
           <button onClick={() => navigate('home')} className="mb-5 block text-left group">
@@ -155,7 +155,7 @@ export default function Footer({ navigate }: Props) {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="max-w-[1280px] mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           <p className="text-[12px] text-white/35">{t.footer.rights}</p>
           <div className="flex items-center gap-3 text-[12px] text-white/30">
             <span>{t.footer.madeIn}</span>

@@ -25,11 +25,11 @@ export default function ExportPage({ navigate }: Props) {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#302A26]/90 to-[#302A26]/60" />
         </div>
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6">
-          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6">
+          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
             {isId ? "Internasional" : "International"}
           </p>
-          <h1 className="font-display text-[52px] md:text-[64px] font-bold text-white mb-4 leading-[1.1]">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-white mb-4 leading-[1.15]">
             {isId ? (
               <>
                 Dari Yogyakarta
@@ -44,7 +44,7 @@ export default function ExportPage({ navigate }: Props) {
               </>
             )}
           </h1>
-          <p className="text-white/60 text-lg max-w-xl">
+          <p className="text-white/60 text-base sm:text-lg max-w-xl">
             {isId
               ? "Dengan pengalaman melayani pasar mancanegara, PARJONO KERAMIK JAYA membawa keindahan kerajinan tangan Indonesia melampaui batas Yogyakarta."
               : "With experience serving international markets, PARJONO KERAMIK JAYA brings Indonesian craftsmanship beyond Yogyakarta."}
@@ -53,28 +53,28 @@ export default function ExportPage({ navigate }: Props) {
       </section>
 
       {/* Export Story */}
-      <section className="py-[100px] max-w-[1280px] mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-[100px] max-w-[1280px] mx-auto px-4 sm:px-6">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div>
-            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
               {isId ? "Kisah Ekspor Kami" : "Our Export Story"}
             </p>
-            <h2 className="font-display text-[40px] font-bold text-[#302A26] mb-6">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-4 sm:mb-6">
               {isId
                 ? "Membawa Kriya Indonesia ke Pasar Internasional"
                 : "Bringing Indonesian Craft to International Markets"}
             </h2>
-            <p className="text-[#302A26]/70 leading-relaxed mb-5">
+            <p className="text-[#302A26]/70 leading-relaxed mb-4 sm:mb-5 text-sm sm:text-base">
               {isId
                 ? "PARJONO KERAMIK JAYA telah mengembangkan pengalaman berharga dalam melayani pembeli dan pasar internasional. Perjalanan ekspor kami mencerminkan dedikasi bertahun-tahun — membangun kualitas produk standar ekspor, menyempurnakan proses pengemasan protektif, dan membina kemitraan terpercaya dengan buyer global."
                 : "PARJONO KERAMIK JAYA has developed experience in serving international buyers and markets. Our export journey reflects years of preparation — building product quality, refining packaging processes, and developing relationships with international partners."}
             </p>
-            <p className="text-[#302A26]/70 leading-relaxed mb-5">
+            <p className="text-[#302A26]/70 leading-relaxed mb-4 sm:mb-5 text-sm sm:text-base">
               {isId
                 ? "Kami memastikan setiap produk memenuhi standar internasional, mulai dari konsistensi pembakaran gerabah, kehalusan finishing, hingga pengemasan peti kayu kokoh untuk pengiriman kargo jarak jauh yang aman."
                 : "We have worked to ensure our products meet the requirements of international buyers, from quality standards and consistent production to secure packaging for long-distance shipping."}
             </p>
-            <p className="text-[#302A26]/70 leading-relaxed">
+            <p className="text-[#302A26]/70 leading-relaxed text-sm sm:text-base">
               {isId
                 ? "Pengalaman ekspor ini membuktikan kesiapan kami melayani mitra luar negeri yang menghargai keaslian, nilai seni, dan sentuhan tangan terampil dari Yogyakarta."
                 : "Our international experience demonstrates our readiness to serve buyers outside Indonesia who value authentic, handcrafted terracotta and clay products from Yogyakarta."}
@@ -91,13 +91,13 @@ export default function ExportPage({ navigate }: Props) {
       </section>
 
       {/* What we export */}
-      <section style={{ backgroundColor: "#F5F1E8" }} className="py-[100px]">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="text-center mb-14">
-            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3">
+      <section style={{ backgroundColor: "#F5F1E8" }} className="py-12 sm:py-16 md:py-20 lg:py-[100px]">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-14">
+            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-2 sm:mb-3">
               {isId ? "Penawaran Kami" : "Our Offering"}
             </p>
-            <h2 className="font-display text-[40px] font-bold text-[#302A26] mb-3">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-3">
               {isId ? "Produk Ekspor Unggulan" : "What We Export"}
             </h2>
           </div>
@@ -152,8 +152,8 @@ export default function ExportPage({ navigate }: Props) {
       </section>
 
       {/* Export capabilities */}
-      <section className="py-[100px] max-w-[1280px] mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-[100px] max-w-[1280px] mx-auto px-4 sm:px-6">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="rounded-2xl overflow-hidden aspect-[4/3] bg-[#D8C3A5]">
             <img
               src={IMAGES.export2}
@@ -162,10 +162,10 @@ export default function ExportPage({ navigate }: Props) {
             />
           </div>
           <div>
-            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+            <p className="text-[#A65F46] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
               {isId ? "Kapabilitas Kami" : "Our Capabilities"}
             </p>
-            <h2 className="font-display text-[36px] font-bold text-[#302A26] mb-6">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-4 sm:mb-6">
               {isId
                 ? "Siap Memenuhi Pesanan Ekspor"
                 : "Ready for International Orders"}
@@ -223,12 +223,12 @@ export default function ExportPage({ navigate }: Props) {
       </section>
 
       {/* Market note */}
-      <section style={{ backgroundColor: "#302A26" }} className="py-[80px]">
-        <div className="max-w-[1280px] mx-auto px-6 text-center">
-          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+      <section style={{ backgroundColor: "#302A26" }} className="py-12 sm:py-16 md:py-20">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 text-center">
+          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
             {isId ? "Jangkauan Internasional" : "International Reach"}
           </p>
-          <h2 className="font-display text-[36px] font-bold text-white mb-5 leading-tight">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-5 leading-tight">
             {isId ? (
               <>
                 PARJONO KERAMIK JAYA berpengalaman
@@ -243,14 +243,14 @@ export default function ExportPage({ navigate }: Props) {
               </>
             )}
           </h2>
-          <p className="text-white/55 max-w-lg mx-auto mb-8 leading-relaxed">
+          <p className="text-white/55 max-w-lg mx-auto mb-6 sm:mb-8 text-sm sm:text-base leading-relaxed">
             {isId
               ? "Kami menyambut terbuka kerjasama dengan pembeli internasional, distributor, arsitek, dan retail. Hubungi tim kami untuk konsultasi dan penawaran ekspor."
               : "We welcome inquiries from international buyers, distributors, and retail partners. Please contact us to discuss your requirements."}
           </p>
           <button
             onClick={() => navigate("contact")}
-            className="bg-[#A65F46] text-white font-semibold px-8 py-4 rounded-lg hover:bg-[#8f5239] transition-colors"
+            className="w-full sm:w-auto bg-[#A65F46] text-white font-semibold px-8 py-3.5 sm:py-4 rounded-xl hover:bg-[#8f5239] transition-colors text-sm sm:text-base"
           >
             {isId ? "Konsultasi & Penawaran Ekspor" : "Contact for Export Inquiries"}
           </button>

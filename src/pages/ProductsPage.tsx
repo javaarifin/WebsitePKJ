@@ -44,7 +44,7 @@ export default function ProductsPage({ navigate }: Props) {
   return (
     <div className="pt-[72px]">
       {/* Hero */}
-      <section style={{ backgroundColor: '#302A26' }} className="py-24 relative overflow-hidden">
+      <section style={{ backgroundColor: '#302A26' }} className="py-16 sm:py-24 relative overflow-hidden">
         <div className="absolute inset-0 opacity-15">
           <img
             src="https://images.unsplash.com/photo-1536266305399-b367feb671f9?w=1400&h=600&fit=crop&auto=format"
@@ -53,14 +53,14 @@ export default function ProductsPage({ navigate }: Props) {
           />
           <div className="absolute inset-0 bg-[#302A26]/80" />
         </div>
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 text-center">
-          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 text-center">
+          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
             {t.nav.products}
           </p>
-          <h1 className="font-display text-[52px] font-bold text-white mb-4">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             {t.products.title}
           </h1>
-          <p className="text-white/60 text-lg max-w-xl mx-auto">
+          <p className="text-white/60 text-base sm:text-lg max-w-xl mx-auto">
             {t.products.subtitle}
           </p>
         </div>
@@ -71,14 +71,14 @@ export default function ProductsPage({ navigate }: Props) {
         style={{ backgroundColor: '#F5F1E8' }}
         className="sticky top-[72px] z-30 border-b border-[#D8C3A5]/60 shadow-xs"
       >
-        <div className="max-w-[1280px] mx-auto px-6 py-4 flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-col md:flex-row gap-3 sm:gap-4 items-stretch md:items-center justify-between">
           {/* Categories */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 rounded-xl text-[12px] font-medium transition-all ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-medium transition-all ${
                   activeCategory === cat
                     ? 'bg-[#A65F46] text-white shadow-xs'
                     : 'bg-white text-[#302A26]/70 border border-[#D8C3A5] hover:border-[#A65F46] hover:text-[#A65F46]'
@@ -103,10 +103,10 @@ export default function ProductsPage({ navigate }: Props) {
       </section>
 
       {/* Products grid */}
-      <section className="py-[80px] max-w-[1280px] mx-auto px-6">
+      <section className="py-10 sm:py-14 md:py-16 lg:py-[80px] max-w-[1280px] mx-auto px-4 sm:px-6">
         {filtered.length === 0 ? (
-          <div className="text-center py-24 bg-white rounded-3xl border border-[#D8C3A5]/40">
-            <p className="font-display text-[22px] text-[#302A26]/60 mb-3">
+          <div className="text-center py-16 sm:py-24 bg-white rounded-3xl border border-[#D8C3A5]/40 px-4">
+            <p className="font-display text-lg sm:text-[22px] text-[#302A26]/60 mb-3">
               {t.products.noProducts}
             </p>
             <button
@@ -120,7 +120,7 @@ export default function ProductsPage({ navigate }: Props) {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {filtered.map(product => (
               <div
                 key={product.id}

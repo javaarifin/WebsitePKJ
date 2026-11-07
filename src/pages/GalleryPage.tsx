@@ -47,16 +47,16 @@ export default function GalleryPage({ navigate }: Props) {
       {/* Hero */}
       <section
         style={{ backgroundColor: "#302A26" }}
-        className="py-24 relative overflow-hidden"
+        className="py-16 sm:py-24 relative overflow-hidden"
       >
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 text-center">
-          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 text-center">
+          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
             {isId ? "Arsip Visual" : "Visual Archive"}
           </p>
-          <h1 className="font-display text-[52px] font-bold text-white mb-4">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             {isId ? "Galeri Foto" : "Gallery"}
           </h1>
-          <p className="text-white/60 text-lg max-w-xl mx-auto">
+          <p className="text-white/60 text-base sm:text-lg max-w-xl mx-auto">
             {isId
               ? "Potret mendalam produk kriya, bengkel kerja, keahlian tangan, dan aktivitas PARJONO KERAMIK JAYA."
               : "A closer look at our products, workshop, craftsmanship, and activities."}
@@ -69,14 +69,14 @@ export default function GalleryPage({ navigate }: Props) {
         style={{ backgroundColor: "#F5F1E8" }}
         className="sticky top-[72px] z-30 border-b border-[#D8C3A5]/60"
       >
-        <div className="max-w-[1280px] mx-auto px-6 py-4 flex flex-wrap gap-2">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-wrap gap-1.5 sm:gap-2">
           {catKeys.map((cat) => {
             const label = isId ? catMap[cat]?.id : catMap[cat]?.en
             return (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 rounded-lg text-[12px] font-medium transition-all ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs font-medium transition-all ${
                   activeCategory === cat
                     ? "bg-[#A65F46] text-white shadow-sm"
                     : "bg-white text-[#302A26]/70 border border-[#D8C3A5] hover:border-[#A65F46] hover:text-[#A65F46]"
@@ -90,10 +90,10 @@ export default function GalleryPage({ navigate }: Props) {
       </section>
 
       {/* Masonry-style grid */}
-      <section className="py-[80px] max-w-[1280px] mx-auto px-6">
+      <section className="py-10 sm:py-14 md:py-16 lg:py-[80px] max-w-[1280px] mx-auto px-4 sm:px-6">
         {filtered.length === 0 ? (
-          <div className="text-center py-24">
-            <p className="font-display text-[24px] text-[#302A26]/40 mb-3">
+          <div className="text-center py-20 sm:py-24">
+            <p className="font-display text-xl sm:text-[24px] text-[#302A26]/40 mb-3">
               {isId ? "Belum ada foto dalam kategori ini" : "No photos in this category"}
             </p>
             <button
@@ -104,7 +104,7 @@ export default function GalleryPage({ navigate }: Props) {
             </button>
           </div>
         ) : (
-          <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+          <div className="columns-2 md:columns-3 lg:columns-4 gap-3 sm:gap-4 space-y-3 sm:space-y-4">
             {filtered.map((img, idx) => (
               <div
                 key={img.id}

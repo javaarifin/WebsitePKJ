@@ -76,13 +76,13 @@ export default function CompanyPage({ navigate }: Props) {
               className="h-14 md:h-18 w-auto object-contain"
             />
           </div>
-          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
             {t.nav.company}
           </p>
-          <h1 className="font-display text-[46px] md:text-[56px] font-bold text-white mb-4">
+          <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
             PARJONO KERAMIK JAYA
           </h1>
-          <p className="text-white/60 text-lg max-w-xl mx-auto">
+          <p className="text-white/60 text-base sm:text-lg max-w-xl mx-auto">
             {lang === 'id'
               ? 'Dibuat dengan tangan di Yogyakarta. Berpengalaman sejak 2003. Siap untuk dunia.'
               : 'Handcrafted in Yogyakarta. Experienced since 2003. Ready for the world.'}
@@ -91,12 +91,12 @@ export default function CompanyPage({ navigate }: Props) {
       </section>
 
       {/* Navigation cards */}
-      <section className="py-[100px] max-w-[1280px] mx-auto px-6">
-        <div className="text-center mb-14">
-          <h2 className="font-display text-[36px] font-bold text-[#302A26] mb-3">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-[100px] max-w-[1280px] mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10 sm:mb-14">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-3">
             {lang === 'id' ? 'Mengenal Perusahaan Lebih Dekat' : 'Explore the Company'}
           </h2>
-          <p className="text-[#302A26]/60 max-w-lg mx-auto">
+          <p className="text-[#302A26]/60 text-sm sm:text-base max-w-lg mx-auto">
             {lang === 'id'
               ? 'Pilih halaman di bawah untuk mengetahui profil, pengalaman ekspor, prestasi, dan aktivitas kami.'
               : 'Discover more about our company profile, export experience, achievements, and activities.'}
@@ -141,25 +141,25 @@ export default function CompanyPage({ navigate }: Props) {
       </section>
 
       {/* Overview stats band */}
-      <section style={{ backgroundColor: '#D8C3A5' }} className="py-16">
-        <div className="max-w-[1280px] mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+      <section style={{ backgroundColor: '#D8C3A5' }} className="py-10 sm:py-14">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 text-center">
           <div>
-            <p className="font-display text-[40px] font-bold text-[#302A26] mb-1">2003</p>
-            <p className="text-[#302A26]/70 text-sm font-semibold">{t.home.statEstablished}</p>
+            <p className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-1">2003</p>
+            <p className="text-[#302A26]/70 text-xs sm:text-sm font-semibold">{t.home.statEstablished}</p>
           </div>
           <div>
-            <p className="font-display text-[40px] font-bold text-[#302A26] mb-1">20+</p>
-            <p className="text-[#302A26]/70 text-sm font-semibold">{t.home.statExperience}</p>
+            <p className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-1">20+</p>
+            <p className="text-[#302A26]/70 text-xs sm:text-sm font-semibold">{t.home.statExperience}</p>
           </div>
           <div>
-            <p className="font-display text-[40px] font-bold text-[#302A26] mb-1">Bantul</p>
-            <p className="text-[#302A26]/70 text-sm font-semibold">
+            <p className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-1">Bantul</p>
+            <p className="text-[#302A26]/70 text-xs sm:text-sm font-semibold">
               {lang === 'id' ? 'Pusat Kriya Gerabah' : 'Clay Pottery Heritage'}
             </p>
           </div>
           <div>
-            <p className="font-display text-[40px] font-bold text-[#302A26] mb-1">Global</p>
-            <p className="text-[#302A26]/70 text-sm font-semibold">{t.home.statExport}</p>
+            <p className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-1">Global</p>
+            <p className="text-[#302A26]/70 text-xs sm:text-sm font-semibold">{t.home.statExport}</p>
           </div>
         </div>
       </section>

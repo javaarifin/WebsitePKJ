@@ -150,29 +150,29 @@ export default function ContactPage({ navigate }: Props) {
   return (
     <div className="pt-[72px]">
       {/* Hero */}
-      <section style={{ backgroundColor: '#302A26' }} className="py-24 relative overflow-hidden">
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 text-center">
-          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+      <section style={{ backgroundColor: '#302A26' }} className="py-16 sm:py-24 relative overflow-hidden">
+        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 text-center">
+          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
             {t.contact.tag}
           </p>
-          <h1 className="font-display text-[52px] font-bold text-white mb-4">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             {t.contact.title}
           </h1>
-          <p className="text-white/60 text-lg max-w-xl mx-auto">
+          <p className="text-white/60 text-base sm:text-lg max-w-xl mx-auto">
             {t.contact.subtitle}
           </p>
         </div>
       </section>
 
       {/* Main content */}
-      <section className="py-[100px] max-w-[1280px] mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-[100px] max-w-[1280px] mx-auto px-4 sm:px-6">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
           {/* Left — info */}
           <div>
-            <h2 className="font-display text-[36px] font-bold text-[#302A26] mb-3">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-3">
               {t.contact.infoTitle}
             </h2>
-            <p className="text-[#302A26]/60 leading-relaxed mb-10">
+            <p className="text-[#302A26]/60 leading-relaxed mb-8 sm:mb-10 text-sm sm:text-base">
               {lang === 'id'
                 ? 'Baik Anda pembeli retail, grosir, desainer interior, atau mitra eksportir mancanegara, kami siap melayani kebutuhan gerabah dan terakota Anda.'
                 : "Whether you're a buyer, distributor, retailer, or simply interested in our products, we'd love to hear from you. Our team is ready to respond to your inquiry."}
@@ -315,7 +315,7 @@ export default function ContactPage({ navigate }: Props) {
 
           {/* Right — form */}
           <div>
-            <div className="bg-white rounded-3xl p-8 shadow-sm border border-[#D8C3A5]/40">
+            <div className="bg-white rounded-3xl p-5 sm:p-8 shadow-sm border border-[#D8C3A5]/40">
               {submitted ? (
                 <div className="text-center py-12">
                   <div className="w-16 h-16 bg-[#A65F46]/10 rounded-full flex items-center justify-center mx-auto mb-5 text-[#A65F46]">

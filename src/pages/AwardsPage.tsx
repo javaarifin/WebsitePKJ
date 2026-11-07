@@ -14,16 +14,16 @@ export default function AwardsPage({ navigate }: Props) {
       {/* Hero */}
       <section
         style={{ backgroundColor: "#302A26" }}
-        className="py-24 relative overflow-hidden"
+        className="py-16 sm:py-24 relative overflow-hidden"
       >
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 text-center">
-          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
+        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 text-center">
+          <p className="text-[#D8C3A5] text-[11px] font-semibold tracking-[0.3em] uppercase mb-3 sm:mb-4">
             {isId ? "Penghargaan" : "Recognition"}
           </p>
-          <h1 className="font-display text-[52px] font-bold text-white mb-4">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             {isId ? "Penghargaan & Prestasi" : "Awards & Achievements"}
           </h1>
-          <p className="text-white/60 text-lg max-w-xl mx-auto">
+          <p className="text-white/60 text-base sm:text-lg max-w-xl mx-auto">
             {isId
               ? "Apresiasi dan pengakuan atas dedikasi bertahun-tahun dalam menjaga mutu kriya dan tradisi gerabah Indonesia."
               : "Recognition earned through years of dedication to handcraft quality and Indonesian craft tradition."}
@@ -32,13 +32,13 @@ export default function AwardsPage({ navigate }: Props) {
       </section>
 
       {/* Awards grid */}
-      <section className="py-[100px] max-w-[1280px] mx-auto px-6">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-[100px] max-w-[1280px] mx-auto px-4 sm:px-6">
         {awards.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="font-display text-[24px] text-[#302A26]/40 mb-3">
+          <div className="text-center py-16 sm:py-20">
+            <p className="font-display text-xl sm:text-[24px] text-[#302A26]/40 mb-3">
               {isId ? "Belum ada data penghargaan" : "No awards recorded yet"}
             </p>
-            <p className="text-xs text-[#302A26]/60">
+            <p className="text-xs sm:text-sm text-[#302A26]/60">
               {isId
                 ? "Data penghargaan dapat dikelola melalui dashboard admin."
                 : "Awards records can be managed via the admin dashboard."}
@@ -83,19 +83,19 @@ export default function AwardsPage({ navigate }: Props) {
       </section>
 
       {/* Commitment section */}
-      <section style={{ backgroundColor: "#D8C3A5" }} className="py-[80px]">
-        <div className="max-w-[1280px] mx-auto px-6 text-center">
-          <h2 className="font-display text-[36px] font-bold text-[#302A26] mb-5">
+      <section style={{ backgroundColor: "#D8C3A5" }} className="py-12 sm:py-16 md:py-20">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 text-center">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#302A26] mb-4 sm:mb-5">
             {isId ? "Komitmen Terhadap Mutu" : "Committed to Quality"}
           </h2>
-          <p className="text-[#302A26]/65 max-w-xl mx-auto mb-8 leading-relaxed">
+          <p className="text-[#302A26]/65 max-w-xl mx-auto mb-6 sm:mb-8 text-sm sm:text-base leading-relaxed">
             {isId
               ? "Setiap apresiasi yang diraih memotivasi kami untuk terus menjaga mutu karya kriya gerabah dan melestarikan warisan terakota Kasongan ke panggung global."
               : "Our recognition reflects our ongoing commitment to quality craftsmanship and the promotion of Indonesian clay and terracotta traditions."}
           </p>
           <button
             onClick={() => navigate("contact")}
-            className="bg-[#A65F46] text-white font-semibold px-8 py-3.5 rounded-lg hover:bg-[#8f5239] transition-colors"
+            className="w-full sm:w-auto bg-[#A65F46] text-white font-semibold px-8 py-3.5 sm:py-4 rounded-xl hover:bg-[#8f5239] transition-colors text-sm sm:text-base"
           >
             {isId ? "Hubungi & Kerjasama" : "Work With Us"}
           </button>

@@ -57,7 +57,7 @@ export default function NewsDetailPage({ navigate, newsId }: Props) {
       </div>
 
       {/* Article */}
-      <article className="max-w-[800px] mx-auto px-6 py-10">
+      <article className="max-w-[800px] mx-auto px-4 sm:px-6 py-6 sm:py-10">
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-4">
             <span className="bg-[#A65F46]/10 text-[#A65F46] text-[11px] font-semibold px-3 py-1.5 rounded-full tracking-wide">
@@ -67,7 +67,7 @@ export default function NewsDetailPage({ navigate, newsId }: Props) {
               {article.date}
             </span>
           </div>
-          <h1 className="font-display text-[40px] md:text-[48px] font-bold text-[#302A26] leading-[1.15] mb-6">
+          <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-[48px] font-bold text-[#302A26] leading-[1.2] mb-4 sm:mb-6">
             {article.title}
           </h1>
         </div>
@@ -95,27 +95,27 @@ export default function NewsDetailPage({ navigate, newsId }: Props) {
 
         {/* CTA */}
         <div
-          className="mt-12 p-8 rounded-2xl"
+          className="mt-10 sm:mt-12 p-6 sm:p-8 rounded-2xl"
           style={{ backgroundColor: "#D8C3A5" }}
         >
-          <h3 className="font-display text-[24px] font-bold text-[#302A26] mb-3">
+          <h3 className="font-display text-xl sm:text-[24px] font-bold text-[#302A26] mb-3">
             {isId ? "Tertarik dengan Kerajinan Kami?" : "Contact PARJONO KERAMIK JAYA"}
           </h3>
-          <p className="text-[#302A26]/75 mb-6 leading-relaxed">
+          <p className="text-[#302A26]/75 mb-6 text-sm sm:text-base leading-relaxed">
             {isId
               ? "Tertarik dengan produk gerabah kami atau ingin berkolaborasi untuk proyek kriya? Hubungi kami sekarang."
               : "Interested in our handcrafted products or want to discuss custom clay projects? Get in touch with us."}
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={() => navigate("contact")}
-              className="bg-[#A65F46] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#8f5239] transition-colors"
+              className="w-full sm:w-auto text-center bg-[#A65F46] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#8f5239] transition-colors text-sm"
             >
               {t.nav.contact}
             </button>
             <button
               onClick={() => navigate("products")}
-              className="border-2 border-[#302A26]/30 text-[#302A26] font-semibold px-6 py-3 rounded-lg hover:border-[#A65F46] hover:text-[#A65F46] transition-colors"
+              className="w-full sm:w-auto text-center border-2 border-[#302A26]/30 text-[#302A26] font-semibold px-6 py-3 rounded-lg hover:border-[#A65F46] hover:text-[#A65F46] transition-colors text-sm"
             >
               {t.nav.products}
             </button>
