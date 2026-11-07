@@ -159,26 +159,6 @@ export default function Footer({ navigate }: Props) {
           <p className="text-[12px] text-white/35">{t.footer.rights}</p>
           <div className="flex items-center gap-3 text-[12px] text-white/30">
             <span>{t.footer.madeIn}</span>
-            <span>&bull;</span>
-            <button
-              onClick={() => navigate('admin-login')}
-              className="text-[#D8C3A5]/60 hover:text-white transition-colors hover:underline flex items-center gap-1"
-            >
-              <svg
-                className="w-3 h-3"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
-              <span>{t.footer.adminPortal}</span>
-            </button>
           </div>
         </div>
       </div>
