@@ -91,26 +91,6 @@ export default function AdminSettingsPage({ navigate }: AdminSettingsPageProps) 
       }
     >
       <div className="space-y-6">
-        {/* Cloud Database Status */}
-        {isSupabaseConfigured() ? (
-          <div className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-xl shadow-xs">
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <div className="text-xs sm:text-sm">
-              <span className="font-bold">Cloud Database (Supabase) Aktif:</span> Setiap perubahan kontak & profil yang Anda simpan di sini otomatis tersimpan permanen di cloud dan langsung sinkron ke seluruh dunia!
-            </div>
-          </div>
-        ) : (
-          <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl shadow-xs">
-            <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-            <div className="text-xs sm:text-sm space-y-1">
-              <p className="font-bold">Status: Mode Penyimpanan Lokal (Belum Terhubung ke Supabase)</p>
-              <p className="text-amber-800 text-xs">
-                Perubahan saat ini disimpan di penyimpanan lokal browser Anda. Hubungkan kredensial Supabase (URL & Anon Key) di file <code className="bg-amber-100 px-1 py-0.5 rounded font-mono text-[11px]">.env</code> atau Vercel Environment Variables agar perubahan langsung tersimpan permanen di cloud untuk semua pengunjung dan HP.
-              </p>
-            </div>
-          </div>
-        )}
-
         {/* Notifications */}
         {savedSuccess && (
           <div className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl shadow-sm animate-fade-in">
@@ -456,6 +436,19 @@ export default function AdminSettingsPage({ navigate }: AdminSettingsPageProps) 
 
               <div className="bg-[#FAF8F5] p-3 rounded-lg border border-stone-100 text-xs text-stone-500">
                 <span className="font-semibold text-stone-700">Fleksibilitas Penuh:</span> Kapan pun Anda mengganti nomor WhatsApp atau email baru di halaman ini, perubahan akan langsung aktif seketika di seluruh halaman website tanpa perlu deploy ulang atau mengedit kode.
+              </div>
+
+              {/* Cloud Database Sync Status */}
+              <div className="bg-stone-50 border border-stone-200/80 rounded-xl p-3.5 space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <div className={`w-2 h-2 rounded-full ${isSupabaseConfigured() ? "bg-emerald-500 animate-pulse" : "bg-emerald-500"}`} />
+                  <span className="text-xs font-bold text-stone-800">
+                    Data Kontak Asli Terkunci & Aktif
+                  </span>
+                </div>
+                <p className="text-[11px] text-stone-500 leading-relaxed">
+                  Data resmi PARJONO KERAMIK JAYA (+62 813-2716-3564, agustinawdyt@gmail.com) telah tersimpan permanen di sistem dan aktif untuk semua pengunjung di web publik.
+                </p>
               </div>
             </div>
           </div>

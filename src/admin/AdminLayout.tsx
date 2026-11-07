@@ -213,45 +213,45 @@ export default function AdminLayout({
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 bottom-0 z-50 w-72 bg-[#302A26] text-white flex flex-col justify-between transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed lg:sticky top-0 left-0 z-50 w-72 bg-[#302A26] text-white flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } h-screen shadow-xl overflow-y-auto`}
+        } h-screen shadow-xl`}
       >
-        <div>
-          {/* Brand Header */}
-          <div className="p-5 border-b border-white/10 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="bg-white p-1.5 rounded-xl shadow-xs shrink-0">
-                <img
-                  src={PKJ_LOGO}
-                  alt="PKJ Logo"
-                  className="h-8 w-auto object-contain"
-                />
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-display font-bold text-sm tracking-wider text-white">
-                    PARJONO
-                  </span>
-                  <span className="text-[9px] font-bold uppercase tracking-wider bg-[#A65F46] text-white px-1.5 py-0.5 rounded shadow-sm">
-                    CMS
-                  </span>
-                </div>
-                <span className="text-[10px] text-[#D8C3A5] font-light tracking-[0.15em]">
-                  KERAMIK JAYA
+        {/* Brand Header - Pinned at top */}
+        <div className="p-5 border-b border-white/10 flex items-center justify-between shrink-0 bg-[#302A26]">
+          <div className="flex items-center gap-3">
+            <div className="bg-white p-1.5 rounded-xl shadow-xs shrink-0">
+              <img
+                src={PKJ_LOGO}
+                alt="PKJ Logo"
+                className="h-8 w-auto object-contain"
+              />
+            </div>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1.5">
+                <span className="font-display font-bold text-sm tracking-wider text-white">
+                  PARJONO
+                </span>
+                <span className="text-[9px] font-bold uppercase tracking-wider bg-[#A65F46] text-white px-1.5 py-0.5 rounded shadow-sm">
+                  CMS
                 </span>
               </div>
+              <span className="text-[10px] text-[#D8C3A5] font-light tracking-[0.15em]">
+                KERAMIK JAYA
+              </span>
             </div>
-            <button
-              onClick={() => setMobileSidebarOpen(false)}
-              className="lg:hidden text-white/60 hover:text-white p-1"
-            >
-              <X className="w-5 h-5" />
-            </button>
           </div>
+          <button
+            onClick={() => setMobileSidebarOpen(false)}
+            className="lg:hidden text-white/60 hover:text-white p-1"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
-          {/* Navigation Links */}
-          <div className="px-4 py-6">
+        {/* Navigation Links - Scrollable middle area */}
+        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+          <div>
             <p className="px-3 text-[10px] font-semibold text-white/40 tracking-widest uppercase mb-3">
               Menu Pengelolaan
             </p>
@@ -346,8 +346,8 @@ export default function AdminLayout({
           </div>
         </div>
 
-        {/* User Footer Profile & Logout */}
-        <div className="p-4 border-t border-white/10 bg-black/20">
+        {/* User Footer Profile & Logout - Pinned at bottom */}
+        <div className="p-4 border-t border-white/10 bg-black/20 shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-[#A65F46]/30 border border-[#A65F46]/50 flex items-center justify-center text-[#D8C3A5]">

@@ -10,15 +10,15 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS public.company_info (
   id INT PRIMARY KEY DEFAULT 1,
   name TEXT NOT NULL DEFAULT 'PARJONO KERAMIK JAYA',
-  tagline TEXT DEFAULT 'Produsen Gerabah & Terakota Kasongan, Bantul',
-  phone TEXT DEFAULT '+62 812-3456-7890',
-  whatsapp TEXT DEFAULT '+62 812-3456-7890',
-  email TEXT DEFAULT 'info@parjonokeramikjaya.com',
+  tagline TEXT DEFAULT 'Produsen Gerabah',
+  phone TEXT DEFAULT '+62 813-2716-3564',
+  whatsapp TEXT DEFAULT '+62 813-2716-3564',
+  email TEXT DEFAULT 'agustinawdyt@gmail.com',
   address_line1 TEXT DEFAULT 'Klisat, Srihardono, Pundong',
   address_line2 TEXT DEFAULT 'Bantul, D.I. Yogyakarta 55771, Indonesia',
-  operating_hours TEXT DEFAULT 'Senin - Sabtu: 08:00 - 17:00 WIB',
-  google_maps_url TEXT DEFAULT 'https://maps.google.com/?q=Klisat,+Srihardono,+Pundong,+Bantul,+Yogyakarta',
-  instagram TEXT DEFAULT '@parjonokeramikjaya',
+  operating_hours TEXT DEFAULT 'Senin - Sabtu: 08:00 - 16:00 WIB',
+  google_maps_url TEXT DEFAULT 'https://maps.app.goo.gl/oDqzTpA58RFrxJK47',
+  instagram TEXT DEFAULT '@PARJONO_KERAMIK',
   facebook TEXT DEFAULT 'Parjono Keramik Jaya',
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -28,15 +28,15 @@ INSERT INTO public.company_info (id, name, tagline, phone, whatsapp, email, addr
 VALUES (
   1,
   'PARJONO KERAMIK JAYA',
-  'Produsen Gerabah & Terakota Kasongan, Bantul',
-  '+62 812-3456-7890',
-  '+62 812-3456-7890',
-  'info@parjonokeramikjaya.com',
+  'Produsen Gerabah',
+  '+62 813-2716-3564',
+  '+62 813-2716-3564',
+  'agustinawdyt@gmail.com',
   'Klisat, Srihardono, Pundong',
   'Bantul, D.I. Yogyakarta 55771, Indonesia',
-  'Senin - Sabtu: 08:00 - 17:00 WIB',
-  'https://maps.google.com/?q=Klisat,+Srihardono,+Pundong,+Bantul,+Yogyakarta',
-  '@parjonokeramikjaya',
+  'Senin - Sabtu: 08:00 - 16:00 WIB',
+  'https://maps.app.goo.gl/oDqzTpA58RFrxJK47',
+  '@PARJONO_KERAMIK',
   'Parjono Keramik Jaya'
 )
 ON CONFLICT (id) DO NOTHING;
@@ -181,3 +181,4 @@ USING (bucket_id = 'pkj-media');
 CREATE POLICY "Allow delete pkj-media"
 ON storage.objects FOR DELETE
 USING (bucket_id = 'pkj-media');
+

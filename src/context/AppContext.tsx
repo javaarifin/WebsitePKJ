@@ -237,15 +237,15 @@ const STORAGE_KEYS = {
 
 export const DEFAULT_COMPANY_INFO: CompanyInfo = {
   name: 'PARJONO KERAMIK JAYA',
-  tagline: 'Produsen Gerabah & Terakota Kasongan, Bantul',
-  phone: '+62 812-3456-7890',
-  whatsapp: '+62 812-3456-7890',
-  email: 'info@parjonokeramikjaya.com',
+  tagline: 'Produsen Gerabah',
+  phone: '+62 813-2716-3564',
+  whatsapp: '+62 813-2716-3564',
+  email: 'agustinawdyt@gmail.com',
   addressLine1: 'Klisat, Srihardono, Pundong',
   addressLine2: 'Bantul, D.I. Yogyakarta 55771, Indonesia',
-  operatingHours: 'Senin - Sabtu: 08:00 - 17:00 WIB',
-  googleMapsUrl: 'https://maps.google.com/?q=Klisat,+Srihardono,+Pundong,+Bantul,+Yogyakarta',
-  instagram: '@parjonokeramikjaya',
+  operatingHours: 'Senin - Sabtu: 08:00 - 16:00 WIB',
+  googleMapsUrl: 'https://maps.app.goo.gl/oDqzTpA58RFrxJK47',
+  instagram: '@PARJONO_KERAMIK',
   facebook: 'Parjono Keramik Jaya',
 }
 
