@@ -133,30 +133,44 @@ ALTER TABLE public.exhibitions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.inquiries ENABLE ROW LEVEL SECURITY;
 
 -- Policy Company Info
+DROP POLICY IF EXISTS "Public read company_info" ON public.company_info;
+DROP POLICY IF EXISTS "Allow all update company_info" ON public.company_info;
 CREATE POLICY "Public read company_info" ON public.company_info FOR SELECT USING (true);
 CREATE POLICY "Allow all update company_info" ON public.company_info FOR ALL USING (true) WITH CHECK (true);
 
 -- Policy Products
+DROP POLICY IF EXISTS "Public read products" ON public.products;
+DROP POLICY IF EXISTS "Allow all manage products" ON public.products;
 CREATE POLICY "Public read products" ON public.products FOR SELECT USING (true);
 CREATE POLICY "Allow all manage products" ON public.products FOR ALL USING (true) WITH CHECK (true);
 
 -- Policy News
+DROP POLICY IF EXISTS "Public read news" ON public.news;
+DROP POLICY IF EXISTS "Allow all manage news" ON public.news;
 CREATE POLICY "Public read news" ON public.news FOR SELECT USING (true);
 CREATE POLICY "Allow all manage news" ON public.news FOR ALL USING (true) WITH CHECK (true);
 
 -- Policy Gallery
+DROP POLICY IF EXISTS "Public read gallery" ON public.gallery;
+DROP POLICY IF EXISTS "Allow all manage gallery" ON public.gallery;
 CREATE POLICY "Public read gallery" ON public.gallery FOR SELECT USING (true);
 CREATE POLICY "Allow all manage gallery" ON public.gallery FOR ALL USING (true) WITH CHECK (true);
 
 -- Policy Awards
+DROP POLICY IF EXISTS "Public read awards" ON public.awards;
+DROP POLICY IF EXISTS "Allow all manage awards" ON public.awards;
 CREATE POLICY "Public read awards" ON public.awards FOR SELECT USING (true);
 CREATE POLICY "Allow all manage awards" ON public.awards FOR ALL USING (true) WITH CHECK (true);
 
 -- Policy Exhibitions
+DROP POLICY IF EXISTS "Public read exhibitions" ON public.exhibitions;
+DROP POLICY IF EXISTS "Allow all manage exhibitions" ON public.exhibitions;
 CREATE POLICY "Public read exhibitions" ON public.exhibitions FOR SELECT USING (true);
 CREATE POLICY "Allow all manage exhibitions" ON public.exhibitions FOR ALL USING (true) WITH CHECK (true);
 
 -- Policy Inquiries
+DROP POLICY IF EXISTS "Public insert inquiries" ON public.inquiries;
+DROP POLICY IF EXISTS "Allow all manage inquiries" ON public.inquiries;
 CREATE POLICY "Public insert inquiries" ON public.inquiries FOR INSERT WITH CHECK (true);
 CREATE POLICY "Allow all manage inquiries" ON public.inquiries FOR ALL USING (true) WITH CHECK (true);
 
@@ -165,6 +179,11 @@ CREATE POLICY "Allow all manage inquiries" ON public.inquiries FOR ALL USING (tr
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('pkj-media', 'pkj-media', true)
 ON CONFLICT (id) DO UPDATE SET public = true;
+
+DROP POLICY IF EXISTS "Public view pkj-media" ON storage.objects;
+DROP POLICY IF EXISTS "Allow upload pkj-media" ON storage.objects;
+DROP POLICY IF EXISTS "Allow update pkj-media" ON storage.objects;
+DROP POLICY IF EXISTS "Allow delete pkj-media" ON storage.objects;
 
 CREATE POLICY "Public view pkj-media"
 ON storage.objects FOR SELECT
