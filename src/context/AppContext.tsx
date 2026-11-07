@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 import { INITIAL_PRODUCTS, NEWS, GALLERY_IMAGES, AWARDS, EXHIBITIONS } from '../data'
 import { Lang, TranslationDictionary, translations } from '../translations'
 import { hashPassword, checkLoginRateLimit, recordFailedLogin, clearLoginRateLimit } from '../utils/security'
+import { supabase, isSupabaseConfigured } from '../lib/supabase'
 
 export type { Lang, TranslationDictionary }
 
@@ -702,6 +703,176 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, [user])
 
+  // Sync with Supabase on mount
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return
+
+    const loadDataFromSupabase = async () => {
+      try {
+        // 1. Company Info
+        const { data: compData, error: compErr } = await supabase
+          .from('company_info')
+          .select('*')
+          .eq('id', 1)
+          .maybeSingle()
+
+        if (compData && !compErr) {
+          const syncedCompany: CompanyInfo = {
+            name: compData.name || DEFAULT_COMPANY_INFO.name,
+            tagline: compData.tagline || DEFAULT_COMPANY_INFO.tagline,
+            phone: compData.phone || DEFAULT_COMPANY_INFO.phone,
+            whatsapp: compData.whatsapp || DEFAULT_COMPANY_INFO.whatsapp,
+            email: compData.email || DEFAULT_COMPANY_INFO.email,
+            addressLine1: compData.address_line1 || DEFAULT_COMPANY_INFO.addressLine1,
+            addressLine2: compData.address_line2 || DEFAULT_COMPANY_INFO.addressLine2,
+            operatingHours: compData.operating_hours || DEFAULT_COMPANY_INFO.operatingHours,
+            googleMapsUrl: compData.google_maps_url || DEFAULT_COMPANY_INFO.googleMapsUrl,
+            instagram: compData.instagram || DEFAULT_COMPANY_INFO.instagram,
+            facebook: compData.facebook || DEFAULT_COMPANY_INFO.facebook,
+          }
+          setCompanyInfo(syncedCompany)
+          localStorage.setItem(STORAGE_KEYS.COMPANY_INFO, JSON.stringify(syncedCompany))
+        }
+
+        // 2. Products
+        const { data: prodData } = await supabase
+          .from('products')
+          .select('*')
+          .order('id', { ascending: false })
+
+        if (prodData && prodData.length > 0) {
+          const syncedProducts: Product[] = prodData.map(p => ({
+            id: Number(p.id),
+            name: p.name,
+            category: p.category || 'Terracotta',
+            description: p.description || '',
+            fullDescription: p.full_description || '',
+            image: p.image,
+            material: p.material || '',
+            size: p.size || '',
+            weight: p.weight || '',
+            finish: p.finish || '',
+            moq: p.moq || '',
+            price: p.price || '',
+            status: p.status || 'published',
+            createdAt: p.created_at,
+          }))
+          setProducts(syncedProducts)
+          localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(syncedProducts))
+        }
+
+        // 3. News
+        const { data: newsData } = await supabase
+          .from('news')
+          .select('*')
+          .order('id', { ascending: false })
+
+        if (newsData && newsData.length > 0) {
+          const syncedNews: NewsItem[] = newsData.map(n => ({
+            id: Number(n.id),
+            category: n.category,
+            date: n.date,
+            title: n.title,
+            excerpt: n.excerpt || '',
+            image: n.image,
+            body: n.body,
+            createdAt: n.created_at,
+          }))
+          setNews(syncedNews)
+          localStorage.setItem(STORAGE_KEYS.NEWS, JSON.stringify(syncedNews))
+        }
+
+        // 4. Gallery
+        const { data: galData } = await supabase
+          .from('gallery')
+          .select('*')
+          .order('id', { ascending: false })
+
+        if (galData && galData.length > 0) {
+          const syncedGallery: GalleryItem[] = galData.map(g => ({
+            id: Number(g.id),
+            category: g.category,
+            src: g.src,
+            alt: g.alt || '',
+            caption: g.caption || '',
+            createdAt: g.created_at,
+          }))
+          setGallery(syncedGallery)
+          localStorage.setItem(STORAGE_KEYS.GALLERY, JSON.stringify(syncedGallery))
+        }
+
+        // 5. Awards
+        const { data: awardData } = await supabase
+          .from('awards')
+          .select('*')
+          .order('id', { ascending: false })
+
+        if (awardData && awardData.length > 0) {
+          const syncedAwards: AwardItem[] = awardData.map(a => ({
+            id: Number(a.id),
+            title: a.title,
+            year: a.year,
+            organization: a.organization,
+            description: a.description || '',
+            image: a.image,
+            createdAt: a.created_at,
+          }))
+          setAwards(syncedAwards)
+          localStorage.setItem(STORAGE_KEYS.AWARDS, JSON.stringify(syncedAwards))
+        }
+
+        // 6. Exhibitions
+        const { data: exhData } = await supabase
+          .from('exhibitions')
+          .select('*')
+          .order('id', { ascending: false })
+
+        if (exhData && exhData.length > 0) {
+          const syncedExhibitions: ExhibitionItem[] = exhData.map(e => ({
+            id: Number(e.id),
+            name: e.name,
+            location: e.location,
+            year: e.year,
+            description: e.description || '',
+            image: e.image,
+            createdAt: e.created_at,
+          }))
+          setExhibitions(syncedExhibitions)
+          localStorage.setItem(STORAGE_KEYS.EXHIBITIONS, JSON.stringify(syncedExhibitions))
+        }
+
+        // 7. Inquiries
+        const { data: inqData } = await supabase
+          .from('inquiries')
+          .select('*')
+          .order('created_at', { ascending: false })
+
+        if (inqData && inqData.length > 0) {
+          const syncedInquiries: Inquiry[] = inqData.map(i => ({
+            id: i.id,
+            name: i.name,
+            company: i.company || '',
+            email: i.email,
+            phone: i.phone || '',
+            subject: i.subject || '',
+            message: i.message,
+            productName: i.product_name || '',
+            country: i.country || '',
+            quantity: i.quantity || '',
+            status: i.status || 'new',
+            createdAt: i.created_at,
+          }))
+          setInquiries(syncedInquiries)
+          localStorage.setItem(STORAGE_KEYS.INQUIRIES, JSON.stringify(syncedInquiries))
+        }
+      } catch (err) {
+        console.error('Error synchronizing with Supabase:', err)
+      }
+    }
+
+    loadDataFromSupabase()
+  }, [])
+
   // Products CRUD
   const addProduct = (productData: Omit<Product, 'id' | 'createdAt'>): Product => {
     const nextId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1
@@ -711,15 +882,65 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       createdAt: new Date().toISOString(),
     }
     setProducts(prev => [newProduct, ...prev])
+
+    if (isSupabaseConfigured()) {
+      supabase.from('products').insert({
+        name: newProduct.name,
+        category: newProduct.category,
+        description: newProduct.description,
+        full_description: newProduct.fullDescription,
+        image: newProduct.image,
+        material: newProduct.material,
+        size: newProduct.size,
+        weight: newProduct.weight,
+        finish: newProduct.finish,
+        moq: newProduct.moq,
+        price: newProduct.price,
+        status: newProduct.status,
+      }).select().single().then(({ data, error }) => {
+        if (data && !error) {
+          setProducts(prev => prev.map(p => p.id === newProduct.id ? { ...p, id: Number(data.id) } : p))
+        } else if (error) {
+          console.error('Supabase add product error:', error)
+        }
+      })
+    }
+
     return newProduct
   }
 
   const updateProduct = (id: number, productData: Partial<Product>) => {
     setProducts(prev => prev.map(p => (p.id === id ? { ...p, ...productData } : p)))
+
+    if (isSupabaseConfigured()) {
+      supabase.from('products').update({
+        ...(productData.name !== undefined && { name: productData.name }),
+        ...(productData.category !== undefined && { category: productData.category }),
+        ...(productData.description !== undefined && { description: productData.description }),
+        ...(productData.fullDescription !== undefined && { full_description: productData.fullDescription }),
+        ...(productData.image !== undefined && { image: productData.image }),
+        ...(productData.material !== undefined && { material: productData.material }),
+        ...(productData.size !== undefined && { size: productData.size }),
+        ...(productData.weight !== undefined && { weight: productData.weight }),
+        ...(productData.finish !== undefined && { finish: productData.finish }),
+        ...(productData.moq !== undefined && { moq: productData.moq }),
+        ...(productData.price !== undefined && { price: productData.price }),
+        ...(productData.status !== undefined && { status: productData.status }),
+        updated_at: new Date().toISOString(),
+      }).eq('id', id).then(({ error }) => {
+        if (error) console.error('Supabase update product error:', error)
+      })
+    }
   }
 
   const deleteProduct = (id: number) => {
     setProducts(prev => prev.filter(p => p.id !== id))
+
+    if (isSupabaseConfigured()) {
+      supabase.from('products').delete().eq('id', id).then(({ error }) => {
+        if (error) console.error('Supabase delete product error:', error)
+      })
+    }
   }
 
   const resetProductsToDefault = () => {
@@ -741,15 +962,50 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       createdAt: new Date().toISOString(),
     }
     setNews(prev => [newItem, ...prev])
+
+    if (isSupabaseConfigured()) {
+      supabase.from('news').insert({
+        category: newItem.category,
+        date: newItem.date,
+        title: newItem.title,
+        excerpt: newItem.excerpt,
+        image: newItem.image,
+        body: newItem.body,
+      }).select().single().then(({ data, error }) => {
+        if (data && !error) {
+          setNews(prev => prev.map(n => n.id === newItem.id ? { ...n, id: Number(data.id) } : n))
+        }
+      })
+    }
+
     return newItem
   }
 
   const updateNews = (id: number, itemData: Partial<NewsItem>) => {
     setNews(prev => prev.map(n => (n.id === id ? { ...n, ...itemData } : n)))
+
+    if (isSupabaseConfigured()) {
+      supabase.from('news').update({
+        ...(itemData.category !== undefined && { category: itemData.category }),
+        ...(itemData.date !== undefined && { date: itemData.date }),
+        ...(itemData.title !== undefined && { title: itemData.title }),
+        ...(itemData.excerpt !== undefined && { excerpt: itemData.excerpt }),
+        ...(itemData.image !== undefined && { image: itemData.image }),
+        ...(itemData.body !== undefined && { body: itemData.body }),
+      }).eq('id', id).then(({ error }) => {
+        if (error) console.error('Supabase update news error:', error)
+      })
+    }
   }
 
   const deleteNews = (id: number) => {
     setNews(prev => prev.filter(n => n.id !== id))
+
+    if (isSupabaseConfigured()) {
+      supabase.from('news').delete().eq('id', id).then(({ error }) => {
+        if (error) console.error('Supabase delete news error:', error)
+      })
+    }
   }
 
   const resetNewsToDefault = () => {
@@ -770,15 +1026,46 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       createdAt: new Date().toISOString(),
     }
     setGallery(prev => [newItem, ...prev])
+
+    if (isSupabaseConfigured()) {
+      supabase.from('gallery').insert({
+        category: newItem.category,
+        src: newItem.src,
+        alt: newItem.alt,
+        caption: newItem.caption,
+      }).select().single().then(({ data, error }) => {
+        if (data && !error) {
+          setGallery(prev => prev.map(g => g.id === newItem.id ? { ...g, id: Number(data.id) } : g))
+        }
+      })
+    }
+
     return newItem
   }
 
   const updateGalleryItem = (id: number, itemData: Partial<GalleryItem>) => {
     setGallery(prev => prev.map(g => (g.id === id ? { ...g, ...itemData } : g)))
+
+    if (isSupabaseConfigured()) {
+      supabase.from('gallery').update({
+        ...(itemData.category !== undefined && { category: itemData.category }),
+        ...(itemData.src !== undefined && { src: itemData.src }),
+        ...(itemData.alt !== undefined && { alt: itemData.alt }),
+        ...(itemData.caption !== undefined && { caption: itemData.caption }),
+      }).eq('id', id).then(({ error }) => {
+        if (error) console.error('Supabase update gallery error:', error)
+      })
+    }
   }
 
   const deleteGalleryItem = (id: number) => {
     setGallery(prev => prev.filter(g => g.id !== id))
+
+    if (isSupabaseConfigured()) {
+      supabase.from('gallery').delete().eq('id', id).then(({ error }) => {
+        if (error) console.error('Supabase delete gallery error:', error)
+      })
+    }
   }
 
   const resetGalleryToDefault = () => {
@@ -799,15 +1086,48 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       createdAt: new Date().toISOString(),
     }
     setAwards(prev => [newItem, ...prev])
+
+    if (isSupabaseConfigured()) {
+      supabase.from('awards').insert({
+        title: newItem.title,
+        year: newItem.year,
+        organization: newItem.organization,
+        description: newItem.description,
+        image: newItem.image,
+      }).select().single().then(({ data, error }) => {
+        if (data && !error) {
+          setAwards(prev => prev.map(a => a.id === newItem.id ? { ...a, id: Number(data.id) } : a))
+        }
+      })
+    }
+
     return newItem
   }
 
   const updateAward = (id: number, itemData: Partial<AwardItem>) => {
     setAwards(prev => prev.map(a => (a.id === id ? { ...a, ...itemData } : a)))
+
+    if (isSupabaseConfigured()) {
+      supabase.from('awards').update({
+        ...(itemData.title !== undefined && { title: itemData.title }),
+        ...(itemData.year !== undefined && { year: itemData.year }),
+        ...(itemData.organization !== undefined && { organization: itemData.organization }),
+        ...(itemData.description !== undefined && { description: itemData.description }),
+        ...(itemData.image !== undefined && { image: itemData.image }),
+      }).eq('id', id).then(({ error }) => {
+        if (error) console.error('Supabase update award error:', error)
+      })
+    }
   }
 
   const deleteAward = (id: number) => {
     setAwards(prev => prev.filter(a => a.id !== id))
+
+    if (isSupabaseConfigured()) {
+      supabase.from('awards').delete().eq('id', id).then(({ error }) => {
+        if (error) console.error('Supabase delete award error:', error)
+      })
+    }
   }
 
   const resetAwardsToDefault = () => {
@@ -828,15 +1148,48 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       createdAt: new Date().toISOString(),
     }
     setExhibitions(prev => [newItem, ...prev])
+
+    if (isSupabaseConfigured()) {
+      supabase.from('exhibitions').insert({
+        name: newItem.name,
+        location: newItem.location,
+        year: newItem.year,
+        description: newItem.description,
+        image: newItem.image,
+      }).select().single().then(({ data, error }) => {
+        if (data && !error) {
+          setExhibitions(prev => prev.map(e => e.id === newItem.id ? { ...e, id: Number(data.id) } : e))
+        }
+      })
+    }
+
     return newItem
   }
 
   const updateExhibition = (id: number, itemData: Partial<ExhibitionItem>) => {
     setExhibitions(prev => prev.map(e => (e.id === id ? { ...e, ...itemData } : e)))
+
+    if (isSupabaseConfigured()) {
+      supabase.from('exhibitions').update({
+        ...(itemData.name !== undefined && { name: itemData.name }),
+        ...(itemData.location !== undefined && { location: itemData.location }),
+        ...(itemData.year !== undefined && { year: itemData.year }),
+        ...(itemData.description !== undefined && { description: itemData.description }),
+        ...(itemData.image !== undefined && { image: itemData.image }),
+      }).eq('id', id).then(({ error }) => {
+        if (error) console.error('Supabase update exhibition error:', error)
+      })
+    }
   }
 
   const deleteExhibition = (id: number) => {
     setExhibitions(prev => prev.filter(e => e.id !== id))
+
+    if (isSupabaseConfigured()) {
+      supabase.from('exhibitions').delete().eq('id', id).then(({ error }) => {
+        if (error) console.error('Supabase delete exhibition error:', error)
+      })
+    }
   }
 
   const resetExhibitionsToDefault = () => {
@@ -857,15 +1210,46 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       createdAt: new Date().toISOString(),
     }
     setInquiries(prev => [newInquiry, ...prev])
+
+    if (isSupabaseConfigured()) {
+      supabase.from('inquiries').insert({
+        id: newInquiry.id,
+        name: newInquiry.name,
+        company: newInquiry.company,
+        email: newInquiry.email,
+        phone: newInquiry.phone,
+        subject: newInquiry.subject,
+        message: newInquiry.message,
+        product_name: newInquiry.productName,
+        country: newInquiry.country,
+        quantity: newInquiry.quantity,
+        status: newInquiry.status,
+      }).then(({ error }) => {
+        if (error) console.error('Supabase add inquiry error:', error)
+      })
+    }
+
     return newInquiry
   }
 
   const updateInquiryStatus = (id: string, status: Inquiry['status']) => {
     setInquiries(prev => prev.map(inq => (inq.id === id ? { ...inq, status } : inq)))
+
+    if (isSupabaseConfigured()) {
+      supabase.from('inquiries').update({ status }).eq('id', id).then(({ error }) => {
+        if (error) console.error('Supabase update inquiry error:', error)
+      })
+    }
   }
 
   const deleteInquiry = (id: string) => {
     setInquiries(prev => prev.filter(inq => inq.id !== id))
+
+    if (isSupabaseConfigured()) {
+      supabase.from('inquiries').delete().eq('id', id).then(({ error }) => {
+        if (error) console.error('Supabase delete inquiry error:', error)
+      })
+    }
   }
 
   // Company Info operations
@@ -877,6 +1261,27 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       } catch (e) {
         console.error('Failed to save company info:', e)
       }
+
+      if (isSupabaseConfigured()) {
+        supabase.from('company_info').upsert({
+          id: 1,
+          name: updated.name,
+          tagline: updated.tagline,
+          phone: updated.phone,
+          whatsapp: updated.whatsapp,
+          email: updated.email,
+          address_line1: updated.addressLine1,
+          address_line2: updated.addressLine2,
+          operating_hours: updated.operatingHours,
+          google_maps_url: updated.googleMapsUrl,
+          instagram: updated.instagram,
+          facebook: updated.facebook,
+          updated_at: new Date().toISOString(),
+        }).then(({ error }) => {
+          if (error) console.error('Supabase update company_info error:', error)
+        })
+      }
+
       return updated
     })
   }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { NavigateFn } from "../App"
 import { useAppStore, CompanyInfo, formatWhatsAppLink } from "../context/AppContext"
+import { isSupabaseConfigured } from "../lib/supabase"
 import AdminLayout from "./AdminLayout"
 import {
   Save,
@@ -90,6 +91,26 @@ export default function AdminSettingsPage({ navigate }: AdminSettingsPageProps) 
       }
     >
       <div className="space-y-6">
+        {/* Cloud Database Status */}
+        {isSupabaseConfigured() ? (
+          <div className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-xl shadow-xs">
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <div className="text-xs sm:text-sm">
+              <span className="font-bold">Cloud Database (Supabase) Aktif:</span> Setiap perubahan kontak & profil yang Anda simpan di sini otomatis tersimpan permanen di cloud dan langsung sinkron ke seluruh dunia!
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl shadow-xs">
+            <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <div className="text-xs sm:text-sm space-y-1">
+              <p className="font-bold">Status: Mode Penyimpanan Lokal (Belum Terhubung ke Supabase)</p>
+              <p className="text-amber-800 text-xs">
+                Perubahan saat ini disimpan di penyimpanan lokal browser Anda. Hubungkan kredensial Supabase (URL & Anon Key) di file <code className="bg-amber-100 px-1 py-0.5 rounded font-mono text-[11px]">.env</code> atau Vercel Environment Variables agar perubahan langsung tersimpan permanen di cloud untuk semua pengunjung dan HP.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Notifications */}
         {savedSuccess && (
           <div className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl shadow-sm animate-fade-in">

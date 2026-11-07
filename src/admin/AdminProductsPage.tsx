@@ -4,6 +4,7 @@ import { NavigateFn } from "../App"
 
 import { useAppStore, Product } from "../context/AppContext"
 import { validateImageFile } from "../utils/security"
+import { uploadMediaToSupabase, isSupabaseConfigured } from "../lib/supabase"
 
 import AdminLayout from "./AdminLayout"
 
@@ -232,9 +233,10 @@ export default function AdminProductsPage({
     setIsModalOpen(true)
   }
 
-  // Handle local image file upload (converts to Base64 data URL)
+  const [uploadingImage, setUploadingImage] = useState(false)
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle image file upload (uploads to Supabase CDN or fallback to Base64)
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       const validation = validateImageFile(file)
@@ -244,13 +246,15 @@ export default function AdminProductsPage({
         return
       }
 
-      const reader = new FileReader()
-      reader.onload = () => {
-        if (typeof reader.result === "string") {
-          setFormData((prev) => ({ ...prev, image: reader.result as string }))
-        }
+      setUploadingImage(true)
+      const res = await uploadMediaToSupabase(file, 'products')
+      setUploadingImage(false)
+
+      if (res.url) {
+        setFormData((prev) => ({ ...prev, image: res.url! }))
+      } else if (res.error) {
+        alert(res.error)
       }
-      reader.readAsDataURL(file)
     }
   }
 
@@ -745,14 +749,23 @@ export default function AdminProductsPage({
                         />
                         <button
                           type="button"
+                          disabled={uploadingImage}
                           onClick={() => fileInputRef.current?.click()}
-                          className="w-full py-3 px-4 bg-white border-2 border-dashed border-[#D8C3A5] hover:border-[#A65F46] rounded-xl text-xs font-medium text-[#302A26]/80 hover:text-[#A65F46] transition-all flex items-center justify-center gap-2"
+                          className="w-full py-3 px-4 bg-white border-2 border-dashed border-[#D8C3A5] hover:border-[#A65F46] rounded-xl text-xs font-medium text-[#302A26]/80 hover:text-[#A65F46] transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                         >
                           <UploadCloud className="w-4 h-4 text-[#A65F46]" />
-                          <span>Pilih Foto dari Komputer (PNG, JPG, WebP)</span>
+                          <span>
+                            {uploadingImage
+                              ? "Mengunggah foto..."
+                              : isSupabaseConfigured()
+                              ? "Unggah Foto Asli (Tersimpan ke Cloud CDN)"
+                              : "Pilih Foto dari Komputer (PNG, JPG, WebP)"}
+                          </span>
                         </button>
-                        <p className="text-[10px] text-[#302A26]/40 mt-1">
-                          Foto otomatis di-encode dan disimpan di browser state.
+                        <p className="text-[10px] text-[#302A26]/50 mt-1">
+                          {isSupabaseConfigured()
+                            ? "Foto otomatis disimpan ke Cloud Supabase Storage dan bisa dilihat di semua perangkat."
+                            : "Foto disimpan ke penyimpanan browser (sambungkan Supabase untuk simpan permanen)."}
                         </p>
                       </div>
                     ) : (
