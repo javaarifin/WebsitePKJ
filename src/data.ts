@@ -19,6 +19,8 @@ export const IMAGES = {
   export1:
     "https://images.unsplash.com/photo-1719173150322-e75de9901efb?w=900&h=700&fit=crop&auto=format",
 
+  exportTradeExpo: "/images/export-trade-expo.jpg",
+
   export2:
     "https://images.unsplash.com/photo-1697410154169-b2bbf83758e6?w=800&h=600&fit=crop&auto=format",
 

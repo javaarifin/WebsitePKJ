@@ -307,9 +307,9 @@ export default function AboutPage({ navigate }: Props) {
           </div>
           <div className="rounded-2xl overflow-hidden aspect-[4/3] bg-[#D8C3A5] shadow-xs">
             <img
-              src={IMAGES.export1}
-              alt="Products prepared for export"
-              className="w-full h-full object-cover"
+              src={IMAGES.exportTradeExpo}
+              alt="PARJONO KERAMIK JAYA - Trade Expo Indonesia Business Matching"
+              className="w-full h-full object-cover object-center"
             />
           </div>
         </div>
