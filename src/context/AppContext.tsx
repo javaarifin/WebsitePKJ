@@ -1167,6 +1167,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }
 
   const updateExhibition = (id: number, itemData: Partial<ExhibitionItem>) => {
+    const existing = exhibitions.find(e => e.id === id)
+    const merged: ExhibitionItem | null = existing ? { ...existing, ...itemData } : null
+
     setExhibitions(prev => prev.map(e => (e.id === id ? { ...e, ...itemData } : e)))
 
     if (isSupabaseConfigured()) {
@@ -1176,8 +1179,33 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         ...(itemData.year !== undefined && { year: itemData.year }),
         ...(itemData.description !== undefined && { description: itemData.description }),
         ...(itemData.image !== undefined && { image: itemData.image }),
-      }).eq('id', id).then(({ error }) => {
-        if (error) console.error('Supabase update exhibition error:', error)
+      }).eq('id', id).select().then(({ data, error }) => {
+        if (error) {
+          console.error('Supabase update exhibition error:', error)
+          return
+        }
+        // If row didn't exist in Supabase yet (e.g., editing a default placeholder item), insert it now
+        if ((!data || data.length === 0) && merged) {
+          supabase.from('exhibitions').insert({
+            name: merged.name,
+            location: merged.location,
+            year: merged.year,
+            description: merged.description,
+            image: merged.image,
+          }).select().single().then(({ data: inserted, error: insErr }) => {
+            if (inserted && !insErr) {
+              const newDbId = Number(inserted.id)
+              setExhibitions(prev => {
+                const collision = prev.some(other => other.id === newDbId && other.id !== id)
+                return prev.map((e, idx) => {
+                  if (e.id === id) return { ...e, id: newDbId }
+                  if (collision && e.id === newDbId) return { ...e, id: Date.now() + idx }
+                  return e
+                })
+              })
+            }
+          })
+        }
       })
     }
   }

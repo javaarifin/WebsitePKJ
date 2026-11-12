@@ -62,6 +62,7 @@ export default function AdminDashboardPage({
 
   const recentProducts = products.slice(0, 5)
   const recentNews = news.slice(0, 4)
+  const recentExhibitions = exhibitions.slice(0, 4)
   const recentInquiries = inquiries.slice(0, 5)
 
   // Max views in weekly trend for dynamic bar chart height calculation
@@ -83,13 +84,20 @@ export default function AdminDashboardPage({
       title="Dashboard Overview"
       subtitle="Ringkasan data produk, artikel berita, galeri foto, pesan, dan statistik pengunjung website"
       actions={
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => navigate("admin-products")}
             className="flex items-center gap-1.5 bg-[#A65F46] hover:bg-[#8f5239] text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm transition-all"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Tambah Produk</span>
+          </button>
+          <button
+            onClick={() => navigate("admin-exhibitions")}
+            className="flex items-center gap-1.5 bg-[#7A8065] hover:bg-[#666c53] text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm transition-all"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Tambah Pameran</span>
           </button>
           <button
             onClick={() => navigate("admin-news")}
@@ -102,8 +110,8 @@ export default function AdminDashboardPage({
       }
     >
       <div className="space-y-8">
-        {/* Metric Cards - 5 columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        {/* Metric Cards - 6 columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
           {/* Card 1: Total Products */}
           <div
             onClick={() => navigate("admin-products")}
@@ -170,20 +178,20 @@ export default function AdminDashboardPage({
             </div>
           </div>
 
-          {/* Card 4: Awards & Exhibitions */}
+          {/* Card 4: Awards */}
           <div
             onClick={() => navigate("admin-awards")}
             className="bg-white p-5 rounded-2xl border border-[#D8C3A5]/40 shadow-xs flex items-center justify-between cursor-pointer hover:border-[#A65F46]/50 transition-colors"
           >
             <div>
               <p className="text-[11px] font-semibold text-[#302A26]/50 uppercase tracking-wider mb-1">
-                Prestasi & Pameran
+                Penghargaan
               </p>
               <h3 className="font-display text-2xl font-bold text-[#302A26]">
-                {awards.length + exhibitions.length}
+                {awards.length}
               </h3>
-              <p className="text-[11px] text-[#302A26]/50 mt-1.5">
-                {awards.length} Award • {exhibitions.length} Expo
+              <p className="text-[11px] text-amber-600 mt-1.5">
+                Prestasi kriya
               </p>
             </div>
             <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
@@ -191,7 +199,28 @@ export default function AdminDashboardPage({
             </div>
           </div>
 
-          {/* Card 5: Inquiries */}
+          {/* Card 5: Exhibitions (Pameran) */}
+          <div
+            onClick={() => navigate("admin-exhibitions")}
+            className="bg-white p-5 rounded-2xl border border-[#D8C3A5]/40 shadow-xs flex items-center justify-between cursor-pointer hover:border-[#A65F46]/50 transition-colors"
+          >
+            <div>
+              <p className="text-[11px] font-semibold text-[#302A26]/50 uppercase tracking-wider mb-1">
+                Pameran Diikuti
+              </p>
+              <h3 className="font-display text-2xl font-bold text-[#302A26]">
+                {exhibitions.length}
+              </h3>
+              <p className="text-[11px] text-[#7A8065] mt-1.5">
+                Riwayat pameran
+              </p>
+            </div>
+            <div className="w-10 h-10 rounded-xl bg-[#7A8065]/15 text-[#7A8065] flex items-center justify-center">
+              <Sparkles className="w-5 h-5" />
+            </div>
+          </div>
+
+          {/* Card 6: Inquiries */}
           <div
             onClick={() => navigate("admin-inquiries")}
             className="bg-white p-5 rounded-2xl border border-[#D8C3A5]/40 shadow-xs flex items-center justify-between cursor-pointer hover:border-[#A65F46]/50 transition-colors"
@@ -793,6 +822,74 @@ export default function AdminDashboardPage({
               </div>
             </div>
 
+            {/* Recent Exhibitions */}
+            <div className="bg-white rounded-2xl border border-[#D8C3A5]/40 shadow-xs p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+                <div>
+                  <h3 className="font-display font-bold text-lg text-[#302A26]">
+                    Pameran yang Pernah Diikuti
+                  </h3>
+                  <p className="text-xs text-[#302A26]/50">
+                    Riwayat pameran nasional &amp; internasional yang tampil di halaman Pameran
+                  </p>
+                </div>
+                <button
+                  onClick={() => navigate("admin-exhibitions")}
+                  className="text-xs font-semibold text-[#A65F46] hover:text-[#8f5239] flex items-center gap-1 self-start sm:self-auto"
+                >
+                  <span>Kelola Pameran ({exhibitions.length})</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              {recentExhibitions.length === 0 ? (
+                <div className="text-center py-6 bg-[#F8F6F0] rounded-xl border border-[#D8C3A5]/40">
+                  <p className="text-xs text-[#302A26]/60 mb-3">
+                    Belum ada data pameran tercatat.
+                  </p>
+                  <button
+                    onClick={() => navigate("admin-exhibitions")}
+                    className="inline-flex items-center gap-1.5 bg-[#A65F46] text-white px-3.5 py-2 rounded-xl text-xs font-semibold"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Tambah Pameran Pertama</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {recentExhibitions.map((item) => (
+                    <div
+                      key={item.id}
+                      onClick={() => navigate("admin-exhibitions")}
+                      className="p-3.5 rounded-xl border border-[#D8C3A5]/40 hover:border-[#A65F46] transition-all cursor-pointer flex gap-3 group bg-white"
+                    >
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-16 h-16 rounded-lg object-cover bg-[#D8C3A5]/40 flex-shrink-0 group-hover:scale-105 transition-transform"
+                      />
+                      <div className="overflow-hidden flex-1">
+                        <div className="flex items-center justify-between gap-2 mb-0.5">
+                          <span className="text-[10px] font-bold text-white bg-[#A65F46] px-2 py-0.5 rounded-full">
+                            {item.year}
+                          </span>
+                          <span className="text-[11px] font-semibold text-[#A65F46] group-hover:underline">
+                            Update
+                          </span>
+                        </div>
+                        <h4 className="font-semibold text-xs text-[#302A26] line-clamp-1 mb-0.5">
+                          {item.name}
+                        </h4>
+                        <p className="text-[11px] text-[#7A8065] font-medium line-clamp-1">
+                          {item.location}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Category Breakdown */}
             <div className="bg-white rounded-2xl border border-[#D8C3A5]/40 shadow-xs p-6">
               <h3 className="font-display font-bold text-base text-[#302A26] mb-4">
@@ -926,6 +1023,13 @@ export default function AdminDashboardPage({
                   >
                     <Eye className="w-3.5 h-3.5" />
                     <span>Lihat Katalog Produk</span>
+                  </button>
+                  <button
+                    onClick={() => navigate("exhibitions")}
+                    className="w-full bg-white/10 hover:bg-[#A65F46] text-white text-xs font-semibold py-2 rounded-xl transition-colors flex items-center justify-center gap-1.5"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    <span>Lihat Halaman Pameran</span>
                   </button>
                 </div>
               </div>

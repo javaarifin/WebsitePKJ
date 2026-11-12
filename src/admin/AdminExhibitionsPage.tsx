@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react"
 import { NavigateFn } from "../App"
 import { useAppStore, ExhibitionItem } from "../context/AppContext"
 import { validateImageFile } from "../utils/security"
+import { uploadMediaToSupabase } from "../lib/supabase"
 import AdminLayout from "./AdminLayout"
 import {
   Sparkles,
@@ -45,6 +46,7 @@ export default function AdminExhibitionsPage({
   )
   const [toastMessage, setToastMessage] = useState<string | null>(null)
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null)
+  const [uploadingImage, setUploadingImage] = useState(false)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -103,7 +105,7 @@ export default function AdminExhibitionsPage({
     setIsModalOpen(true)
   }
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       const validation = validateImageFile(file)
@@ -112,13 +114,14 @@ export default function AdminExhibitionsPage({
         e.target.value = ""
         return
       }
-      const reader = new FileReader()
-      reader.onload = () => {
-        if (typeof reader.result === "string") {
-          setFormData((prev) => ({ ...prev, image: reader.result as string }))
-        }
+      setUploadingImage(true)
+      const res = await uploadMediaToSupabase(file, "exhibitions")
+      setUploadingImage(false)
+      if (res.url) {
+        setFormData((prev) => ({ ...prev, image: res.url! }))
+      } else if (res.error) {
+        alert(res.error)
       }
-      reader.readAsDataURL(file)
     }
   }
 
@@ -156,13 +159,22 @@ export default function AdminExhibitionsPage({
       title="Kelola Pameran (Exhibitions)"
       subtitle="Agenda & dokumentasi keikutsertaan pameran dagang kerajinan gerabah internasional"
       actions={
-        <button
-          onClick={handleOpenCreateModal}
-          className="flex items-center gap-2 bg-[#A65F46] hover:bg-[#8f5239] text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-sm transition-all"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Tambah Pameran</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate("exhibitions")}
+            className="flex items-center gap-1.5 bg-white hover:bg-[#F8F6F0] text-[#302A26] border border-[#D8C3A5]/60 px-3.5 py-2.5 rounded-xl text-xs font-semibold shadow-xs transition-all"
+          >
+            <Eye className="w-4 h-4 text-[#A65F46]" />
+            <span className="hidden sm:inline">Lihat Web Pameran</span>
+          </button>
+          <button
+            onClick={handleOpenCreateModal}
+            className="flex items-center gap-2 bg-[#A65F46] hover:bg-[#8f5239] text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-sm transition-all"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Tambah Pameran</span>
+          </button>
+        </div>
       }
     >
       {/* Toast Notification */}
@@ -374,7 +386,7 @@ export default function AdminExhibitionsPage({
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  placeholder="Contoh: Trade Expo Indonesia 2024"
+                  placeholder="Contoh: Trade Expo Indonesia (TEI) 2025"
                   className="w-full bg-[#F8F6F0] border border-[#D8C3A5]/60 rounded-xl px-4 py-2.5 text-xs text-[#302A26] focus:outline-none focus:border-[#A65F46] focus:bg-white"
                 />
               </div>
@@ -481,17 +493,22 @@ export default function AdminExhibitionsPage({
                         <input
                           ref={fileInputRef}
                           type="file"
-                          accept="image/*"
+                          accept="image/jpeg,image/png,image/webp"
                           onChange={handleFileUpload}
                           className="hidden"
                         />
                         <button
                           type="button"
+                          disabled={uploadingImage}
                           onClick={() => fileInputRef.current?.click()}
-                          className="w-full border-2 border-dashed border-[#D8C3A5] hover:border-[#A65F46] rounded-xl py-3 px-4 text-center transition-colors bg-[#F8F6F0] flex items-center justify-center gap-2 text-xs text-[#302A26]/70 font-medium"
+                          className="w-full border-2 border-dashed border-[#D8C3A5] hover:border-[#A65F46] rounded-xl py-3 px-4 text-center transition-colors bg-[#F8F6F0] flex items-center justify-center gap-2 text-xs text-[#302A26]/70 font-medium disabled:opacity-50"
                         >
                           <Upload className="w-4 h-4 text-[#A65F46]" />
-                          <span>Pilih Foto Dokumentasi Pameran</span>
+                          <span>
+                            {uploadingImage
+                              ? "Mengunggah foto ke cloud..."
+                              : "Pilih Foto Dokumentasi Pameran"}
+                          </span>
                         </button>
                       </div>
                     ) : (
@@ -520,9 +537,14 @@ export default function AdminExhibitionsPage({
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-xl text-xs font-semibold bg-[#A65F46] hover:bg-[#8f5239] text-white shadow-sm transition-all"
+                  disabled={uploadingImage}
+                  className="px-6 py-2.5 rounded-xl text-xs font-semibold bg-[#A65F46] hover:bg-[#8f5239] text-white shadow-sm transition-all disabled:opacity-50"
                 >
-                  {editingItem ? "Simpan Perubahan" : "Tambahkan Pameran"}
+                  {uploadingImage
+                    ? "Menunggu Upload..."
+                    : editingItem
+                      ? "Simpan Perubahan"
+                      : "Tambahkan Pameran"}
                 </button>
               </div>
             </form>
